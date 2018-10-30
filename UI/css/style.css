@@ -1,0 +1,87 @@
+@font-face {
+  font-family: rubikBold;
+  src: url(../asset/fonts/Rubik-Bold.ttf);
+}
+@font-face {
+  font-family: rubikMedium;
+  src: url(../asset/fonts/Rubik-Medium.ttf);
+}
+@font-face {
+  font-family: rubikRegular;
+  src: url(../asset/fonts/Rubik-Regular.ttf);
+}
+@font-face {
+  font-family: rubikLightItalic;
+  src: url(../asset/fonts/Rubik-LightItalic.ttf);
+}
+
+body {
+  font-family: 'rubikRegular', sans-serif;
+  font-size: 16px;
+}
+h1, h4 {
+  font-family: 'rubikBold', sans-serif;
+  font-size: 2.5rem;
+}
+
+/* Login */
+#login, #sign-up, #menu {
+  color: rgba(255, 255, 255, 1);
+}
+#login a, #sign-up a {
+  font-size: 0.75rem;
+}
+
+/* Dashboard */
+.btn-blue {
+  font-size: 0.8rem;
+}
+
+
+
+/* styling the placeholders */
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  font-family: 'rubikLightItalic',
+    sans-serif;
+  font-size: 0.75rem;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-family: 'rubikLightItalic',
+    sans-serif;
+  font-size: 0.75rem;
+}
+
+:-ms-input-placeholder {
+  /* IE 10+ */
+  font-family: 'rubikLightItalic',
+    sans-serif;
+  font-size: 0.75rem;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-family: 'rubikLightItalic',
+    sans-serif;
+  font-size: 0.75rem;
+}
+
+
+/* colors */
+.bg-blue {
+  background-color: rgba(15, 21, 35, 1);
+}
+.blue {
+  color: rgba(39, 11, 238, 1)
+}
+.green {
+  color: rgba(35, 172, 76, 1);
+}
+.grey {
+  color: rgba(51, 51, 51, 1);
+}
+.white, .white:hover {
+  color: rgba(255, 255, 255, 1);
+}
