@@ -63,8 +63,12 @@ td {
 }
 
 /*Parcel Details*/
-#details h6, #details p {
-  font-size: 1.1rem;
+#details h6 {
+  font-size: 1rem;
+  margin: 1rem;
+}
+#details p {
+  font-size: 0.9rem;
   margin: 1rem;
 }
 
@@ -124,6 +128,9 @@ td {
 }
 .green {
   color: rgba(35, 172, 76, 1);
+}
+.red {
+  color: rgba(239, 12, 51, 1);
 }
 .grey {
   color: rgba(51, 51, 51, 1);
