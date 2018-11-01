@@ -1,0 +1,191 @@
+
+.form-row {
+  margin-bottom: 25px;
+}
+input, textarea {
+  width: 100%;
+  display: block;
+  outline: none;
+  height: 40px;
+  border: none;
+  border-radius: 4px;
+  text-indent: 20px;
+  box-sizing: border-box;
+}
+textarea {
+  min-height: 70px ;
+}
+
+input:focus {
+  border: solid 2px dodgerblue;
+}
+
+.column {
+  display: flex;
+}
+
+.is-two {
+  justify-content: space-between;
+}
+
+.column.is-two > input, .column.is-two div {
+  width: calc(50% - 15px);
+}
+
+.btn {
+  display: inline-block;
+  outline: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 1);
+}
+.btn.xsm {
+  line-height: 30px;
+  padding: 0 1.5em;
+}
+.btn.sm {
+  line-height: 35px;
+  padding: 0 1.5em;
+}
+.btn.lg {
+  line-height: 35px;
+  padding: 0 3.3em;
+}
+button {
+  border: none;
+  cursor: pointer;
+  background: inherit;
+}
+
+.btn.is-outlined {
+  border: 2px solid rgba(255, 255, 255, 1);
+}
+.btn.is-outlined-blue {
+  border: 2px solid rgba(15, 21, 35, 1);
+  color: rgba(15, 21, 35, 1);
+}
+.btn.is-blue {
+  background-color: rgba(15, 21, 35, 1);
+}
+.modal {
+  height: 100%;
+  width: 100%;
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+
+/* --------- Display ---------- */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+.content-between {
+  justify-content: space-between;
+}
+
+.text-right {
+  text-align: right;
+}
+.d-block {
+  display: block;
+}
+.d-flex {
+  display: flex;
+}
+
+a, a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* -------- Spacing Utilities ---------- */
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.m-auto {
+  margin: auto;
+}
+
+.mr-1 {
+  margin-right: 1.5rem;
+}
+
+.mr-2 {
+  margin-right: 2rem;
+}
+.mr-3 {
+  margin-right: 3rem;
+}
+.mr-5 {
+  margin-right: 5.5rem;
+}
+
+.ml-1 {
+  margin-left: 1rem;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mt-40 {
+  margin-top: 40px;
+}
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+.mb-14 {
+  margin-bottom: 14px;
+}
+
+.mb-24 {
+  margin-bottom: 24px;
+}
+.mb-60 {
+  margin-bottom: 60px;
+}
+
+.mb-34 {
+  margin-bottom: 34px;
+}
+
+.pt-5 {
+  padding-top: 5px;
+}
+
+.pt-27 {
+  padding-top: 27px;
+}
+.pb-10 {
+  padding-bottom: 10px;
+}
+
+
+
+

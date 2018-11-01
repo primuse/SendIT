@@ -18,24 +18,67 @@
 body {
   font-family: 'rubikRegular', sans-serif;
   font-size: 16px;
+  color: rgba(255, 255, 255, 1);
 }
-h1, h4 {
+h1, h3, h4 {
   font-family: 'rubikBold', sans-serif;
   font-size: 2.5rem;
 }
+h2, h5 {
+  font-family: 'rubikBold', sans-serif;
+}
 
 /* Login */
-#login, #sign-up, #menu {
-  color: rgba(255, 255, 255, 1);
-}
 #login a, #sign-up a {
   font-size: 0.75rem;
 }
 
 /* Dashboard */
-.btn-blue {
-  font-size: 0.8rem;
+nav li {
+  font-family: 'rubikMedium', sans-serif;
+  color: rgba(51, 51, 51, 1) !important;
 }
+aside a {
+  font-size: 0.9rem;
+  font-family: 'rubikMedium', sans-serif;
+}
+#content-info a {
+  color: rgba(255, 255, 255, 1);
+  font-family: 'rubikBold', sans-serif;
+}
+
+/*Table*/
+#table-info a {
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  color: rgba(93, 93, 93, 1);
+  font-family: 'rubikMedium', sans-serif;
+}
+#table-info a.active {
+  color: rgba(35, 172, 76, 1);
+  border-bottom: 1px solid rgba(35, 172, 76, 1);
+}
+td {
+  font-size: 0.85rem;
+}
+
+/*Parcel Details*/
+#details h6, #details p {
+  font-size: 1.1rem;
+  margin: 1rem;
+}
+
+/*Modal*/
+.modal-content h6 {
+  font-size: 0.85rem;
+}
+.modal-content h5 {
+  font-family: 'rubikMedium', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  font-weight: normal;
+}
+
 
 
 
@@ -73,8 +116,11 @@ h1, h4 {
 .bg-blue {
   background-color: rgba(15, 21, 35, 1);
 }
+.bg-bright-blue {
+  background-color: rgba(49, 135, 210, 1);
+}
 .blue {
-  color: rgba(39, 11, 238, 1)
+  color: rgba(0, 167, 185, 1)
 }
 .green {
   color: rgba(35, 172, 76, 1);
@@ -84,4 +130,7 @@ h1, h4 {
 }
 .white, .white:hover {
   color: rgba(255, 255, 255, 1);
+}
+.white-3 {
+  color: rgba(255, 255, 255, .3);
 }
