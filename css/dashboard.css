@@ -11,8 +11,13 @@ main {
 
 #menu {
   padding: 30px 22px 30px 17px;
-  height: 100vh;
+  /*height: 110vh;*/
   box-sizing: border-box;
+  height: auto;
+  position: fixed;
+  width: 258px;
+  top: 0;
+  bottom: 0;
 }
 .menu-ico {
   width: 20px;
@@ -67,7 +72,7 @@ main > section > #main-content-page {
   justify-content: center;
   align-items: center;
   padding: 10px;
-  max-width: 240px;
+  max-width: 220px;
   min-width: 150px;
   height: 70px;
   border-radius: 5px;
@@ -100,9 +105,11 @@ main > section > #main-content-page {
   margin: 0;
 }
 table {
-  overflow: auto;
   width: 100%;
   border-collapse: collapse;
+}
+#table-cont {
+  overflow: auto;
 }
 #table-head {
   height: 50px;
@@ -176,10 +183,13 @@ tr:nth-child(even) {
 
 .toggled-nav {
   height: auto;
-  position: absolute;
+  position: fixed;
   z-index: 1;
   top: 0;
   bottom: 0;
+}
+.toggled-nav > #menu {
+  width: auto;
 }
 
 .toggled-nav #aside-profile {
@@ -223,4 +233,76 @@ label {
     display: block;
   }
 }
+
+@media (max-width: 600px) {
+  #parcel {
+    flex-direction: column;
+  }
+  #parcel-ico {
+    width: 120px;
+  }
+  .modal-box {
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 600px) {
+  #parcel {
+    flex-direction: column;
+  }
+  #parcel-ico {
+    width: 150px;
+  }
+  #user-img {
+    width: 90px;
+  }
+  .dash-img {
+    width: 235px;
+    height: 233px;
+  }
+}
+
+@media (min-width: 768px) {
+  main {
+    display: grid;
+    grid-template-columns: minmax(250px, 260px) 1fr;
+    grid-template-rows: 100vh;
+  }
+  aside {
+    display: block;
+  }
+  .toggler {
+    display: none;
+  }
+  .info-box {
+    padding: 0;
+  }
+  #user-info {
+    padding: 5px 5px;
+  }
+  .dash-img {
+    width: 265px;
+    height: 263px;
+  }
+}
+
+@media (min-width: 992px) {
+  .info-box {
+    width: 100%;
+    padding: 3px;
+  }
+  #parcel {
+    flex-direction: row;
+  }
+  #content-info {
+    padding: 40px 0 0 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .info-box {
+    padding: 10px;
+  }
+}
+
 
