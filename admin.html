@@ -32,7 +32,7 @@
                         <a href="dashboard.html"><span>Parcel</span></a>
                     </li>
                     <ul>
-                        <li><a href="#"><span>New Parcel</span></a></li>
+                        <li><a href="#" id="parcel-modal-open"><span>New Parcel</span></a></li>
                         <li><a href="dashboard.html"><span>Delivered Parcels</span></a></li>
                         <li><a href="dashboard.html"><span>In-transit Parcels</span></a></li>
                     </ul>
@@ -60,7 +60,7 @@
             </nav>
             <!-- Dashboard Content -->
             <div id="main-content-page">
-                <div id="info-cont" class="mb-60">
+                <div id="info-cont">
                     <div class="info-box">
                         <small>Created</small>
                         <h4 class="m-0">0</h4>
@@ -74,7 +74,7 @@
                         <h4 class="m-0 green">0</h4>
                     </div>
                 </div>
-                <div id="parcel" class="dash-cont d-flex">
+                <div id="parcel" class="dash-cont d-flex mt-40">
                     <div class="p-10">
                         <img src="asset/imgs/parcel.jpg" id="parcel-ico">
                   </div>
@@ -118,7 +118,7 @@
                     <div class="form-row">
                         <input type="text">
                     </div>
-                    <button type="submit" class="btn xsm is-outlined">Save</button>
+                    <button type="submit" class="btn xsm is-outlined white">Save</button>
                 </form>
             </div>
         </div>
@@ -133,7 +133,7 @@
                 <div class="form-row">
                   <input type="text" placeholder="In-transit, Delivered, Canceled">
                 </div>
-                <button type="submit" class="btn xsm is-outlined">Save</button>
+                <button type="submit" class="btn xsm is-outlined white">Save</button>
               </form>
             </div>
         </div>
