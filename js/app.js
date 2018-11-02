@@ -1,62 +1,89 @@
+window.addEventListener('load', () => {
+  resize();
+})
 
-let myDocument = $(document),
-    deviceWidth = myDocument.width();
+window.addEventListener('resize', function() {
+  resize();
+})
 
-// To hide and dsiplay side menu
-if (deviceWidth <= 767) {
-  $(document).click(function(){
-    $('aside').fadeOut(500);
-  })
-  $(document).on('click', '#toggle', (event) => {
-    $('aside').fadeIn(500).addClass('toggled-nav');
-    event.stopPropagation();
-  })
-  $(document).on('click', 'aside', (event) => {
-    event.stopPropagation();
-  })
+const $ = (selector) => {
+  return document.querySelector(selector)
+};
+
+var viewportwidth;
+var viewportheight;
+
+function resize() {
+  let
+    deviceWidth = window.innerWidth;
+    console.log(deviceWidth);
+    console.log(typeof window.innerWidth);
+  if (typeof window.innerWidth == 'number') {
+    viewportwidth = window.innerWidth,
+    viewportheight = window.innerHeight
+    console.log(viewportwidth)
+    if(viewportwidth <= 700) {
+      window.reload;
+      }
+  }
+
+  let aside = $('aside');
+  let asideClass = aside.classList;
+  
+  // To hide and dsiplay side menu
+  if (deviceWidth <= 767) {
+    
+    $('#main-content-page').addEventListener('click', () => {
+      // asideClass.add('fade-out');
+      asideClass.remove('fade-in');
+    });
+     
+    $('#toggle').addEventListener('click', (event) => {
+      console.log('am clicking on toggle');
+      
+      asideClass.add('fade-in')
+      asideClass.toggle('toggled-nav');
+      
+      event.stopPropagation();
+    });
+  }
 }
 
-// Modals
-let parcelModal = document.getElementById('parcelmodal'),
-    cancelModal = document.getElementById('cancel-modal'),
-    destinationModal = document.getElementById('destination-modal'),
-    profileModal = document.getElementById('profile-modal'),
-    locationModal = document.getElementById('location-modal'),
-    updateModal = document.getElementById('update-modal');
-
-// Buttons
-let parcelBtn = document.getElementById('parcel-modal-open'),
-    parcelBtn2 = document.getElementById('parcel-modal'),
-    cancelBtn = document.getElementById('cancel-parcel'),
-    profileBtn = document.getElementById('profile-btn')
-    destinationBtn = document.getElementById('change-destination'),
-    locationBtn = document.getElementById('change-location'),
-    updateBtn = document.getElementById('update-status');
-
-
-Validate(parcelBtn, parcelModal);
-Validate(parcelBtn2, parcelModal);
-Validate(cancelBtn, cancelModal);
-Validate(profileBtn, profileModal);
-Validate(destinationBtn, destinationModal);
-Validate(locationBtn, locationModal);
-Validate(updateBtn, updateModal);
-
 // Function to validate if element is on the DOM and call Modal function
-function Validate(btn, modal) {
+function validate(btn, modal) {
   if (btn !== null) {
-    btn.onclick = () => Modal(modal);
+    btn.onclick = () => toggleModal(modal);
   }
 }
 
 
 // Function to open and close modal
-function Modal(modalId) {
-  modalId.style.display = 'block';
+function toggleModal(modalElement) {
+  modalElement.style.display = 'block';
+  modalElement.show = function() {    
+    this.style.display = "block";
+  }
+  modalElement.hide = function() {
+    this.style.display = "none";
+  }
+  
+  const buttons = modalElement.querySelectorAll('button[type=submit]');
+  for(let button of buttons) {
+    button.addEventListener("click", () => {
+      modalElement.hide();
+    });
+  }
   window.onclick = function(event) {
     if (event.target == modalId) {
-      modalId.style.display = "none";
+      modalElement.show();
     }
   }
 }
 
+const buttons = document.querySelectorAll('[data-modal]');
+
+for(let button of buttons) {
+  let targetModal = button.getAttribute('data-target');
+  
+  validate(button, $(targetModal));
+}

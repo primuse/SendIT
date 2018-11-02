@@ -183,13 +183,14 @@ tr:nth-child(even) {
 
 .toggled-nav {
   height: auto;
-  position: fixed;
+  /* position: fixed; */
   z-index: 1;
   top: 0;
   bottom: 0;
 }
+
 .toggled-nav > #menu {
-  width: auto;
+  width: 250px;
 }
 
 .toggled-nav #aside-profile {
@@ -227,8 +228,18 @@ label {
     grid-template-rows: 100vh;
   }
   aside {
-    display: none;
+    visibility: hidden;
+    position: absolute;
+    transition: all .3s;
+    left: 0; top: 0;
+    opacity: 0;
   }
+  
+  aside.fade-in {
+    opacity: 1;
+    visibility: visible;
+  }
+  
   .toggler {
     display: block;
   }
