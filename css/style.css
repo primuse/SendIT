@@ -77,8 +77,6 @@ td {
 }
 
 
-
-
 /* styling the placeholders */
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
@@ -137,7 +135,7 @@ td {
 
 
 /*Media Quries*/
-@media (min-width: 320px) {
+@media (max-width: 491px) and (min-width: 0) {
   body {
     font-size: 13px;
   }
@@ -150,14 +148,26 @@ td {
   #details h6, #details p {
     font-size: 0.7rem;
   }
+  h1, h3, h4 {
+    font-size: 1.5rem;
+  }
+  #details_btns > a {
+    font-size: 0.65rem;
+  }
 }
 
-@media (min-width: 491px) {
+@media (max-width: 600px) and (min-width: 491px) {
   body {
     font-size: 15px;
   }
   #details h6, #details p {
     font-size: 0.9rem;
+  }
+  .modal-content h5 {
+    font-size: 0.8rem;
+  }
+  h1, h3, h4 {
+    font-size: 1.8rem;
   }
 }
 @media (min-width: 600px) {
@@ -169,14 +179,5 @@ td {
   }
   td {
       font-size: 0.85rem;
-  }
-}
-@media (max-width: 600px) {
-  .modal-content h5 {
-    font-size: 0.8rem;
-  }
-  h1, h3, h4 {
-    font-family: 'rubikBold', sans-serif;
-    font-size: 1.8rem;
   }
 }

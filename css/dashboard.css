@@ -183,18 +183,13 @@ tr:nth-child(even) {
 
 .toggled-nav {
   height: auto;
-  /* position: fixed; */
   z-index: 1;
   top: 0;
   bottom: 0;
 }
 
 .toggled-nav > #menu {
-  width: 250px;
-}
-
-.toggled-nav #aside-profile {
-  margin-left: 0;
+  width: 255px;
 }
 
 
@@ -257,6 +252,119 @@ label {
   }
 }
 
+@media (max-width: 491px) and (min-width: 0) {
+  .info-box {
+    min-width: 75px;
+  }
+  .toggler {
+    width: 10px;
+  }
+  nav {
+    padding: 10px 15px;
+  }
+  .toggled-nav > #menu {
+    width: 200px;
+  }
+  nav li:first-child {
+    margin-right: 10px;
+  }
+  .modal-box {
+    max-width: 300px;
+  }
+  #details > div:first-child {
+    margin-right: 0px;
+  }
+  #details_btns > a {
+    margin-right: 3px;
+  }
+  #details_btns .is-outlined-blue {
+    line-height: 31px;
+  }
+#user-info {
+    padding: 5px 20px;
+  }
+  #user-img {
+    width: 80px;
+  }
+  #user-desc h4 {
+    margin-top: 1rem;
+    margin-bottom: 0.6rem;
+  }
+  #user-desc h5 {
+    margin: 10px;
+  }
+  #user-desc {
+    padding: 2px;
+    border-bottom: 1px solid rgba(112, 112, 112, 0.27);
+    border-right: none;
+  }
+  main > section > #main-content-page {
+    padding: 25px 5px;
+  }
+  #user-info h1 {
+    margin-bottom: 2.5rem;
+  }
+  #user-info > div {
+    margin-bottom: 5rem;
+  }
+  .btn.lg {
+    padding: 0 2em;
+  }
+  #user-cont {
+    flex-direction: column;
+  }
+  nav.mb-60 {
+    margin-bottom: 30px;
+  }
+  #profile-modal button {
+    margin-right: 20px;
+  }
+  #parcel h4 {
+    margin-bottom: 5px;
+  }
+  #parcel .btn.sm.bg-blue {
+    margin-right: 8px;
+  }
+  #parcel .btn.sm.is-outlined-blue {
+   line-height: 32px;
+  }
+  .dash-cont {
+    box-shadow: none; 
+    border: none; 
+  }
+  #info-cont {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 600px) and (min-width: 491px) {
+  .info-box {
+    min-width: 120px;
+  }
+  .toggler {
+    width: 14px;
+  }
+  main > section > #main-content-page {
+    padding: 15px 15px;
+  }
+  #user-desc {
+    padding: 20px 5px;
+  }
+  #user-img {
+    width: 93px;
+  }
+  #user-info {
+    padding: 20px 15px;
+  }
+  .dash-img {
+    width: 275px;
+    height: 273px;
+  }
+  #content-info {
+    padding: 40px 0 0 0;
+  }
+}
+
 @media (min-width: 600px) {
   #parcel {
     flex-direction: column;
@@ -298,6 +406,9 @@ label {
   #user-img {
     width: 88px;
     height: auto;
+  }
+  main > section > #main-content-page {
+    padding: 15px 5px;
   }
 }
 
