@@ -51,24 +51,17 @@ aside a {
 #table-info a {
   font-size: 1.1rem;
   letter-spacing: 3px;
-  color: rgba(93, 93, 93, 1);
-  font-family: 'rubikMedium', sans-serif;
-}
-#table-info a.active {
   color: rgba(35, 172, 76, 1);
   border-bottom: 1px solid rgba(35, 172, 76, 1);
+  font-family: 'rubikMedium', sans-serif;
 }
 td {
   font-size: 0.85rem;
 }
 
 /*Parcel Details*/
-#details h6 {
+#details h6, #details p {
   font-size: 1rem;
-  margin: 1rem;
-}
-#details p {
-  font-size: 0.9rem;
   margin: 1rem;
 }
 
@@ -82,8 +75,6 @@ td {
   letter-spacing: 2px;
   font-weight: normal;
 }
-
-
 
 
 /* styling the placeholders */
@@ -140,4 +131,53 @@ td {
 }
 .white-3 {
   color: rgba(255, 255, 255, .3);
+}
+
+
+/*Media Quries*/
+@media (max-width: 491px) and (min-width: 0) {
+  body {
+    font-size: 13px;
+  }
+  #table-info a {
+    font-size: 0.8rem;
+  }
+  td {
+    font-size: 0.7rem;
+  }
+  #details h6, #details p {
+    font-size: 0.7rem;
+  }
+  h1, h3, h4 {
+    font-size: 1.5rem;
+  }
+  #details_btns > a {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 600px) and (min-width: 491px) {
+  body {
+    font-size: 15px;
+  }
+  #details h6, #details p {
+    font-size: 0.9rem;
+  }
+  .modal-content h5 {
+    font-size: 0.8rem;
+  }
+  h1, h3, h4 {
+    font-size: 1.8rem;
+  }
+}
+@media (min-width: 600px) {
+  body {
+    font-size: 16px;
+  }
+  #table-info a {
+    font-size: 1rem;
+  }
+  td {
+      font-size: 0.85rem;
+  }
 }
