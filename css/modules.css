@@ -161,6 +161,9 @@ a, a:hover {
 .mt-50 {
   margin-top: 50px;
 }
+.mt-80 {
+  margin-top: 80px;
+}
 
 .mb-14 {
   margin-bottom: 14px;
@@ -191,6 +194,12 @@ a, a:hover {
   padding-bottom: 10px;
 }
 
-
+/*Media Queries*/
+@media (min-width: 320px) and (max-width: 500px) {
+  .btn.sm {
+    line-height: 35px;
+    padding: 0 1em;
+  }
+}
 
 

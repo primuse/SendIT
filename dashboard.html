@@ -22,7 +22,7 @@
                 <small class="d-block pb-10 white-3">HSDB3UUQ2</small>
                 <small>Welcome!<br> Tiku Okoye</small>
             </div>
-            <ul class="mt-50">
+            <ul class="mt-80">
               <li>
                 <img src="asset/imgs/ico/home.svg" class="menu-ico">
                 <a href="dashboard.html"><span>Dashboard</span></a>
@@ -31,10 +31,14 @@
                 <img src="asset/imgs/ico/box-open.svg" class="menu-ico">
                 <a href="#" id="parcel-modal"><span>New Parcel</span></a>
               </li>
-              <ul>
-                <li><a href="dashboard.html"><span>Delivered Parcels</span></a></li>
-                <li><a href="dashboard.html"><span>In-transit Parcels</span></a></li>
-              </ul>
+              <li>
+                <img src="asset/imgs/ico/archive.svg" class="menu-ico">
+                <a href="delivered_parcel.html"><span>Delivered Parcels</span></a>
+              </li>
+              <li>
+                <img src="asset/imgs/ico/box.svg" class="menu-ico">
+                <a href="intransit_parcel.html"><span>In-transit Parcels</span></a>
+              </li>
             </ul>
           </div>
         </aside>
@@ -62,21 +66,20 @@
             <div id="info-cont" class="mb-34">
               <div class="info-box">
                   <small>Created</small>
-                  <h4 class="m-0">0</h4>
+                  <h4 class="m-0">20</h4>
               </div>
               <div class="info-box">
                   <small>In Transit</small>
-                  <h4 class="m-0 blue">0</h4>
+                  <h4 class="m-0 blue">10</h4>
               </div>
               <div class="info-box">
                   <small>Delivered</small>
-                  <h4 class="m-0 green">0</h4>
+                  <h4 class="m-0 green">10</h4>
               </div>
             </div>
             <div class="dash-cont">
               <div id="table-info">
-                <a href="#" class="active">IN TRANSIT</a>
-                <a href="#">DELIVERED</a>
+                <a href="#">All</a>
               </div>
               <div id="table-cont">
                 <table>
@@ -106,7 +109,7 @@
                     <td>#1000</td>
                     <td>No 14 Asobruewu street, Rumuigbo</td>
                     <td>31/10/2018</td>
-                    <td>Delivered</td>
+                    <td>In-transit</td>
                       <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
                   </tr>
                   <tr>
@@ -146,7 +149,7 @@
                     <td>#1000</td>
                     <td>No 14 Asobruewu street, Rumuigbo</td>
                     <td>31/10/2018</td>
-                    <td>Delivered</td>
+                    <td>Canceled</td>
                       <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
                   </tr>
                 </table>

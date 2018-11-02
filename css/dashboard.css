@@ -42,8 +42,8 @@ ul {
   display: block;
   padding-bottom: 10px;
 }
-#menu > ul > li:not(:nth-child(2)) {
-  padding: 50px 0;
+#menu > ul > li{
+  padding: 20px 0;
 }
 #menu img {
   margin-right: 15px;
@@ -284,6 +284,10 @@ label {
     width: 265px;
     height: 263px;
   }
+  #user-img {
+    width: 88px;
+    height: auto;
+  }
 }
 
 @media (min-width: 992px) {
@@ -296,6 +300,12 @@ label {
   }
   #content-info {
     padding: 40px 0 0 0;
+  }
+  #user-info {
+    padding: 20px 40px;
+  }
+  #user-img {
+    width: 140px;
   }
 }
 

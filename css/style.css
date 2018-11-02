@@ -51,12 +51,9 @@ aside a {
 #table-info a {
   font-size: 1.1rem;
   letter-spacing: 3px;
-  color: rgba(93, 93, 93, 1);
-  font-family: 'rubikMedium', sans-serif;
-}
-#table-info a.active {
   color: rgba(35, 172, 76, 1);
   border-bottom: 1px solid rgba(35, 172, 76, 1);
+  font-family: 'rubikMedium', sans-serif;
 }
 td {
   font-size: 0.85rem;
@@ -140,6 +137,40 @@ td {
 
 
 /*Media Quries*/
+@media (min-width: 320px) {
+  body {
+    font-size: 13px;
+  }
+  #table-info a {
+    font-size: 0.8rem;
+  }
+  td {
+    font-size: 0.7rem;
+  }
+  #details h6, #details p {
+    font-size: 0.7rem;
+  }
+}
+
+@media (min-width: 491px) {
+  body {
+    font-size: 15px;
+  }
+  #details h6, #details p {
+    font-size: 0.9rem;
+  }
+}
+@media (min-width: 600px) {
+  body {
+    font-size: 16px;
+  }
+  #table-info a {
+    font-size: 1rem;
+  }
+  td {
+      font-size: 0.85rem;
+  }
+}
 @media (max-width: 600px) {
   .modal-content h5 {
     font-size: 0.8rem;

@@ -45,7 +45,7 @@
         <!-- Main Content  -->
         <section class="grey" id="dash">
           <!-- Dashboard Top Nav -->
-          <nav class="mb-60">
+          <nav>
             <a href="#" class="toggler mr-1" id="toggle"><img src="asset/imgs/ico/bars.svg"></a>
             <ul class="p-0">
               <li>
@@ -62,39 +62,97 @@
             </ul>
           </nav>
             <!-- Dashboard Content -->
-          <div id="main-content-page" class="d-flex">
-            <div id="user-cont" class="d-flex">
-              <div id="user-desc">
-                <img src="asset/imgs/ico/user-black.svg" id="user-img">
-                <div class="text-center">
-                  <h4>Tiku Okoye</h4>
-                  <small>primuse51@gmail.com</small>
-                  <h5>Lagos, Nigeria</h5>
-                  <h5>Female</h5>
-                  <h5>+23480990547</h5>
-                </div>
+          <div id="main-content-page">
+            <div id="info-cont" class="mb-34">
+              <div class="info-box">
+                  <small>Created</small>
+                  <h4 class="m-0">20</h4>
               </div>
-              <div id="user-info" class="text-center">
-                <h1 class="mb-6">My Parcels</h1>
-                <div class="d-flex content-between mb-6">
-                  <div> 
-                    <small>created</small>
-                    <h4>20</h4>
-                  </div>
-                  <div> 
-                    <small>delivered</small>
-                    <h4 class="green">10</h4>
-                  </div>
-                  <div> 
-                    <small>in transit</small>
-                    <h4 class="blue">10</h4>
-                  </div>
-                  <div> 
-                    <small>cancelled</small>
-                    <h4 class="red">0</h4>
-                  </div>
-                </div>
-                <a href="#" id="profile-btn" class="btn lg bg-blue white">Edit Profile</a>
+              <div class="info-box">
+                  <small>In Transit</small>
+                  <h4 class="m-0 blue">10</h4>
+              </div>
+              <div class="info-box">
+                  <small>Delivered</small>
+                  <h4 class="m-0 green">10</h4>
+              </div>
+            </div>
+            <div class="dash-cont">
+              <div id="table-info">
+                <a href="#">Delivered</a>
+              </div>
+              <div id="table-cont">
+                <table>
+                  <tr id="table-head">
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Weight</th>
+                    <th>Price</th>
+                    <th>Destination</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr> 
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                    <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
@@ -102,31 +160,6 @@
     </main>
 
     <!-- Modal -->
-    <!-- To edit Profile -->
-    <div id="profile-modal" class="modal">
-      <div class="modal-box">
-        <div class="modal-content">
-          <h5 class="text-center">Edit Profile</h5>
-          <form class="text-center">
-            <div class="column is-two form-row">
-              <input type="text" placeholder="First Name">
-              <input type="text" placeholder="Last Name">
-            </div>
-            <div class="column is-two form-row">
-              <input type="email" placeholder="Email">
-              <input type="number" placeholder="Phone Number">
-            </div>
-            <div class="column is-two form-row">
-              <input type="text" placeholder="sex">
-              <input type="text" placeholder="Location">
-            </div>
-            <button type="submit" class="btn lg is-outlined mr-2 white">Save</button>
-            <a href="profile.html" class="btn lg is-outlined">Cancel</a>
-          </form>
-        </div>
-      </div>
-    </div>
-    
     <!-- To create parcel -->
     <div id="parcelmodal" class="modal">
       <div class="modal-box">
@@ -182,6 +215,7 @@
         </div>
       </div>
     </div>
+
 
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/app.js"></script>
