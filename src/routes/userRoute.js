@@ -10,10 +10,12 @@ const router = express.Router();
 router.post('/parcels', (req, res) => {
   const myData = req.body;
   model.createParcel(myData).then(() => {
+    res.status(201);
     res.send('Successfully Written to File.');
   }).catch((match) => {
+    res.status(409);
     res.send({
-      messgae: `Parcel with ID ${match.parcelId} already exists`,
+      Error: `Parcel with ID ${match.parcelId} already exists`,
     });
   });
 });
@@ -23,7 +25,22 @@ router.post('/parcels', (req, res) => {
 router.get('/parcels', (req, res) => {
   model.read((err, buf) => {
     if (!err) {
-      res.send(JSON.parse(buf.toString()));
+      const parcels = JSON.parse(buf.toString());
+      const { location } = req.query;
+      console.log(req.query);
+      if (location === undefined) {
+        res.send(parcels);
+      } else {
+        const filteredParcel = parcels.filter((e) => {
+          return e.location !== undefined && e.location.toLowerCase() === location.toLowerCase();
+        });
+        if (filteredParcel.length > 0) {
+          res.send(filteredParcel);
+        } else {
+          res.status(404);
+          res.send({ Error: 'No parcel found' });
+        }
+      }
     }
   });
 });
@@ -34,11 +51,26 @@ router.get('/parcels/:parcelId', (req, res) => {
 
   model.findParcel(id).then((parcel) => {
     res.send(parcel);
-  }).catch((err) => {
-    console.log(err);
+  }).catch((error) => {
+    console.log(error);
     res.status(404);
     res.send({
-      message: `Parcel with ID ${id} was not found`,
+      Error: error,
+    });
+  });
+});
+
+// To update a parcel with ID
+router.put('/parcels/:parcelId/update', (req, res) => {
+  const id = req.params.parcelId;
+  const value = req.body;
+  model.updateParcel(id, value).then(() => {
+    console.log('done');
+    res.send(`Sucessfully updated ${Object.keys(value)}`);
+  }).catch((error) => {
+    res.status(409);
+    res.send({
+      Error: error,
     });
   });
 });
@@ -49,15 +81,25 @@ router.put('/parcels/:parcelId/cancel', (req, res) => {
   model.cancelParcel(id).then(() => {
     res.send('successful');
   }).catch((error) => {
-    console.log(error.message);
+    res.status(409);
     res.send({
-      message: error.message,
+      Error: error,
     });
   });
 });
 
 // To get all parcels from User with ID
 router.get('/users/:userId/parcels', (req, res) => {
-  res.send('tiku');
+  const id = req.params.userId;
+
+  model.findUserParcel(id).then((parcel) => {
+    res.send({ parcels: parcel });
+  }).catch((error) => {
+    console.log(error);
+    res.status(404);
+    res.send({
+      Error: error.message,
+    });
+  });
 });
 export default router;
