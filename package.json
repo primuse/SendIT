@@ -1,0 +1,37 @@
+{
+  "name": "sendit",
+  "version": "1.0.0",
+  "description": "API for SendIT application",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "nodemon ./src/index.js --exec babel-node",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/primuse/SendIT.git"
+  },
+  "keywords": [
+    "api",
+    "parcel",
+    "sendit",
+    "courier"
+  ],
+  "author": "Tiku Okoye",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/primuse/SendIT/issues"
+  },
+  "homepage": "https://github.com/primuse/SendIT#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "nodemon": "^1.18.5"
+  }
+}
