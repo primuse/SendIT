@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SendIT</title>
+    <link rel="icon" href="asset/imgs/parcel.jpg" type="image/jpg">
+    <!-- stylesheets link -->
+    <link rel="stylesheet" href="css/modules.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <main>
+        <!-- Dashboard side Menu  -->
+        <aside>
+          <div class="bg-blue" id="menu">
+            <div id="aside-profile">
+                <h3 class="m-0 pb-10">SendIT</h3>
+                <small class="d-block pb-10 white-3">HSDB3UUQ2</small>
+                <small>Welcome!<br> Tiku Okoye</small>
+            </div>
+            <ul class="mt-80">
+              <li>
+                <img src="asset/imgs/ico/home.svg" class="menu-ico">
+                <a href="dashboard.html"><span>Dashboard</span></a>
+              </li>
+              <li>
+                <img src="asset/imgs/ico/box-open.svg" class="menu-ico">
+                <a href="#" data-modal data-target="#parcelmodal"><span>New Parcel</span></a>
+              </li>
+              <li>
+                <img src="asset/imgs/ico/archive.svg" class="menu-ico">
+                <a href="delivered_parcel.html"><span>Delivered Parcels</span></a>
+              </li>
+              <li>
+                <img src="asset/imgs/ico/box.svg" class="menu-ico">
+                <a href="intransit_parcel.html"><span>In-transit Parcels</span></a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <!-- Main Content  -->
+        <section class="grey" id="dash">
+          <!-- Dashboard Top Nav -->
+          <nav>
+            <a href="#" class="toggler mr-1" id="toggle"><img src="asset/imgs/ico/bars.svg"></a>
+            <ul class="p-0">
+              <li>
+                Dashboard
+              </li>
+            </ul>
+            <ul class="p-0 ml-auto">
+              <li class="mr-1">
+                <a href="profile.html">My Profile</a>
+            </li>
+              <li>
+                <a href="index.html">Logout</a>
+              </li>
+            </ul>
+          </nav>
+            <!-- Dashboard Content -->
+          <div id="main-content-page">
+            <div id="info-cont" class="mb-34">
+              <div class="info-box">
+                  <small>Created</small>
+                  <h4 class="m-0">20</h4>
+              </div>
+              <div class="info-box">
+                  <small>In Transit</small>
+                  <h4 class="m-0 blue">10</h4>
+              </div>
+              <div class="info-box">
+                  <small>Delivered</small>
+                  <h4 class="m-0 green">10</h4>
+              </div>
+            </div>
+            <div class="dash-cont">
+              <div id="table-info">
+                <a href="#">All</a>
+              </div>
+              <div id="table-cont">
+                <table>
+                  <tr id="table-head">
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Weight</th>
+                    <th>Price</th>
+                    <th>Destination</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr> 
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                    <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>In-transit</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Delivered</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>101</td>
+                    <td>Document</td>
+                    <td>10kg</td>
+                    <td>#1000</td>
+                    <td>No 14 Asobruewu street, Rumuigbo</td>
+                    <td>31/10/2018</td>
+                    <td>Canceled</td>
+                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <!-- To create parcel -->
+    <div id="parcelmodal" class="modal">
+      <div class="modal-box">
+        <div class="modal-content">
+          <h2 class="text-center">New Parcel</h2>
+          <form class="text-right">
+            <div class="column is-two form-row text-left">
+              <div>
+                <label for="parcelType">Parcel Type</label>
+                <input type="text" id="parcelType">
+              </div>
+
+              <div class="column is-two">
+                <div>
+                  <label for="weight">Weight</label>
+                  <input type="number" id="weight">
+                </div>
+                <div>
+                  <label for="price">Price</label>
+                  <input type="number" id="price">
+                </div>
+              </div>
+            </div>
+            <div class="form-row text-left">
+              <div>
+                <label for="destination">Destination</label>
+                <textarea id="destination"></textarea>
+              </div>
+            </div>
+            <h5 class="text-center">Addressed To</h5>
+            <div class="column is-two form-row text-left">
+              <div>
+                <label for="name">Name</label>
+                <input type="text" id="name">
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input type="text" id="email">
+              </div>
+            </div>
+            <div class="column is-two form-row text-left">            
+              <div>
+                <label for="phoneNumber">PhoneNumber</label>
+                <input type="number" id="phoneNumber">
+              </div>
+              <div>
+                <label for="PickupLocation">Pickup Location</label>
+                <input type="text" id="PickupLocation">
+              </div>
+            </div>
+            <button type="submit" class="btn sm bg-bright-blue text-right white">Create</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
