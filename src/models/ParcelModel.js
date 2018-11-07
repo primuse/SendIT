@@ -20,7 +20,7 @@ class ParcelModel {
       this.populate().then(() => {
         const match = this.list.find(e => +e.parcelId === +parcelID);
         if (match) {
-          reject(match);
+          reject();
           return;
         }
         this.list.push(data);
@@ -39,7 +39,7 @@ class ParcelModel {
         if (parcel) {
           resolve(parcel);
         }
-        const error = `No parcel with ID ${id}`;
+        const error = 'No parcel with given ID';
         reject(error);
       });
     });
@@ -54,9 +54,7 @@ class ParcelModel {
         for (let i = 0; i < this.list.length; i += 1) {
           if (this.list[i].userId === id) {
             userFound = true;
-            console.log(userFound);
             if ('name' in this.list[i]) {
-              console.log('tiku');
               parcel.push(this.list[i]);
             }
           }
@@ -64,10 +62,10 @@ class ParcelModel {
         if (parcel.length > 0) {
           resolve(parcel);
         } else if (!userFound) {
-          const error = Error(`No User with ID ${id}`);
+          const error = 'No User with this ID';
           reject(error);
         } else {
-          const error = Error(`User with ID ${id} has no parcel`);
+          const error = 'User with this ID has no parcel';
           reject(error);
         }
       });
@@ -79,11 +77,10 @@ class ParcelModel {
       this.findParcel(id).then((parcel) => {
         const foundParcel = parcel;
         const newParcel = Object.assign(foundParcel, value);
-        console.log(newParcel, this.list);
+        // console.log(newParcel, this.list);
         fs.writeFile(this.filepath, JSON.stringify(this.list), resolve);
       }).catch((error) => {
         reject(error);
-        console.log(error);
       });
     });
   }
@@ -94,7 +91,7 @@ class ParcelModel {
         const myParcel = parcel;
         if (myParcel.status.toLowerCase() !== 'canceled') {
           myParcel.status = 'Canceled';
-          console.log(parcel, this.list);
+          // console.log(parcel, this.list);
           fs.writeFile(this.filepath, JSON.stringify(this.list), resolve);
           return;
         }
