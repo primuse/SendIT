@@ -25,6 +25,9 @@ app.use(_bodyParser.default.urlencoded({
 
 app.use('/api/v1', _userRoute.default);
 app.use('/api/v1', _parcelRoute.default);
+app.get('/', function (req, res) {
+  res.send('Welcome to SendIT!');
+});
 
 if (port == null || port === '') {
   port = 3000;
