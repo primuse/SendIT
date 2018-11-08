@@ -12,6 +12,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use('/api/v1', userRoute);
 app.use('/api/v1', parcelRoute);
 
+app.get('/', (req, res) => {
+  res.send('Welcome to SendIT!');
+});
+
 if (port == null || port === '') {
   port = 3000;
 }
