@@ -49,7 +49,7 @@ function () {
           });
 
           if (match) {
-            reject(match);
+            reject();
             return;
           }
 
@@ -108,11 +108,10 @@ function () {
           if (parcel.length > 0) {
             resolve(parcel);
           } else if (!userFound) {
-            var error = Error("No User with ID ".concat(id));
+            var error = 'No User with this ID';
             reject(error);
           } else {
-            var _error = Error("User with ID ".concat(id, " has no parcel"));
-
+            var _error = 'User with this ID has no parcel';
             reject(_error);
           }
         });
@@ -126,13 +125,11 @@ function () {
       return new Promise(function (resolve, reject) {
         _this4.findParcel(id).then(function (parcel) {
           var foundParcel = parcel;
-          var newParcel = Object.assign(foundParcel, value);
-          console.log(newParcel, _this4.list);
+          var newParcel = Object.assign(foundParcel, value); // console.log(newParcel, this.list);
 
           _fs.default.writeFile(_this4.filepath, JSON.stringify(_this4.list), resolve);
         }).catch(function (error) {
           reject(error);
-          console.log(error);
         });
       });
     }
@@ -146,8 +143,7 @@ function () {
           var myParcel = parcel;
 
           if (myParcel.status.toLowerCase() !== 'canceled') {
-            myParcel.status = 'Canceled';
-            console.log(parcel, _this5.list);
+            myParcel.status = 'Canceled'; // console.log(parcel, this.list);
 
             _fs.default.writeFile(_this5.filepath, JSON.stringify(_this5.list), resolve);
 
