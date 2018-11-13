@@ -32,6 +32,17 @@ h2, h5 {
 #login a, #sign-up a {
   font-size: 0.75rem;
 }
+#login li a {
+  font-size: 1rem;
+}
+#login h5 {
+  margin: 20px 10px;
+  font-size: 1.6rem;
+  font-family: 'rubikRegular', sans-serif;
+}
+#login p {
+  line-height: 1.6;
+}
 
 /* Dashboard */
 nav li {
@@ -153,6 +164,10 @@ td {
   }
   #details_btns > a {
     font-size: 0.65rem;
+  }
+  #login h5 {
+    margin: 20px 0;
+    font-size: 1.3rem;
   }
 }
 

@@ -30,7 +30,7 @@ input:focus, textarea:focus {
 }
 
 .column.is-two > input, .column.is-two div {
-  width: calc(50% - 15px);
+  width: calc(50% - 9px);
 }
 
 .btn {
