@@ -174,12 +174,4 @@ describe('GET /users/:userId/parcels', () => {
         done(err);
       });
   });
-  // it('should return an error if User is found but has no parcel', (done) => {
-  //   chai.request(server).get('/api/v1/users/11/parcels')
-  //     .end((err, res) => {
-  //       expect(res.status).to.equal(404);
-  //       expect(res.body.Error).to.equal('User with this ID has no parcel');
-  //       done(err);
-  //     });
-  // });
 });
