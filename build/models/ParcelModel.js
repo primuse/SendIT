@@ -96,12 +96,9 @@ function () {
           _this3.list = JSON.parse(buf.toString());
 
           for (var i = 0; i < _this3.list.length; i += 1) {
-            if (_this3.list[i].userId === id) {
+            if (_this3.list[i].placedBy === id) {
               userFound = true;
-
-              if ('name' in _this3.list[i]) {
-                parcel.push(_this3.list[i]);
-              }
+              parcel.push(_this3.list[i]);
             }
           }
 
@@ -110,9 +107,6 @@ function () {
           } else if (!userFound) {
             var error = 'No User with this ID';
             reject(error);
-          } else {
-            var _error = 'User with this ID has no parcel';
-            reject(_error);
           }
         });
       });
@@ -125,7 +119,7 @@ function () {
       return new Promise(function (resolve, reject) {
         _this4.findParcel(id).then(function (parcel) {
           var foundParcel = parcel;
-          var newParcel = Object.assign(foundParcel, value); // console.log(newParcel, this.list);
+          var newParcel = Object.assign(foundParcel, value);
 
           _fs.default.writeFile(_this4.filepath, JSON.stringify(_this4.list), resolve);
         }).catch(function (error) {
