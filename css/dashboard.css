@@ -126,7 +126,7 @@ tr:nth-child(even) {
 
 /*parcel-detail*/
 #parcel > div:first-child {
-  flex: 0 1 30%;
+  flex: 0 1 50%;
   display: flex;
   align-items: center;
 }
@@ -141,6 +141,10 @@ tr:nth-child(even) {
 }
 #details > div:first-child {
   margin-right: 80px;
+}
+#map {
+  width: 300px;
+  height: 400px;
 }
 
 /*User Profile*/

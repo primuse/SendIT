@@ -32,9 +32,10 @@ h2, h5 {
 #login a, #sign-up a {
   font-size: 0.75rem;
 }
-#login li a {
-  font-size: 1rem;
+header a:hover {
+  color: rgb(255,69,0);
 }
+
 #login h5 {
   margin: 20px 10px;
   font-size: 1.6rem;
@@ -42,6 +43,13 @@ h2, h5 {
 }
 #login p {
   line-height: 1.6;
+}
+.head-span {
+  color: rgb(255,69,0);
+}
+#head-brand a {
+  font-family: 'rubikMedium', sans-serif;
+  font-size: 1.7rem;
 }
 
 /* Dashboard */

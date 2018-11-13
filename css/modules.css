@@ -151,6 +151,10 @@ a, a:hover {
   margin-top: 2rem;
 }
 
+.mt-25 {
+  margin-top: 25px;
+}
+
 .mt-40 {
   margin-top: 40px;
 }
