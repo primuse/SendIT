@@ -26,7 +26,6 @@ class ParcelModel {
         this.list.push(data);
         fs.writeFile(this.filepath, JSON.stringify(this.list), resolve);
       }).catch((err) => {
-        console.log(err);
       });
     });
   }
@@ -71,7 +70,7 @@ class ParcelModel {
     return new Promise((resolve, reject) => {
       this.findParcel(id).then((parcel) => {
         const foundParcel = parcel;
-        const newParcel = Object.assign(foundParcel, value);
+        Object.assign(foundParcel, value);
         fs.writeFile(this.filepath, JSON.stringify(this.list), resolve);
       }).catch((error) => {
         reject(error);
@@ -85,7 +84,6 @@ class ParcelModel {
         const myParcel = parcel;
         if (myParcel.status.toLowerCase() !== 'canceled') {
           myParcel.status = 'Canceled';
-          // console.log(parcel, this.list);
           fs.writeFile(this.filepath, JSON.stringify(this.list), resolve);
           return;
         }
@@ -93,7 +91,6 @@ class ParcelModel {
         reject(error);
       }).catch((error) => {
         reject(error);
-        console.log(error);
       });
     });
   }

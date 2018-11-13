@@ -12,15 +12,15 @@ class Parcel {
       res.status(201).send({
         status: 201,
         data: [{
-          id: id,
+          id,
           message: 'Order Created',
         }],
       });
     }).catch(() => {
-      res.status(409).send({
-        status: 409,
+      res.status(400).send({
+        status: 400,
         data: [{
-          id: id,
+          id,
           message: 'Parcel with this ID already exists',
         }],
       });
@@ -32,19 +32,19 @@ class Parcel {
     model.read((err, buf) => {
       if (!err) {
         const parcels = JSON.parse(buf.toString());
-        const { location } = req.query;
-        console.log(req.query);
-        if (location === undefined) {
+        const { weight } = req.query;
+        if (weight === undefined) {
           res.send({
             status: 200,
             data: parcels,
           });
         } else {
-          const filteredParcel = parcels.filter((e) => {
-            return e.location !== undefined && e.location.toLowerCase() === location.toLowerCase();
-          });
+          const filteredParcel = parcels.filter(e => e.weight === weight);
           if (filteredParcel.length > 0) {
-            res.send(filteredParcel);
+            res.send({
+              status: 200,
+              data: filteredParcel,
+            });
           } else {
             res.status(404).send({
               status: 404,
@@ -68,7 +68,6 @@ class Parcel {
         data: [parcel],
       });
     }).catch((error) => {
-      console.log(error);
       res.status(404).send({
         status: 404,
         data: [{
@@ -83,10 +82,20 @@ class Parcel {
     const id = req.params.parcelId;
     const value = req.body;
     model.updateParcel(id, value).then(() => {
-      res.send({ message: 'Sucessfully updated Parcel' });
+      res.send({
+        status: 200,
+        data: [{
+          id,
+          message: 'Sucessfully updated Parcel',
+        }],
+      });
     }).catch((error) => {
-      res.status(409).send({
-        message: error,
+      res.status(400).send({
+        status: 400,
+        data: [{
+          id,
+          message: error,
+        }],
       });
     });
   }
@@ -98,13 +107,13 @@ class Parcel {
       res.send({
         status: 200,
         data: [{
-          id: id,
+          id,
           message: 'Order Canceled',
         }],
       });
     }).catch((error) => {
-      res.status(409).send({
-        status: 409,
+      res.status(400).send({
+        status: 400,
         data: [{
           message: error,
         }],
