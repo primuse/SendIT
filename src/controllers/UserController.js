@@ -7,13 +7,18 @@ class User {
   // To get all parcels from user with ID
   static getUserParcel(req, res) {
     const id = req.params.userId;
-
     model.findUserParcel(id).then((parcel) => {
-      res.send(parcel);
+      res.send({
+        status: 200,
+        data: [parcel],
+      });
     }).catch((error) => {
       console.log(error);
       res.status(404).send({
-        Error: error,
+        status: 404,
+        data: [{
+          message: error,
+        }],
       });
     });
   }

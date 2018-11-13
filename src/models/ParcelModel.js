@@ -52,20 +52,15 @@ class ParcelModel {
       this.read((err, buf) => {
         this.list = JSON.parse(buf.toString());
         for (let i = 0; i < this.list.length; i += 1) {
-          if (this.list[i].userId === id) {
+          if (this.list[i].placedBy === id) {
             userFound = true;
-            if ('name' in this.list[i]) {
-              parcel.push(this.list[i]);
-            }
+            parcel.push(this.list[i]);
           }
         }
         if (parcel.length > 0) {
           resolve(parcel);
         } else if (!userFound) {
           const error = 'No User with this ID';
-          reject(error);
-        } else {
-          const error = 'User with this ID has no parcel';
           reject(error);
         }
       });
@@ -77,7 +72,6 @@ class ParcelModel {
       this.findParcel(id).then((parcel) => {
         const foundParcel = parcel;
         const newParcel = Object.assign(foundParcel, value);
-        // console.log(newParcel, this.list);
         fs.writeFile(this.filepath, JSON.stringify(this.list), resolve);
       }).catch((error) => {
         reject(error);
