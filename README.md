@@ -27,6 +27,7 @@ Clone the repo and cd into it.
 
 ### Installation and Usage
 Simply run:
+
 ```npm start```
 
 ### Testing
@@ -69,9 +70,9 @@ Mocha test suite,
 Chai assertion library
 
 ## Environments
-#### API endpoints hosted on Heroku @ https://sendit18.herokuapp.com/
-#### UI templates hosted on GH-pages @ https://primuse.github.io/SendIT/index.html
-#### Pivotal Tracker board @ https://www.pivotaltracker.com/n/projects/2212719
+#### <a href="https://sendit18.herokuapp.com/">API endpoints hosted on Heroku</a>
+#### <a href="https://primuse.github.io/SendIT/index.html">UI templates hosted on GH-pages</a>
+#### <a href="https://www.pivotaltracker.com/n/projects/2212719">Pivotal Tracker board</a>
 
 ## Author
 
