@@ -31,13 +31,22 @@ function () {
     // Create new Parcels
     value: function createParcels(req, res) {
       var myData = req.body;
+      var id = req.body.parcelId;
       model.createParcel(myData).then(function () {
         res.status(201).send({
-          message: 'Successfully Written to File.'
+          status: 201,
+          data: [{
+            id: id,
+            message: 'Order Created'
+          }]
         });
       }).catch(function () {
         res.status(409).send({
-          message: 'Parcel with this ID already exists'
+          status: 409,
+          data: [{
+            id: id,
+            message: 'Parcel with this ID already exists'
+          }]
         });
       });
     } // Get all Parcels
@@ -52,7 +61,10 @@ function () {
           console.log(req.query);
 
           if (location === undefined) {
-            res.send(parcels);
+            res.send({
+              status: 200,
+              data: parcels
+            });
           } else {
             var filteredParcel = parcels.filter(function (e) {
               return e.location !== undefined && e.location.toLowerCase() === location.toLowerCase();
@@ -62,7 +74,10 @@ function () {
               res.send(filteredParcel);
             } else {
               res.status(404).send({
-                message: 'No parcel found'
+                status: 404,
+                data: [{
+                  message: 'No parcel found'
+                }]
               });
             }
           }
@@ -75,11 +90,17 @@ function () {
     value: function getParcel(req, res) {
       var id = req.params.parcelId;
       model.findParcel(id).then(function (parcel) {
-        res.send(parcel);
+        res.send({
+          status: 200,
+          data: [parcel]
+        });
       }).catch(function (error) {
         console.log(error);
         res.status(404).send({
-          message: error
+          status: 404,
+          data: [{
+            message: error
+          }]
         });
       });
     } // To update a parcel with ID
@@ -106,11 +127,18 @@ function () {
       var id = req.params.parcelId;
       model.cancelParcel(id).then(function () {
         res.send({
-          message: 'Successfully canceled Parcel'
+          status: 200,
+          data: [{
+            id: id,
+            message: 'Order Canceled'
+          }]
         });
       }).catch(function (error) {
         res.status(409).send({
-          message: error
+          status: 409,
+          data: [{
+            message: error
+          }]
         });
       });
     }

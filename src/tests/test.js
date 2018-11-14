@@ -9,35 +9,47 @@ const { expect } = chai;
 describe('POST /parcels', () => {
   it('should return an error if inputed ID already exists', (done) => {
     const parcel = {
-      name: 'Crabs',
-      price: '3000',
-      parcelId: '6',
-      user: 'Jumoke Odutayo',
-      userId: '100',
-      location: 'Owerri',
+      parcelId: '1',
+      placedBy: '1',
+      weight: '3',
+      weightMetric: 'kg',
+      sentOn: '12-11-2018',
+      deliveredOn: 'null',
+      status: 'Canceled',
+      from: '14 Asobruewu Street',
+      to: 'Jibowu, Lagos',
+      currentLocation: 'Ajah, Lagos',
+      location: 'Uyo',
     };
     chai.request(server).post('/api/v1/parcels')
       .send(parcel)
       .end((err, res) => {
-        expect(res.status).to.equal(409);
-        expect(res.body.message).to.equal('Parcel with this ID already exists');
+        expect(res.status).to.equal(400);
+        expect(res.body.data[0].message).to.equal('Parcel with this ID already exists');
+        expect(res.body.data[0].id).to.equal(parcel.parcelId);
         done(err);
       });
   });
   it('should create a new parcel', (done) => {
     const parcel = {
-      name: 'Crabs',
-      price: '3000',
-      parcelId: '7',
-      user: 'Tiku Okoye',
-      userId: '100',
-      location: 'Owerri',
+      parcelId: '3',
+      placedBy: '1',
+      weight: '3',
+      weightMetric: 'kg',
+      sentOn: '12-11-2018',
+      deliveredOn: 'null',
+      status: 'Canceled',
+      from: '14 Asobruewu Street',
+      to: 'Jibowu, Lagos',
+      currentLocation: 'Ajah, Lagos',
+      location: 'Uyo',
     };
     chai.request(server).post('/api/v1/parcels')
       .send(parcel)
       .end((err, res) => {
-        expect(res.status).to.be.oneOf([409, 201]);
-        expect(res.body.message).to.be.oneOf(['Successfully Written to File.', 'Parcel with this ID already exists']);
+        expect(res.status).to.be.oneOf([400, 201]);
+        expect(res.body.data[0].message).to.be.oneOf(['Parcel with this ID already exists', 'Order created']);
+        expect(res.body.data[0].id).to.equal(parcel.parcelId);
         done(err);
       });
   });
@@ -49,23 +61,24 @@ describe('GET /parcels', () => {
     chai.request(server).get('/api/v1/parcels')
       .end((err, res) => {
         expect(res.status).to.equal(200);
-        expect(res.body).to.be.an('array');
+        expect(res.body).to.be.an('object');
         done(err);
       });
   });
   it('should return all parcels with destination oyo', (done) => {
-    chai.request(server).get('/api/v1/parcels?location=oyo')
+    chai.request(server).get('/api/v1/parcels?weight=3')
       .end((err, res) => {
         expect(res.status).to.equal(200);
-        expect(res.body).to.have.lengthOf.at.least(1);
+        expect(res.body).to.be.an('object');
         done(err);
       });
   });
   it('should return an error if the given query cannot be matched', (done) => {
-    chai.request(server).get('/api/v1/parcels?location=california')
+    chai.request(server).get('/api/v1/parcels?weight=10')
       .end((err, res) => {
         expect(res.status).to.equal(404);
-        expect(res.body.message).to.equal('No parcel found');
+        expect(res.body.status).to.equal(404);
+        expect(res.body.data[0].message).to.equal('No parcel found');
         done(err);
       });
   });
@@ -77,7 +90,7 @@ describe('GET /parcels/:parcelId', () => {
     chai.request(server).get('/api/v1/parcels/100')
       .end((err, res) => {
         expect(res.status).to.equal(404);
-        expect(res.body.message).to.equal('No parcel with given ID');
+        expect(res.body.data[0].message).to.equal('No parcel with given ID');
         done(err);
       });
   });
@@ -85,6 +98,7 @@ describe('GET /parcels/:parcelId', () => {
     chai.request(server).get('/api/v1/parcels/1')
       .end((err, res) => {
         expect(res.status).to.equal(200);
+        expect(res.body.status).to.equal(200);
         expect(res.body).to.be.an('object');
         done(err);
       });
@@ -95,24 +109,27 @@ describe('GET /parcels/:parcelId', () => {
 describe('PUT /parcels/:parcelId/update', () => {
   it('should update the parcel with the given data', (done) => {
     const update = {
-      location: 'Uyo',
+      weight: '5',
     };
     chai.request(server).put('/api/v1/parcels/1/update')
       .send(update)
       .end((err, res) => {
         expect(res.status).to.equal(200);
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data[0].message).to.equal('Sucessfully updated Parcel');
         done(err);
       });
   });
   it('should return an error if parcel not found', (done) => {
     const update = {
-      location: 'Uyo',
+      weight: '9',
     };
     chai.request(server).put('/api/v1/parcels/31/update')
       .send(update)
       .end((err, res) => {
-        expect(res.status).to.equal(409);
-        expect(res.body.message).to.equal('No parcel with given ID');
+        expect(res.status).to.equal(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body.data[0].message).to.equal('No parcel with given ID');
         done(err);
       });
   });
@@ -120,19 +137,19 @@ describe('PUT /parcels/:parcelId/update', () => {
 
 // Test for canceling a Parcel with ID
 describe('PUT /parcels/:parcelID/cancel', () => {
-  it('should change parcel status to cancel', (done) => {
+  it('should change parcel status to canceled', (done) => {
     chai.request(server).put('/api/v1/parcels/1/cancel')
       .end((err, res) => {
-        expect(res.status).to.be.oneOf([200, 409]);
-        expect(res.body.message).to.be.oneOf(['Successfully canceled Parcel', 'Already canceled parcel']);
+        expect(res.status).to.be.oneOf([200, 400]);
+        expect(res.body.data[0].message).to.be.oneOf(['Successfully canceled Parcel', 'Already canceled parcel']);
         done(err);
       });
   });
-  it('sould return an error if parcel status already canceled', (done) => {
+  it('should return an error if parcel status already canceled', (done) => {
     chai.request(server).put('/api/v1/parcels/3/cancel')
       .end((err, res) => {
-        expect(res.status).to.equal(409);
-        expect(res.body.message).to.equal('Already canceled parcel');
+        expect(res.status).to.equal(400);
+        expect(res.body.data[0].message).to.equal('Already canceled parcel');
         done(err);
       });
   });
@@ -141,10 +158,11 @@ describe('PUT /parcels/:parcelID/cancel', () => {
 // Test for getting all parcels from User with ID
 describe('GET /users/:userId/parcels', () => {
   it('should return all parcels orders by a user', (done) => {
-    chai.request(server).get('/api/v1/users/90/parcels')
+    chai.request(server).get('/api/v1/users/1/parcels')
       .end((err, res) => {
         expect(res.status).to.equal(200);
-        expect(res.body).to.have.lengthOf.at.least(1);
+        expect(res.body.data).to.have.lengthOf.at.least(1);
+        expect(res.body.status).to.equal(200);
         done(err);
       });
   });
@@ -152,15 +170,7 @@ describe('GET /users/:userId/parcels', () => {
     chai.request(server).get('/api/v1/users/101/parcels')
       .end((err, res) => {
         expect(res.status).to.equal(404);
-        expect(res.body.Error).to.equal('No User with this ID');
-        done(err);
-      });
-  });
-  it('should return an error if User is found but has no parcel', (done) => {
-    chai.request(server).get('/api/v1/users/11/parcels')
-      .end((err, res) => {
-        expect(res.status).to.equal(404);
-        expect(res.body.Error).to.equal('User with this ID has no parcel');
+        expect(res.body.data[0].message).to.equal('No User with this ID');
         done(err);
       });
   });

@@ -32,11 +32,17 @@ function () {
     value: function getUserParcel(req, res) {
       var id = req.params.userId;
       model.findUserParcel(id).then(function (parcel) {
-        res.send(parcel);
+        res.send({
+          status: 200,
+          data: [parcel]
+        });
       }).catch(function (error) {
         console.log(error);
         res.status(404).send({
-          Error: error
+          status: 404,
+          data: [{
+            message: error
+          }]
         });
       });
     }
