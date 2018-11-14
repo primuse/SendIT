@@ -1,10 +1,28 @@
+/**
+* @fileOverview Controller reusable module with parcel route handler functions.
+*
+* @exports Parcel
+* @requires ParcelModel
+* @requires path
+*/
+
 import path from 'path';
 import ParcelModel from '../models/ParcelModel';
 
 const model = new ParcelModel(path.join(__dirname, '../files/parcels.json'));
 
+/**
+* @class
+  @classdesc Parcel class with handler methods
+*/
 class Parcel {
-  // Create new Parcels
+  /**
+  * Handler Method to create new Parcels
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  * @returns {obj}
+  */
   static createParcels(req, res) {
     const myData = req.body;
     const id = req.body.parcelId;
@@ -27,7 +45,13 @@ class Parcel {
     });
   }
 
-  // Get all Parcels
+  /**
+  * Handler Method to get all Parcel orders
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  * @returns {obj}
+  */
   static getAllParcels(req, res) {
     model.read((err, buf) => {
       if (!err) {
@@ -39,7 +63,7 @@ class Parcel {
             data: parcels,
           });
         } else {
-          const filteredParcel = parcels.filter(e => e.weight === weight);
+          const filteredParcel = parcels.filter(item => item.weight === weight);
           if (filteredParcel.length > 0) {
             res.send({
               status: 200,
@@ -58,7 +82,13 @@ class Parcel {
     });
   }
 
-  // To get a parcel delivery order with ID
+  /**
+  * Hanlder Method to get a parcel order by ID
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  * @returns {obj}
+  */
   static getParcel(req, res) {
     const id = req.params.parcelId;
 
@@ -77,7 +107,13 @@ class Parcel {
     });
   }
 
-  // To update a parcel with ID
+  /**
+  * Handler Method to update a parcel order
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  * @returns {obj}
+  */
   static updateParcel(req, res) {
     const id = req.params.parcelId;
     const value = req.body;
@@ -100,7 +136,13 @@ class Parcel {
     });
   }
 
-  // To cancel a parcel with ID
+  /**
+  * Handler Method to cancel a parcel order
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  * @returns {obj}
+  */
   static cancelParcel(req, res) {
     const id = req.params.parcelId;
     model.cancelParcel(id).then(() => {
