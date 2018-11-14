@@ -60,14 +60,14 @@ class Parcel {
         if (weight === undefined) {
           res.send({
             status: 200,
-            data: parcels,
+            data: [parcels],
           });
         } else {
           const filteredParcel = parcels.filter(item => item.weight === weight);
           if (filteredParcel.length > 0) {
             res.send({
               status: 200,
-              data: filteredParcel,
+              data: [filteredParcel],
             });
           } else {
             res.status(404).send({
