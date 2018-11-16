@@ -7,6 +7,7 @@
 * @requires userRoute
 * @requires parcelRoute
 */
+import '@babel/polyfill';
 import express from 'express';
 import bodyParser from 'body-parser';
 import userRoute from './routes/userRoute';
