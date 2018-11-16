@@ -10,7 +10,7 @@ import fs from 'fs';
 /**
 * Creates a new Parcel Class.
 * @class
-  @classdesc Parcel class with handler methods
+* @classdesc Parcel class with handler methods
 */
 class ParcelModel {
 /**

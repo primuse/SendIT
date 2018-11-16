@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _path = _interopRequireDefault(require("path"));
+var _joi = _interopRequireDefault(require("joi"));
 
-var _ParcelModel = _interopRequireDefault(require("../models/ParcelModel"));
+var _validateSchema = require("../helper/validateSchema");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17,49 +17,43 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var model = new _ParcelModel.default(_path.default.join(__dirname, '../files/parcels.json'));
 /**
+* Creates a middleware class
 * @class
-* @classdesc User class with handler methods.
 */
-
-var User =
+var ValidateMiddleware =
 /*#__PURE__*/
 function () {
-  function User() {
-    _classCallCheck(this, User);
+  function ValidateMiddleware() {
+    _classCallCheck(this, ValidateMiddleware);
   }
 
-  _createClass(User, null, [{
-    key: "getUserParcel",
+  _createClass(ValidateMiddleware, null, [{
+    key: "validateParcel",
 
     /**
-    * Method to get all Parcel orders by a particular user
+    * Method to validate input before inserting into DB
     * @method
-    * @param  {obj} req The HTTP request
-    * @param  {obj} res The HTTP response
-    * @returns {obj}
+    * @param {obj} req HTTP request
+    * @param {obj} res HTTP response
+    * @param {obj} next points to the next function down the line
     */
-    value: function getUserParcel(req, res) {
-      var id = req.params.userId;
-      model.findUserParcel(id).then(function (parcel) {
-        res.send({
-          status: 200,
-          data: [parcel]
-        });
-      }).catch(function (error) {
-        res.status(404).send({
-          status: 404,
+    value: function validateParcel(req, res, next) {
+      _joi.default.validate(req.body, _validateSchema.parcelSchema).then(function () {
+        return next();
+      }).catch(function (err) {
+        res.status(400).send({
+          status: 400,
           data: [{
-            message: error
+            message: err.details[0].message
           }]
         });
       });
     }
   }]);
 
-  return User;
+  return ValidateMiddleware;
 }();
 
-var _default = User;
+var _default = ValidateMiddleware;
 exports.default = _default;

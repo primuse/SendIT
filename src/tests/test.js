@@ -5,7 +5,33 @@ import server from '../index';
 chai.use(chaiHttp);
 const { expect } = chai;
 
-// Test for creating new parcels
+// Test for creating new parcels with DB
+describe('POST /parcels', () => {
+  it('should create a new parcel in the DB', (done) => {
+    const parcel = {
+      parcel_name: 'Shoe',
+      placed_by: 2,
+      price: 10000,
+      weight: 3,
+      pickup_location: 'Owerri',
+      destination: 'Abuja',
+      status: 'Created',
+      receiver: 'Tiku Okoye',
+      email: 'okoyetiku@gmail.com',
+      phone_number: '08129814330',
+      current_location: 'Lagos',
+    };
+    chai.request(server).post('/api/v1/parcels')
+      .send(parcel)
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body.data[0].message).to.equal('Order Created');
+        done(err);
+      });
+  });
+});
+
+// Test for creating new parcels with dummy Json file
 describe('POST /parcels', () => {
   it('should return an error if inputed ID already exists', (done) => {
     const parcel = {

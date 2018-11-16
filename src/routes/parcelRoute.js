@@ -4,18 +4,26 @@
 * @exports router
 * @requires express
 * @requires ParcelController
+* @requires ValidateMiddleware
 */
 import express from 'express';
+import DbParcelController from '../controllers/dbParcelController';
 import ParcelController from '../controllers/ParcelController';
+import ValidateMiddleware from '../middleware/validator';
 
 const router = express.Router();
 
 /**
 * Route to create new Parcel Orders
 * @param  {string} route The Post url route
-* @param  {function} ParcelController.createParcels The handler     function
+* @param  {function} DbParcelController.createParcels The handler method
 * @returns {(obj|obj} success message or error message
 */
+router.post('/auth/parcels', ValidateMiddleware.validateParcel, DbParcelController.createParcels);
+
+/**
+ * with dummy Json file
+ */
 router.post('/parcels', ParcelController.createParcels);
 
 /**
