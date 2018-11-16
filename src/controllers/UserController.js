@@ -13,7 +13,7 @@ const model = new ParcelModel(path.join(__dirname, '../files/parcels.json'));
 
 /**
 * @class
-  @classdesc User class with handler methods.
+* @classdesc User class with handler methods.
 */
 class User {
   /**

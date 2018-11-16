@@ -1,5 +1,15 @@
+/**
+* @fileOverview Database configuration.
+*
+* @exports DB query
+* @requires pg
+*/
+
 const { Client } = require('pg');
 
+/**
+* Connection URI to PostgreSQL database hosted online
+*/
 const connectionString = 'postgres://kzqbbkwl:eN4OypUPY13ir8ondO6ROLnVu_98ZmsQ@pellefant.db.elephantsql.com:5432/kzqbbkwl';
 
 const pool = new Client({
@@ -20,8 +30,8 @@ pool.connect().catch(err => console.log(err.stack));
 export default {
   /**
    * DB Query
-   * @param {object} req
-   * @param {object} res
+   * @param {object} text
+   * @param {object} params
    * @returns {object} Promise
    */
   query(text, params) {

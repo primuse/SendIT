@@ -4,6 +4,7 @@
 * @exports router
 * @requires express
 * @requires ParcelController
+* @requires ValidateMiddleware
 */
 import express from 'express';
 import ParcelController from '../controllers/dbParcelController';
@@ -14,7 +15,7 @@ const router = express.Router();
 /**
 * Route to create new Parcel Orders
 * @param  {string} route The Post url route
-* @param  {function} ParcelController.createParcels The handler     function
+* @param  {function} ParcelController.createParcels The handler method
 * @returns {(obj|obj} success message or error message
 */
 router.post('/parcels', ValidateMiddleware.validateParcel, ParcelController.createParcels);

@@ -1,6 +1,16 @@
 /* eslint-disable camelcase */
+/**
+* @fileOverview Model with queries for database manipulation.
+*
+* @exports parcelSchema
+* @exports userSchema
+* @requires Joi
+*/
 import Joi from 'joi';
 
+/**
+* Joi validation constraints
+*/
 const parcel_name = Joi.string().required();
 const placed_by = Joi.number().integer().required();
 const price = Joi.number().integer().required();
@@ -20,6 +30,9 @@ const other_names = Joi.string().required();
 const username = Joi.string().required();
 const password = Joi.string().alphanum().required();
 
+/**
+* Creates a new Joi schema.
+*/
 const parcelSchema = {
   parcel_name,
   placed_by,
@@ -34,6 +47,9 @@ const parcelSchema = {
   current_location,
 };
 
+/**
+* Creates a new Joi schema.
+*/
 const userSchema = {
   first_name,
   last_name,

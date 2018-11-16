@@ -7,21 +7,57 @@ exports.default = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
-var _ParcelController = _interopRequireDefault(require("../controllers/ParcelController"));
+var _dbParcelController = _interopRequireDefault(require("../controllers/dbParcelController"));
+
+var _validator = _interopRequireDefault(require("../middleware/validator"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var router = _express.default.Router(); // To create new parcels
+/**
+* @fileOverview Parcel Route module
+*
+* @exports router
+* @requires express
+* @requires ParcelController
+* @requires ValidateMiddleware
+*/
+var router = _express.default.Router();
+/**
+* Route to create new Parcel Orders
+* @param  {string} route The Post url route
+* @param  {function} ParcelController.createParcels The handler method
+* @returns {(obj|obj} success message or error message
+*/
 
 
-router.post('/parcels', _ParcelController.default.createParcels); // To get all parcel delivery orders
+router.post('/parcels', _validator.default.validateParcel, _dbParcelController.default.createParcels); // /**
+// * Route to get all Parcel Orders
+// * @param  {string} route The Get Parcels url route
+// * @param  {function} ParcelController.getAllParcels The handler function
+// * @returns {(obj|obj} parcel or error message
+// */
+// router.get('/parcels', ParcelController.getAllParcels);
+// /**
+// * Route to get parcel order by ID
+// * @param  {string} route The Get parcels/:parcelID url route
+// * @param  {function} ParcelController.getParcel The handler function
+// * @returns {(obj|obj} parcel or error message
+// */
+// router.get('/parcels/:parcelId', ParcelController.getParcel);
+// /**
+// * Route to Update a Parcel
+// * @param  {string} route The Update url route
+// * @param  {function} ParcelController.updateParcel The handler function
+// * @returns {(obj|obj} success message or error message
+// */
+// router.put('/parcels/:parcelId/update', ParcelController.updateParcel);
+// /**
+// * Route to cancel a parcel order
+// * @param  {string} route The cancel url route
+// * @param  {function} ParcelController.cancelParcel The handler function
+// * @returns {(obj|obj} success message or error message
+// */
+// router.put('/parcels/:parcelId/cancel', ParcelController.cancelParcel);
 
-router.get('/parcels', _ParcelController.default.getAllParcels); // To get a parcel delivery order with ID
-
-router.get('/parcels/:parcelId', _ParcelController.default.getParcel); // To update a parcel with ID
-
-router.put('/parcels/:parcelId/update', _ParcelController.default.updateParcel); // To cancel a Parcel with ID
-
-router.put('/parcels/:parcelId/cancel', _ParcelController.default.cancelParcel);
 var _default = router;
 exports.default = _default;

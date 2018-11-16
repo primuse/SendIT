@@ -1,9 +1,8 @@
 /**
-* @fileOverview Controller reusable module with parcel route handler functions.
+* @fileOverview Controller reusable module with parcel route handler methods.
 *
 * @exports Parcel
-* @requires ParcelModel
-* @requires path
+* @requires dbModel
 */
 
 import dbModel from '../models/dbmodel';
@@ -12,7 +11,7 @@ const model = dbModel;
 
 /**
 * @class
-  @classdesc Parcel class with handler methods
+* @classdesc Parcel class with handler methods
 */
 class Parcel {
   /**

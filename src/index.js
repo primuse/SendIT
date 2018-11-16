@@ -6,6 +6,7 @@
 * @requires bodyParser
 * @requires userRoute
 * @requires parcelRoute
+* @requires @babel/polyfill
 */
 import '@babel/polyfill';
 import express from 'express';

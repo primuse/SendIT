@@ -1,8 +1,24 @@
+/**
+* @fileOverview Model with queries for database manipulation.
+*
+* @exports dbModel
+* @requires moment
+* @requires DB
+*/
 import moment from 'moment';
 import DB from './DB';
 
-
+/**
+* Creates a new dbModel Class.
+* @class
+* @classdesc database model class with query methods
+*/
 class dbModel {
+  /**
+  * Method to create new parcel by inserting into DB
+  * @method
+  * @param {obj} req HTTP request
+  */
   static async createParcel(req) {
     const querytext = `INSERT INTO
       parcel_table(parcel_name, placed_by, price, weight, metric,
