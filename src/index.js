@@ -11,7 +11,7 @@
 import '@babel/polyfill';
 import express from 'express';
 import bodyParser from 'body-parser';
-import userRoute from './routes/userRoute';
+// import userRoute from './routes/userRoute';
 import parcelRoute from './routes/parcelRoute';
 
 const app = express();
@@ -24,7 +24,7 @@ let port = process.env.PORT;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/api/v1', userRoute);
+// app.use('/api/v1', userRoute);
 app.use('/api/v1', parcelRoute);
 
 /**
@@ -34,7 +34,9 @@ app.use('/api/v1', parcelRoute);
 * @returns {string} success message
 */
 app.get('/', (req, res) => {
-  res.send('Welcome to SendIT!');
+  res.status(200).send({
+    message: 'Welcome to SendIT!',
+  });
 });
 
 if (port == null || port === '') {
