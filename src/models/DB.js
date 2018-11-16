@@ -24,26 +24,24 @@ const pool = new Client({
 //   console.log('client removed');
 //   process.exit(0);
 // });
-pool.connect().catch(err => console.log(err.stack));
+pool.connect();
 
 
-export default {
-  /**
-   * DB Query
-   * @param {object} text
-   * @param {object} params
-   * @returns {object} Promise
-   */
-  query(text, params) {
-    return new Promise((resolve, reject) => {
-      pool.query(text, params)
-        .then((res) => {
-          resolve(res);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  },
-};
-require('make-runnable');
+export default pool;
+// /**
+//  * DB Query
+//  * @param {object} text
+//  * @param {object} params
+//  * @returns {object} Promise
+//  */
+// query(text, params) {
+//   return new Promise((resolve, reject) => {
+//     pool.query(text, params)
+//       .then((res) => {
+//         resolve(res);
+//       })
+//       .catch((err) => {
+//         reject(err);
+//       });
+//   });
+// },

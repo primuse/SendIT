@@ -44,105 +44,61 @@ describe('POST /parcels', () => {
 });
 
 
-// // Test for getting all parcel delivery orders
-// describe('GET /parcels', () => {
-//   it('should return all parcels', (done) => {
-//     chai.request(server).get('/api/v1/parcels')
-//       .end((err, res) => {
-//         expect(res.status).to.equal(200);
-//         expect(res.body).to.be.an('object');
-//         done(err);
-//       });
-//   });
-//   it('should return all parcels with destination oyo', (done) => {
-//     chai.request(server).get('/api/v1/parcels?weight=3')
-//       .end((err, res) => {
-//         expect(res.status).to.equal(200);
-//         expect(res.body).to.be.an('object');
-//         done(err);
-//       });
-//   });
-//   it('should return an error if the given query cannot be matched', (done) => {
-//     chai.request(server).get('/api/v1/parcels?weight=10')
-//       .end((err, res) => {
-//         expect(res.status).to.equal(404);
-//         expect(res.body.status).to.equal(404);
-//         expect(res.body.data[0].message).to.equal('No parcel found');
-//         done(err);
-//       });
-//   });
-// });
+// Test for getting all parcel delivery orders
+describe('GET /parcels', () => {
+  it('should return all parcels', (done) => {
+    chai.request(server).get('/api/v1/parcels')
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data[0]).to.be.an('object');
+        done(err);
+      });
+  });
+});
 
-// // Test for getting a parcel delivery order with ID
-// describe('GET /parcels/:parcelId', () => {
-//   it('should return an error if an invalid ID is passed', (done) => {
-//     chai.request(server).get('/api/v1/parcels/100')
-//       .end((err, res) => {
-//         expect(res.status).to.equal(404);
-//         expect(res.body.data[0].message).to.equal('No parcel with given ID');
-//         done(err);
-//       });
-//   });
-//   it('should return parcel if Id is valid', (done) => {
-//     chai.request(server).get('/api/v1/parcels/1')
-//       .end((err, res) => {
-//         expect(res.status).to.equal(200);
-//         expect(res.body.status).to.equal(200);
-//         expect(res.body).to.be.an('object');
-//         done(err);
-//       });
-//   });
-// });
+// Test for getting a parcel delivery order with ID
+describe('GET /parcels/:parcelId', () => {
+  it('should return parcel with ID given', (done) => {
+    chai.request(server).get('/api/v1/parcels/1')
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done(err);
+      });
+  });
+  it('should return an error if ID is invalid', (done) => {
+    chai.request(server).get('/api/v1/parcels/21')
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body.status).to.equal(404);
+        expect(res.body).to.be.an('object');
+        expect(res.body.data[0].message).to.equal('No parcel with given id');
+        done(err);
+      });
+  });
+});
 
-// // Test for updating a parcel with ID
-// describe('PUT /parcels/:parcelId/update', () => {
-//   it('should update the parcel with the given data', (done) => {
-//     const update = {
-//       weight: '5',
-//     };
-//     chai.request(server).put('/api/v1/parcels/1/update')
-//       .send(update)
-//       .end((err, res) => {
-//         expect(res.status).to.equal(200);
-//         expect(res.body.status).to.equal(200);
-//         expect(res.body.data[0].message).to.equal('Sucessfully updated Parcel');
-//         done(err);
-//       });
-//   });
-//   it('should return an error if parcel not found', (done) => {
-//     const update = {
-//       weight: '9',
-//     };
-//     chai.request(server).put('/api/v1/parcels/31/update')
-//       .send(update)
-//       .end((err, res) => {
-//         expect(res.status).to.equal(400);
-//         expect(res.body.status).to.equal(400);
-//         expect(res.body.data[0].message).to.equal('No parcel with given ID');
-//         done(err);
-//       });
-//   });
-// });
-
-// // Test for canceling a Parcel with ID
-// describe('PUT /parcels/:parcelID/cancel', () => {
-//   it('should change parcel status to canceled', (done) => {
-//     chai.request(server).put('/api/v1/parcels/1/cancel')
-//       .end((err, res) => {
-//         expect(res.status).to.be.oneOf([200, 400]);
-//         expect(res.body.data[0].message).to.be.oneOf(['Successfully canceled Parcel', 'Already canceled parcel']);
-//         done(err);
-//       });
-//   });
-//   it('should return an error if parcel status already canceled', (done) => {
-//     chai.request(server).put('/api/v1/parcels/3/cancel')
-//       .end((err, res) => {
-//         expect(res.status).to.equal(400);
-//         expect(res.body.data[0].message).to.equal('Already canceled parcel');
-//         done(err);
-//       });
-//   });
-// });
+// Test for canceling a Parcel with ID
+describe('PUT /parcels/:parcelID/cancel', () => {
+  it('should change parcel status to canceled', (done) => {
+    chai.request(server).patch('/api/v1/parcels/1/cancel')
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.data[0].message).to.equal('Order Canceled');
+        done(err);
+      });
+  });
+  it('should return an error if parcel status = delivered or parcel not found', (done) => {
+    chai.request(server).patch('/api/v1/parcels/20/cancel')
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.data[0].message).to.equal('No parcel found or already delivered');
+        done(err);
+      });
+  });
+});
 
 // // Test for getting all parcels from User with ID
 // describe('GET /users/:userId/parcels', () => {
