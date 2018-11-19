@@ -7,7 +7,7 @@
 * @requires userSchema
 */
 import Joi from 'joi';
-import { parcelSchema, userSchema } from '../helper/validateSchema';
+import { parcelSchema } from '../helper/validateSchema';
 
 /**
 * Creates a middleware class

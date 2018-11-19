@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /**
 * @fileOverview Model with queries for database manipulation.
 *
@@ -11,22 +10,22 @@ import Joi from 'joi';
 /**
 * Joi validation constraints
 */
-const parcel_name = Joi.string().required();
-const placed_by = Joi.number().integer().required();
+const parcelName = Joi.string().required();
+const placedBy = Joi.number().integer().required();
 const price = Joi.number().integer().required();
 const weight = Joi.number().integer().required();
-const pickup_location = Joi.string().required();
+const pickupLocation = Joi.string().required();
 const destination = Joi.string().required();
 const status = Joi.string().valid(['Created', 'In-transit', 'Delivered']).required();
 const receiver = Joi.string().required();
 const email = Joi.string().email().lowercase().required();
-const phone_number = Joi.number().integer()
+const phoneNumber = Joi.number().integer()
   .required();
-const current_location = Joi.string().required();
+const currentLocation = Joi.string().required();
 
-const first_name = Joi.string().required();
-const last_name = Joi.string().required();
-const other_names = Joi.string().required();
+const firstName = Joi.string().required();
+const lastName = Joi.string().required();
+const otherNames = Joi.string().required();
 const username = Joi.string().required();
 const password = Joi.string().alphanum().required();
 
@@ -34,26 +33,26 @@ const password = Joi.string().alphanum().required();
 * Creates a new Joi schema.
 */
 const parcelSchema = {
-  parcel_name,
-  placed_by,
+  parcelName,
+  placedBy,
   price,
   weight,
-  pickup_location,
+  pickupLocation,
   destination,
   status,
   receiver,
   email,
-  phone_number,
-  current_location,
+  phoneNumber,
+  currentLocation,
 };
 
 /**
 * Creates a new Joi schema.
 */
 const userSchema = {
-  first_name,
-  last_name,
-  other_names,
+  firstName,
+  lastName,
+  otherNames,
   username,
   email,
   password,

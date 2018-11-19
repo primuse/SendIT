@@ -18,7 +18,9 @@
         <aside id="side">
             <div class="bg-blue" id="menu">
                 <div id="aside-profile">
-                    <h3 class="m-0 pb-10">SendIT</h3>
+                    <a href="admin.html">
+                      <h3 class="m-0 pb-10">Send<span class="head-span">IT</span></h3>
+                    </a>
                     <small class="d-block pb-10 white-3">HSDB3UUQ2</small>
                     <small>Welcome!<br> Tiku Okoye</small>
                 </div>
@@ -121,7 +123,7 @@
                 <h5 class="text-center">Enter current Location</h5>
                 <form class="text-right">
                     <div class="form-row">
-                        <input type="text">
+                        <input type="text" required>
                     </div>
                     <button type="submit" class="btn xsm is-outlined white">Save</button>
                 </form>
@@ -136,7 +138,7 @@
               <h5 class="text-center">Update Status</h5>
               <form>
                 <div class="form-row">
-                  <input type="text" placeholder="In-transit, Delivered, Canceled">
+                  <input type="text" placeholder="In-transit, Delivered, Canceled" required>
                 </div>
                 <button type="submit" class="btn xsm is-outlined white">Save</button>
               </form>
@@ -153,45 +155,45 @@
             <div class="column is-two form-row text-left">
               <div>
                 <label for="parcelType">Parcel Type</label>
-                <input type="text" id="parcelType">
+                <input type="text" id="parcelType" required>
               </div>
 
               <div class="column is-two">
                 <div>
                   <label for="weight">Weight</label>
-                  <input type="number" id="weight">
+                  <input type="number" id="weight" required>
                 </div>
                 <div>
                   <label for="price">Price</label>
-                  <input type="number" id="price">
+                  <input type="number" id="price" required>
                 </div>
               </div>
             </div>
             <div class="form-row text-left">
               <div>
                 <label for="destination">Destination</label>
-                <textarea id="destination"></textarea>
+                <textarea id="destination" required></textarea>
               </div>
             </div>
             <h5 class="text-center">Addressed To</h5>
             <div class="column is-two form-row text-left">
               <div>
                 <label for="name">Name</label>
-                <input type="text" id="name">
+                <input type="text" id="name" required>
               </div>
               <div>
                 <label for="email">Email</label>
-                <input type="text" id="email">
+                <input type="text" id="email" required>
               </div>
             </div>
             <div class="column is-two form-row text-left">            
               <div>
                 <label for="phoneNumber">PhoneNumber</label>
-                <input type="text" id="phoneNumber">
+                <input type="text" id="phoneNumber" required>
               </div>
               <div>
                 <label for="PickupLocation">Pickup Location</label>
-                <input type="text" id="PickupLocation">
+                <input type="text" id="PickupLocation" required>
               </div>
             </div>
             <button type="submit" class="btn sm bg-bright-blue text-right white">Create</button>
