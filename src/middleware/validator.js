@@ -26,10 +26,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          status: 400,
-          data: [{
-            message: err.details[0].message,
-          }],
+          message: err.details[0].message,
         });
       });
   }

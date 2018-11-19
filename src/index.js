@@ -27,7 +27,6 @@ const port = process.env.PORT;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use('/api/v1', userRoute);
 app.use('/api/v1', parcelRoute);
 
 /**
