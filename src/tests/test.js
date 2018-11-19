@@ -45,6 +45,27 @@ describe('POST /parcels', () => {
   });
 });
 
+// Test for creating new users with DB
+describe('POST /users', () => {
+  it('should create a new user in the DB', (done) => {
+    const user = {
+      firstName: 'Joseph',
+      lastName: 'Julius',
+      otherNames: 'John',
+      username: 'jude',
+      email: 'okoyetiku@yahoo.com',
+      password: 'tiku',
+    };
+    chai.request(server).post('/api/v1/users')
+      .send(user)
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body.data[0].message).to.equal('User Created');
+        done(err);
+      });
+  });
+});
+
 
 // Test for getting all parcel delivery orders
 describe('GET /parcels', () => {

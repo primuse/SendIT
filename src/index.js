@@ -14,6 +14,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import parcelRoute from './routes/parcelRoute';
+import userRoute from './routes/userRoute';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/v1', parcelRoute);
+app.use('/api/v1', userRoute);
 
 /**
 * Index Route
