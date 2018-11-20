@@ -5,9 +5,10 @@
 * @requires Joi
 * @requires parcelSchema
 * @requires userSchema
+* @requires loginSchema
 */
 import Joi from 'joi';
-import { parcelSchema, userSchema } from '../helper/validateSchema';
+import { parcelSchema, userSchema, loginSchema } from '../helper/validateSchema';
 
 /**
 * Creates a middleware class
@@ -40,6 +41,23 @@ class ValidateMiddleware {
   */
   static validateUser(req, res, next) {
     Joi.validate(req.body, userSchema)
+      .then(() => next())
+      .catch((err) => {
+        res.status(400).send({
+          message: err.details[0].message,
+        });
+      });
+  }
+
+  /**
+  * Method to validate user input before inserting into DB
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  */
+  static validateLogin(req, res, next) {
+    Joi.validate(req.body, loginSchema)
       .then(() => next())
       .catch((err) => {
         res.status(400).send({

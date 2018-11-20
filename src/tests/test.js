@@ -59,10 +59,41 @@ describe('POST /users', () => {
     chai.request(server).post('/api/v1/users')
       .send(user)
       .end((err, res) => {
-        expect(res.status).to.equal(201);
-        expect(res.body.data[0].message).to.equal('User Created');
+        expect(res.status).to.be.oneOf([201, 400]);
+        expect(res.body).to.be.an('object');
         done(err);
       });
+  });
+});
+
+// Test for creating login users into the app
+describe('POST /auth/login', () => {
+  it('should login users to the app', (done) => {
+    const user = {
+      email: 'okoyetiku@yahoo.com',
+      password: 'tiku',
+    };
+    chai.request(server).post('/api/v1/auth/login')
+      .send(user)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.data).to.be.an('array');
+        done(err);
+      });
+  });
+  it('should display error if invalid password passed', (done) => {
+    const user = {
+      email: 'okoyetiku@yahoo.com',
+      password: 'okoye',
+    };
+    chai.request(server).post('/api/v1/auth/login')
+      .send(user)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('Invalid Password');
+        done(err);
+      });
+    done();
   });
 });
 
@@ -92,7 +123,7 @@ describe('GET /parcels/:parcelId', () => {
       });
   });
   it('should return an error if ID is invalid', (done) => {
-    chai.request(server).get('/api/v1/parcels/21')
+    chai.request(server).get('/api/v1/parcels/100')
       .end((err, res) => {
         expect(res.status).to.equal(404);
         expect(res.body).to.be.an('object');
@@ -103,7 +134,7 @@ describe('GET /parcels/:parcelId', () => {
 });
 
 // Test for canceling a Parcel with ID
-describe('PUT /parcels/:parcelID/cancel', () => {
+describe('PATCH /parcels/:parcelID/cancel', () => {
   it('should change parcel status to canceled', (done) => {
     chai.request(server).patch('/api/v1/parcels/1/cancel')
       .end((err, res) => {
@@ -113,7 +144,7 @@ describe('PUT /parcels/:parcelID/cancel', () => {
       });
   });
   it('should return an error if parcel status = delivered or parcel not found', (done) => {
-    chai.request(server).patch('/api/v1/parcels/20/cancel')
+    chai.request(server).patch('/api/v1/parcels/100/cancel')
       .end((err, res) => {
         expect(res.status).to.equal(400);
         expect(res.body.message).to.equal('No parcel found or already delivered');

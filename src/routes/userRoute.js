@@ -19,4 +19,13 @@ const router = express.Router();
 * @returns {(obj|obj} success message or error message
 */
 router.post('/users', ValidateMiddleware.validateUser, UserController.createUsers);
+
+/**
+* Route to create new Parcel Orders
+* @param  {string} route The Post url route
+* @param  {function} UserController.createUsers The handler method
+* @returns {(obj|obj} success message or error message
+*/
+router.post('/auth/login', ValidateMiddleware.validateLogin, UserController.loginUser);
+
 export default router;

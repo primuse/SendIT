@@ -58,4 +58,9 @@ const userSchema = {
   password,
 };
 
-export { parcelSchema, userSchema };
+const loginSchema = {
+  email,
+  password,
+};
+
+export { parcelSchema, userSchema, loginSchema };

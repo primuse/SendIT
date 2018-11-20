@@ -32,6 +32,19 @@ class User {
       });
     }).catch((error) => {
       res.status(400).send({
+        message: error.detail,
+      });
+    });
+  }
+
+  static loginUser(req, res) {
+    model.loginUser(req).then((data) => {
+      res.status(200).send({
+        status: 200,
+        data,
+      });
+    }).catch((error) => {
+      res.status(400).send({
         message: error,
       });
     });
