@@ -9,4 +9,7 @@ install:
 script: 
   - npm run test
 
+services:
+  - postgresql
+
 after_success: npm run coverage
