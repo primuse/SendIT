@@ -17,6 +17,7 @@ before((done) => {
     .send(userCredentials)
     .end((err, res) => {
       if (err) throw err;
+      console.log(res.body.data);
       myToken = res.body.data[0].token;
       expect(res.status).to.equal(200);
       expect(res.body.data).to.be.an('array');
