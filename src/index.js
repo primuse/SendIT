@@ -7,15 +7,19 @@
 * @requires userRoute
 * @requires parcelRoute
 * @requires @babel/polyfill
+* @requires dotenv
 */
 import '@babel/polyfill';
 import express from 'express';
+import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-// import userRoute from './routes/userRoute';
 import parcelRoute from './routes/parcelRoute';
+import userRoute from './routes/userRoute';
+
+dotenv.config();
 
 const app = express();
-let port = process.env.PORT;
+const port = process.env.PORT;
 
 /**
  * support json encoded bodies
@@ -24,8 +28,8 @@ let port = process.env.PORT;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use('/api/v1', userRoute);
 app.use('/api/v1', parcelRoute);
+app.use('/api/v1', userRoute);
 
 /**
 * Index Route
@@ -38,10 +42,6 @@ app.get('/', (req, res) => {
     message: 'Welcome to SendIT!',
   });
 });
-
-if (port == null || port === '') {
-  port = 3000;
-}
 
 const server = app.listen(port, () => {
   console.log(`Server started on PORT ${port}`);

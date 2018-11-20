@@ -41,6 +41,9 @@ ul {
   max-width: 400px;
   width: 100%;
 }
+button {
+  color: rgba(255, 255, 255, 1);
+}
 
 /*Media queries*/
 @media (max-width: 491px) and (min-width: 0) {

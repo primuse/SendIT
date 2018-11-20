@@ -1,6 +1,8 @@
+import { describe, it } from 'mocha';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../index';
+
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -21,23 +23,44 @@ describe('GET /', () => {
 describe('POST /parcels', () => {
   it('should create a new parcel in the DB', (done) => {
     const parcel = {
-      parcel_name: 'farm',
-      placed_by: 2,
-      price: 10000,
-      weight: 3,
-      pickup_location: 'Owerri',
-      destination: 'Abuja',
+      parcelName: 'Kiki',
+      placedBy: 3,
+      price: 100,
+      weight: 30,
+      pickupLocation: 'Lagos',
+      destination: 'Owerri',
       status: 'Created',
       receiver: 'Tiku Okoye',
       email: 'okoyetiku@gmail.com',
-      phone_number: '08129814330',
-      current_location: 'Lagos',
+      phoneNumber: '08129814330',
+      currentLocation: 'Lagos',
     };
     chai.request(server).post('/api/v1/parcels')
       .send(parcel)
       .end((err, res) => {
         expect(res.status).to.equal(201);
         expect(res.body.data[0].message).to.equal('Order Created');
+        done(err);
+      });
+  });
+});
+
+// Test for creating new users with DB
+describe('POST /users', () => {
+  it('should create a new user in the DB', (done) => {
+    const user = {
+      firstName: 'Joseph',
+      lastName: 'Julius',
+      otherNames: 'John',
+      username: 'jude',
+      email: 'okoyetiku@yahoo.com',
+      password: 'tiku',
+    };
+    chai.request(server).post('/api/v1/users')
+      .send(user)
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body.data[0].message).to.equal('User Created');
         done(err);
       });
   });
@@ -72,9 +95,8 @@ describe('GET /parcels/:parcelId', () => {
     chai.request(server).get('/api/v1/parcels/21')
       .end((err, res) => {
         expect(res.status).to.equal(404);
-        expect(res.body.status).to.equal(404);
         expect(res.body).to.be.an('object');
-        expect(res.body.data[0].message).to.equal('No parcel with given id');
+        expect(res.body.message).to.equal('No parcel with given id');
         done(err);
       });
   });
@@ -94,29 +116,8 @@ describe('PUT /parcels/:parcelID/cancel', () => {
     chai.request(server).patch('/api/v1/parcels/20/cancel')
       .end((err, res) => {
         expect(res.status).to.equal(400);
-        expect(res.body.data[0].message).to.equal('No parcel found or already delivered');
+        expect(res.body.message).to.equal('No parcel found or already delivered');
         done(err);
       });
   });
 });
-
-// // Test for getting all parcels from User with ID
-// describe('GET /users/:userId/parcels', () => {
-//   it('should return all parcels orders by a user', (done) => {
-//     chai.request(server).get('/api/v1/users/1/parcels')
-//       .end((err, res) => {
-//         expect(res.status).to.equal(200);
-//         expect(res.body.data).to.have.lengthOf.at.least(1);
-//         expect(res.body.status).to.equal(200);
-//         done(err);
-//       });
-//   });
-//   it('should return an error if User not found', (done) => {
-//     chai.request(server).get('/api/v1/users/101/parcels')
-//       .end((err, res) => {
-//         expect(res.status).to.equal(404);
-//         expect(res.body.data[0].message).to.equal('No User with this ID');
-//         done(err);
-//       });
-//   });
-// });

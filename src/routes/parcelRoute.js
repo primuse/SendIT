@@ -20,7 +20,6 @@ const router = express.Router();
 */
 router.post('/parcels', ValidateMiddleware.validateParcel, ParcelController.createParcels);
 
-
 /**
 * Route to get all Parcel Orders
 * @param  {string} route The Get Parcels url route

@@ -32,10 +32,7 @@ class Parcel {
       });
     }).catch((error) => {
       res.status(400).send({
-        status: 400,
-        data: [{
-          message: error,
-        }],
+        message: error,
       });
     });
   }
@@ -53,6 +50,9 @@ class Parcel {
         status: 200,
         data: rows,
       });
+    }).catch((error) => {
+      res.status(404)
+        .send(error);
     });
   }
 
@@ -71,12 +71,8 @@ class Parcel {
         data: parcel,
       });
     }).catch((error) => {
-      res.status(404).send({
-        status: 404,
-        data: [{
-          message: error.message,
-        }],
-      });
+      res.status(404)
+        .send(error);
     });
   }
 
@@ -98,13 +94,8 @@ class Parcel {
         }],
       });
     }).catch((error) => {
-      res.status(400).send({
-        status: 400,
-        data: [{
-          id,
-          message: error.message,
-        }],
-      });
+      res.status(400)
+        .send(error);
     });
   }
 }

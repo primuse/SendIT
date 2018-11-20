@@ -1,6 +1,5 @@
 /**
 * @fileOverview Model with queries for database manipulation.
-*
 * @exports dbModel
 * @requires moment
 * @requires DB
@@ -21,25 +20,30 @@ class dbModel {
   */
   static async createParcel(req) {
     const querytext = `INSERT INTO
-      parcel_table(parcel_name, placed_by, price, weight, metric,
-      pickup_location, destination, status, receiver, email, phone_number, current_location, sent_on, delivered_on)
-      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+      parcelTable(parcelName, placedBy, price, weight, metric,
+      pickupLocation, destination, status, receiver, email, phoneNumber, currentLocation, sentOn)
+      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
       returning *`;
+
+    const {
+      parcelName, placedBy, price, weight, pickupLocation, destination,
+      status, receiver, email, phoneNumber, currentLocation,
+    } = req.body;
+
     const values = [
-      req.body.parcel_name,
-      req.body.placed_by,
-      req.body.price,
-      req.body.weight,
+      parcelName,
+      placedBy,
+      price,
+      weight,
       'kg',
-      req.body.pickup_location,
-      req.body.destination,
-      req.body.status,
-      req.body.receiver,
-      req.body.email,
-      req.body.phone_number,
-      req.body.current_location,
-      moment(new Date()),
-      moment(new Date()),
+      pickupLocation,
+      destination,
+      status,
+      receiver,
+      email,
+      phoneNumber,
+      currentLocation,
+      moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
     ];
 
     try {
@@ -57,7 +61,7 @@ class dbModel {
   */
   static getAllParcels() {
     return new Promise((resolve, reject) => {
-      const findAllQuery = 'SELECT * FROM parcel_table';
+      const findAllQuery = 'SELECT * FROM parcelTable';
 
       DB.query(findAllQuery).then((result) => {
         if (result.rows.length === 0) {
@@ -80,7 +84,7 @@ class dbModel {
   */
   static findParcel(id) {
     return new Promise((resolve, reject) => {
-      const findOneQuery = `SELECT * FROM parcel_table WHERE id = '${id}'`;
+      const findOneQuery = `SELECT * FROM parcelTable WHERE id = '${id}'`;
       DB.query(findOneQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
@@ -104,7 +108,7 @@ class dbModel {
     return new Promise((resolve, reject) => {
       const exception = 'Delivered';
       const status = 'Canceled';
-      const cancelQuery = `UPDATE parcel_table SET status = '${status}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
+      const cancelQuery = `UPDATE parcelTable SET status = '${status}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
       DB.query(cancelQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {

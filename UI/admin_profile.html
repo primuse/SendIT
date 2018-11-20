@@ -18,7 +18,9 @@
         <aside>
           <div class="bg-blue" id="menu">
             <div id="aside-profile">
-                <h3 class="m-0 pb-10">SendIT</h3>
+                <a href="admin.html">
+                  <h3 class="m-0 pb-10">Send<span class="head-span">IT</span></h3>
+                </a>
                 <small class="d-block pb-10 white-3">HSDB3UUQ2</small>
                 <small>Welcome!<br> ADMIN</small>
             </div>
@@ -109,16 +111,16 @@
           <h5 class="text-center">Edit Profile</h5>
           <form class="text-center">
             <div class="column is-two form-row">
-              <input type="text" placeholder="First Name">
-              <input type="text" placeholder="Last Name">
+              <input type="text" placeholder="First Name" required>
+              <input type="text" placeholder="Last Name" required>
             </div>
             <div class="column is-two form-row">
-              <input type="email" placeholder="Email">
-              <input type="number" placeholder="Phone Number">
+              <input type="email" placeholder="Email" required>
+              <input type="number" placeholder="Phone Number" required>
             </div>
             <div class="column is-two form-row">
-              <input type="text" placeholder="sex">
-              <input type="text" placeholder="Location">
+              <input type="text" placeholder="sex" required>
+              <input type="text" placeholder="Location" required>
             </div>
             <button type="submit" class="btn lg is-outlined mr-2 white">Save</button>
             <a href="admin_profile.html" class="btn lg is-outlined">Cancel</a>
@@ -136,45 +138,45 @@
             <div class="column is-two form-row text-left">
               <div>
                 <label for="parcelType">Parcel Type</label>
-                <input type="text" id="parcelType">
+                <input type="text" id="parcelType" required>
               </div>
 
               <div class="column is-two">
                 <div>
                   <label for="weight">Weight</label>
-                  <input type="number" id="weight">
+                  <input type="number" id="weight" required>
                 </div>
                 <div>
                   <label for="price">Price</label>
-                  <input type="number" id="price">
+                  <input type="number" id="price" required>
                 </div>
               </div>
             </div>
             <div class="form-row text-left">
               <div>
                 <label for="destination">Destination</label>
-                <textarea id="destination"></textarea>
+                <textarea id="destination" required></textarea>
               </div>
             </div>
             <h5 class="text-center">Addressed To</h5>
             <div class="column is-two form-row text-left">
               <div>
                 <label for="name">Name</label>
-                <input type="text" id="name">
+                <input type="text" id="name" required>
               </div>
               <div>
                 <label for="email">Email</label>
-                <input type="text" id="email">
+                <input type="text" id="email" required>
               </div>
             </div>
             <div class="column is-two form-row text-left">            
               <div>
                 <label for="phoneNumber">PhoneNumber</label>
-                <input type="text" id="phoneNumber">
+                <input type="text" id="phoneNumber" required>
               </div>
               <div>
                 <label for="PickupLocation">Pickup Location</label>
-                <input type="text" id="PickupLocation">
+                <input type="text" id="PickupLocation" required>
               </div>
             </div>
             <button type="submit" class="btn sm bg-bright-blue text-right white">Create</button>

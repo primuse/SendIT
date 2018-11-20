@@ -15,7 +15,7 @@ import { parcelSchema, userSchema } from '../helper/validateSchema';
 */
 class ValidateMiddleware {
   /**
-  * Method to validate input before inserting into DB
+  * Method to validate parcel input before inserting into DB
   * @method
   * @param {obj} req HTTP request
   * @param {obj} res HTTP response
@@ -26,10 +26,24 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          status: 400,
-          data: [{
-            message: err.details[0].message,
-          }],
+          message: err.details[0].message,
+        });
+      });
+  }
+
+  /**
+  * Method to validate user input before inserting into DB
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  */
+  static validateUser(req, res, next) {
+    Joi.validate(req.body, userSchema)
+      .then(() => next())
+      .catch((err) => {
+        res.status(400).send({
+          message: err.details[0].message,
         });
       });
   }
