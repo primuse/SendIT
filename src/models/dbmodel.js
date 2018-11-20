@@ -123,5 +123,23 @@ class dbModel {
       });
     });
   }
+
+  static changeDestination(id, value) {
+    return new Promise((resolve, reject) => {
+      const exception = 'Delivered';
+      const updateQuery = `UPDATE parcelTable SET destination = '${value}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
+      DB.query(updateQuery).then((result) => {
+        if (result.rows.length === 0) {
+          const response = {
+            message: 'No parcel found or already delivered',
+          };
+          reject(response);
+        }
+        resolve(result.rows);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
 }
 export default dbModel;

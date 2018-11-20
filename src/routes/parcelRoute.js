@@ -26,7 +26,7 @@ router.post('/parcels', ValidateMiddleware.validateToken, ValidateMiddleware.val
 * @param  {function} ParcelController.getAllParcels The handler function
 * @returns {(obj|obj} parcel or error message
 */
-router.get('/parcels', ParcelController.getAllParcels);
+router.get('/parcels', ValidateMiddleware.validateToken, ParcelController.getAllParcels);
 
 /**
 * Route to get parcel order by ID
@@ -34,7 +34,7 @@ router.get('/parcels', ParcelController.getAllParcels);
 * @param  {function} ParcelController.getParcel The handler function
 * @returns {(obj|obj} parcel or error message
 */
-router.get('/parcels/:parcelId', ParcelController.getParcel);
+router.get('/parcels/:parcelId', ValidateMiddleware.validateToken, ParcelController.getParcel);
 
 /**
 * Route to cancel a parcel order
@@ -42,6 +42,14 @@ router.get('/parcels/:parcelId', ParcelController.getParcel);
 * @param  {function} ParcelController.cancelParcel The handler function
 * @returns {(obj|obj} success message or error message
 */
-router.patch('/parcels/:parcelId/cancel', ParcelController.cancelParcel);
+router.patch('/parcels/:parcelId/cancel', ValidateMiddleware.validateToken, ParcelController.cancelParcel);
+
+/**
+* Route to cancel a parcel order
+* @param  {string} route The cancel url route
+* @param  {function} ParcelController.cancelParcel The handler function
+* @returns {(obj|obj} success message or error message
+*/
+router.patch('/parcels/:parcelId/destination', ValidateMiddleware.validateToken, ValidateMiddleware.validateDestination, ParcelController.updateParcel);
 
 export default router;

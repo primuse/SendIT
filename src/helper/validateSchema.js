@@ -61,4 +61,10 @@ const loginSchema = {
   password,
 };
 
-export { parcelSchema, userSchema, loginSchema };
+const updateSchema = {
+  destination,
+};
+
+export {
+  parcelSchema, userSchema, loginSchema, updateSchema,
+};
