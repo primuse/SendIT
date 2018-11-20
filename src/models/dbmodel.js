@@ -19,6 +19,7 @@ class dbModel {
   * @param {obj} req HTTP request
   */
   static async createParcel(req) {
+    console.log(req.decoded);
     const querytext = `INSERT INTO
       parcelTable(parcelName, placedBy, price, weight, metric,
       pickupLocation, destination, status, receiver, email, phoneNumber, currentLocation, sentOn)
@@ -26,13 +27,13 @@ class dbModel {
       returning *`;
 
     const {
-      parcelName, placedBy, price, weight, pickupLocation, destination,
+      parcelName, price, weight, pickupLocation, destination,
       status, receiver, email, phoneNumber, currentLocation,
     } = req.body;
 
     const values = [
       parcelName,
-      placedBy,
+      req.decoded,
       price,
       weight,
       'kg',

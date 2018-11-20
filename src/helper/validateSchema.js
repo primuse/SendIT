@@ -11,7 +11,6 @@ import Joi from 'joi';
 * Joi validation constraints
 */
 const parcelName = Joi.string().required();
-const placedBy = Joi.number().integer().required();
 const price = Joi.number().integer().required();
 const weight = Joi.number().integer().required();
 const pickupLocation = Joi.string().required();
@@ -34,7 +33,6 @@ const password = Joi.string().alphanum().required();
 */
 const parcelSchema = {
   parcelName,
-  placedBy,
   price,
   weight,
   pickupLocation,

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon ./src/index.js --exec babel-node",
     "build": "babel src --out-dir build",
-    "test": "nyc --reporter=text mocha --require @babel/register ./src/tests/test.js --timeout 15000 --recursive --exit || true",
+    "test": "nyc --reporter=text mocha --require @babel/register ./src/tests/test.js --timeout 25000 --recursive --exit || true",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
@@ -40,7 +40,9 @@
     "make-runnable": "^1.3.6",
     "mocha": "^5.2.0",
     "moment": "^2.22.2",
-    "pg": "^7.6.1"
+    "pg": "^7.6.1",
+    "superagent": "^4.0.0",
+    "supertest": "^3.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

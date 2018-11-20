@@ -18,7 +18,7 @@ const router = express.Router();
 * @param  {function} ParcelController.createParcels The handler method
 * @returns {(obj|obj} success message or error message
 */
-router.post('/parcels', ValidateMiddleware.validateParcel, ParcelController.createParcels);
+router.post('/parcels', ValidateMiddleware.validateToken, ValidateMiddleware.validateParcel, ParcelController.createParcels);
 
 /**
 * Route to get all Parcel Orders

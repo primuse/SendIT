@@ -45,7 +45,6 @@ class userModel {
       DB.query(querytext, values).then((result) => {
         resolve(result.rows);
       }).catch((error) => {
-        console.log(error);
         reject(error);
       });
     });
@@ -65,15 +64,20 @@ class userModel {
         bcrypt.compare(password, result.rows[0].password).then((res) => {
           if (res) {
             const user = result.rows[0];
-            const payload = { user: result.rows[0].firstName, id: user.id };
+            const payload = {
+              user: result.rows[0].firstName,
+              id: user.id,
+              role: result.rows[0].isAdmin,
+            };
             const token = jwt.sign(payload, process.env.secret, { expiresIn: '1h' });
             resolve([{ token, user }]);
           }
-        }).catch(() => {
           const response = {
             message: 'Invalid Password',
           };
           reject(response);
+        }).catch((error) => {
+          reject(error);
         });
       }).catch((error) => {
         reject(error);

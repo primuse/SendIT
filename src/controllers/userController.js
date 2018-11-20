@@ -26,7 +26,7 @@ class User {
       res.status(201).send({
         status: 201,
         data: [{
-          id: rows.id,
+          id: rows[0].id,
           message: 'User Created',
         }],
       });
@@ -44,8 +44,8 @@ class User {
         data,
       });
     }).catch((error) => {
-      res.status(400).send({
-        message: error,
+      res.status(401).send({
+        message: error.message,
       });
     });
   }

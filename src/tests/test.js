@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it, before } from 'mocha';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../index';
@@ -21,10 +21,25 @@ describe('GET /', () => {
 
 // Test for creating new parcels with DB
 describe('POST /parcels', () => {
+  let myToken = null;
+  before((done) => {
+    const userCredentials = {
+      email: 'tikuokoye@gmail.com',
+      password: 'tiku',
+    };
+    chai.request(server).post('/api/v1/auth/login')
+      .send(userCredentials)
+      .end((err, res) => {
+        if (err) throw err;
+        myToken = res.body.data[0].token;
+        expect(res.status).to.equal(200);
+        expect(res.body.data).to.be.an('array');
+        done(err);
+      });
+  });
   it('should create a new parcel in the DB', (done) => {
     const parcel = {
       parcelName: 'Kiki',
-      placedBy: 3,
       price: 100,
       weight: 30,
       pickupLocation: 'Lagos',
@@ -36,10 +51,33 @@ describe('POST /parcels', () => {
       currentLocation: 'Lagos',
     };
     chai.request(server).post('/api/v1/parcels')
+      .set('x-access-token', myToken)
       .send(parcel)
       .end((err, res) => {
         expect(res.status).to.equal(201);
         expect(res.body.data[0].message).to.equal('Order Created');
+        done(err);
+      });
+  });
+  it('should return a DB error', (done) => {
+    const parcel = {
+      parcelName: 'Kiki',
+      prices: 100,
+      weight: 30,
+      pickupLocation: 'Lagos',
+      destination: 'Owerri',
+      status: 'Created',
+      receiver: 'Tiku Okoye',
+      email: 'okoyetiku@gmail.com',
+      phoneNumber: '08129814330',
+      currentLocation: 'Lagos',
+    };
+    chai.request(server).post('/api/v1/parcels')
+      .set('x-access-token', myToken)
+      .send(parcel)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        // expect(res.body.data[0].message).to.equal('Order Created');
         done(err);
       });
   });
@@ -89,11 +127,36 @@ describe('POST /auth/login', () => {
     chai.request(server).post('/api/v1/auth/login')
       .send(user)
       .end((err, res) => {
-        expect(res.status).to.equal(400);
+        expect(res.status).to.equal(401);
         expect(res.body.message).to.equal('Invalid Password');
         done(err);
       });
-    done();
+  });
+  it('should display error if invalid email passed', (done) => {
+    const user = {
+      email: 'favourokoye@yahoo.com',
+      password: 'okoye',
+    };
+    chai.request(server).post('/api/v1/auth/login')
+      .send(user)
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        expect(res.body.message).to.equal('Authentication failed. User not found');
+        done(err);
+      });
+  });
+  it('should display error if no password passed', (done) => {
+    const user = {
+      email: 'okoyetiku@yahoo.com',
+      password: '',
+    };
+    chai.request(server).post('/api/v1/auth/login')
+      .send(user)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('"password" is not allowed to be empty');
+        done(err);
+      });
   });
 });
 
