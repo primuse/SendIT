@@ -27,3 +27,14 @@ CREATE TABLE IF NOT EXISTS parcelTable (
   sentOn VARCHAR NOT NULL,
   deliveredOn VARCHAR
 );
+
+INSERT INTO userTable (
+  firstName, 
+  lastName, 
+  otherNames, 
+  username, 
+  email, 
+  registered, 
+  isAdmin, 
+  password)
+VALUES('Tiku', 'Okoye', 'Divine', 'primuse', 'tikuokoye@gmail.com', 'today', 'false', '$2b$08$LJXVbU8uAL9O38vu9dMSvOFyMrh1QeS3rIRnlFzyB.Z93pJchErO2')
