@@ -13,34 +13,7 @@ services:
   - postgresql
 
 before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
-  - psql -c 'create table if not exists userTable (
-      id SERIAL PRIMARY KEY,
-      firstName VARCHAR (128) NOT NULL,
-      lastName VARCHAR (128) NOT NULL,
-      otherNames VARCHAR (128) NOT NULL,
-      username VARCHAR (128) UNIQUE NOT NULL,
-      email VARCHAR (355) UNIQUE NOT NULL,
-      registered VARCHAR NOT NULL,
-      isAdmin BOOLEAN NOT NULL,
-      password VARCHAR (128) NOT NULL
-    );' -U postgres
-  - psql -c 'create table if not exists parcelTable (
-      id SERIAL PRIMARY KEY,
-      parcelName VARCHAR (128) NOT NULL,
-      placedBy INT NOT NULL,
-      price FLOAT (11) NOT NULL,
-      weight FLOAT (11) NOT NULL,
-      metric VARCHAR (20) NOT NULL,
-      pickupLocation VARCHAR (128) NOT NULL,
-      destination VARCHAR (128) NOT NULL,
-      status VARCHAR (128) NOT NULL,
-      receiver VARCHAR (128) NOT NULL,
-      email VARCHAR (355) NOT NULL,
-      phoneNumber VARCHAR(20) NOT NULL,
-      currentLocation VARCHAR (128) NOT NULL,
-      sentOn VARCHAR NOT NULL,
-      deliveredOn VARCHAR
-    );' -U postgres
+  - psql -U postgres -c 'CREATE DATABASE sendittest;'
+  - psql -U postgres -f ./db/createtables.sql -d sendittest
 
 after_success: npm run coverage
