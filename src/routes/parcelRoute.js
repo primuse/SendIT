@@ -34,7 +34,7 @@ router.get('/parcels', ValidateMiddleware.validateToken, ParcelController.getAll
 * @param  {function} ParcelController.getParcel The handler function
 * @returns {(obj|obj} parcel or error message
 */
-router.get('/parcels/:parcelId', ValidateMiddleware.validateToken, ParcelController.getParcel);
+router.get('/parcels/:parcelId', ParcelController.getParcel);
 
 /**
 * Route to cancel a parcel order
