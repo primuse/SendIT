@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 dotenv.config();
 
-const hashedPassword = bcrypt.
+const hashedPassword = bcrypt.hashSync('cim', 8);
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URI,
@@ -88,7 +88,7 @@ const dropUserTable = () => {
 
 const createAdmin = () => {
   const queryText = `INSERT INTO userTable(firstName, lastName, otherNames, username, email, registered, isAdmin, password)
-  VALUES('tiku', 'okoye', 'divine', 'primuse', 'tikuokoye@yhaoo.com', $6, $7, $8)`;
+  VALUES('tiku', 'okoye', 'divine', 'cim', 'tikuokoye@yahoo.com', '12-10-18', 'true', '${hashedPassword}')`;
   pool.query(queryText)
     .then((res) => {
       console.log(res);
@@ -107,6 +107,7 @@ module.exports = {
   createTables,
   dropParcelTable,
   dropUserTable,
+  createAdmin,
 };
 
 require('make-runnable');
