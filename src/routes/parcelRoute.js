@@ -26,7 +26,7 @@ router.post('/parcels', ValidateMiddleware.validateToken, ValidateMiddleware.val
 * @param  {function} ParcelController.getAllParcels The handler function
 * @returns {(obj|obj} parcel or error message
 */
-router.get('/parcels', ValidateMiddleware.validateToken, ParcelController.getAllParcels);
+router.get('/parcels', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ParcelController.getAllParcels);
 
 /**
 * Route to get parcel order by ID

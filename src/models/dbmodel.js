@@ -18,41 +18,36 @@ class dbModel {
   * @method
   * @param {obj} req HTTP request
   */
-  static async createParcel(req) {
-    console.log(req.decoded);
-    const querytext = `INSERT INTO
+  static createParcel(parcelName, price, weight, pickupLocation, destination,
+    status, receiver, email, phoneNumber, currentLocation, userId) {
+    return new Promise((resolve, reject) => {
+      const querytext = `INSERT INTO
       parcelTable(parcelName, placedBy, price, weight, metric,
       pickupLocation, destination, status, receiver, email, phoneNumber, currentLocation, sentOn)
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
       returning *`;
+      const values = [
+        parcelName,
+        userId,
+        price,
+        weight,
+        'kg',
+        pickupLocation,
+        destination,
+        status,
+        receiver,
+        email,
+        phoneNumber,
+        currentLocation,
+        moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+      ];
 
-    const {
-      parcelName, price, weight, pickupLocation, destination,
-      status, receiver, email, phoneNumber, currentLocation,
-    } = req.body;
-
-    const values = [
-      parcelName,
-      req.decoded,
-      price,
-      weight,
-      'kg',
-      pickupLocation,
-      destination,
-      status,
-      receiver,
-      email,
-      phoneNumber,
-      currentLocation,
-      moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-    ];
-
-    try {
-      const { rows } = await DB.query(querytext, values);
-      return rows[0];
-    } catch (error) {
-      return error;
-    }
+      DB.query(querytext, values).then((result) => {
+        resolve(result.rows[0]);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
   }
 
   /**
@@ -83,9 +78,9 @@ class dbModel {
   * @method
   * @param {obj} req HTTP request
   */
-  static findParcel(id) {
+  static findParcel(id, userId) {
     return new Promise((resolve, reject) => {
-      const findOneQuery = `SELECT * FROM parcelTable WHERE id = '${id}'`;
+      const findOneQuery = `SELECT * FROM parcelTable WHERE id = '${id}' AND placedby = '${userId}'`;
       DB.query(findOneQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
@@ -105,19 +100,39 @@ class dbModel {
   * @method
   * @param {obj} req HTTP request
   */
-  static cancelParcel(id) {
+  static cancelParcel(id, userId) {
     return new Promise((resolve, reject) => {
       const exception = 'Delivered';
       const status = 'Canceled';
+      let RealUser = null;
+      const findQuery = `SELECT * FROM parcelTable WHERE id = '${id}'`;
       const cancelQuery = `UPDATE parcelTable SET status = '${status}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
-      DB.query(cancelQuery).then((result) => {
+      DB.query(findQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
             message: 'No parcel found or already delivered',
           };
           reject(response);
         }
-        resolve(result.rows);
+        RealUser = result.rows[0].placedby;
+        if (RealUser === userId) {
+          DB.query(cancelQuery).then((results) => {
+            if (results.rows.length === 0) {
+              const response = {
+                message: 'No parcel found or already delivered',
+              };
+              reject(response);
+            }
+            resolve(results.rows);
+          }).catch((error) => {
+            reject(error);
+          });
+        } else {
+          const response = {
+            message: 'Unauthorized access',
+          };
+          reject(response);
+        }
       }).catch((error) => {
         reject(error);
       });
@@ -129,18 +144,38 @@ class dbModel {
   * @method
   * @param {obj} req HTTP request
   */
-  static changeDestination(id, value) {
+  static changeDestination(id, value, userId) {
     return new Promise((resolve, reject) => {
       const exception = 'Delivered';
+      let RealUser = null;
+      const findQuery = `SELECT * FROM parcelTable WHERE id = '${id}'`;
       const updateQuery = `UPDATE parcelTable SET destination = '${value}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
-      DB.query(updateQuery).then((result) => {
+      DB.query(findQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
             message: 'No parcel found or already delivered',
           };
           reject(response);
         }
-        resolve(result.rows);
+        RealUser = result.rows[0].placedby;
+        if (RealUser === userId) {
+          DB.query(updateQuery).then((results) => {
+            if (results.rows.length === 0) {
+              const response = {
+                message: 'No parcel found or already delivered',
+              };
+              reject(response);
+            }
+            resolve(results.rows);
+          }).catch((error) => {
+            reject(error);
+          });
+        } else {
+          const response = {
+            message: 'Unauthorized access',
+          };
+          reject(response);
+        }
       }).catch((error) => {
         reject(error);
       });
