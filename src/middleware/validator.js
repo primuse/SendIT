@@ -13,7 +13,7 @@ import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import {
-  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema,
+  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema, statusSchema,
 } from '../helper/validateSchema';
 
 dotenv.config();
@@ -100,6 +100,23 @@ class ValidateMiddleware {
   */
   static validateLocation(req, res, next) {
     Joi.validate(req.body, locationSchema)
+      .then(() => next())
+      .catch((err) => {
+        res.status(400).send({
+          message: err.details[0].message,
+        });
+      });
+  }
+
+  /**
+  * Method to validate status input
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  */
+  static validateStatus(req, res, next) {
+    Joi.validate(req.body, statusSchema)
       .then(() => next())
       .catch((err) => {
         res.status(400).send({

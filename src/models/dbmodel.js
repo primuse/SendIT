@@ -169,5 +169,28 @@ class dbModel {
       });
     });
   }
+
+  /**
+  * Method to change parcel location in DB
+  * @method
+  * @param {obj} req HTTP request
+  */
+  static changeStatus(id, value) {
+    return new Promise((resolve, reject) => {
+      const exception = 'Delivered';
+      const updateQuery = `UPDATE parcelTable SET status = '${value}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
+      DB.query(updateQuery).then((result) => {
+        if (result.rows.length === 0) {
+          const response = {
+            message: 'No parcel found or already delivered',
+          };
+          reject(response);
+        }
+        resolve(result.rows);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
 }
 export default dbModel;

@@ -146,6 +146,30 @@ class Parcel {
         .send(error);
     });
   }
+
+  /**
+  * Handler Method to change currentLocation of a parcel order
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  * @returns {obj}
+  */
+  static statusParcel(req, res) {
+    const id = req.params.parcelId;
+    const value = req.body.status;
+    model.changeStatus(id, value).then(() => {
+      res.send({
+        status: 200,
+        data: [{
+          id,
+          message: 'Status updated',
+        }],
+      });
+    }).catch((error) => {
+      res.status(400)
+        .send(error);
+    });
+  }
 }
 
 export default Parcel;

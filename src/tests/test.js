@@ -230,7 +230,7 @@ describe('GET /parcels/:parcelId', () => {
 // Test for canceling a Parcel with ID
 describe('PATCH /parcels/:parcelID/cancel', () => {
   it('should change parcel status to canceled', (done) => {
-    chai.request(server).patch('/api/v1/parcels/1/cancel')
+    chai.request(server).patch('/api/v1/parcels/2/cancel')
       .set('x-access-token', myToken)
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -264,7 +264,7 @@ describe('PATCH /parcels/:parcelId/destination', () => {
   const errorValue = { destination: 123 };
   const noValue = { };
   it('should change parcel destination to provided value', (done) => {
-    chai.request(server).patch('/api/v1/parcels/1/destination')
+    chai.request(server).patch('/api/v1/parcels/2/destination')
       .set('x-access-token', myToken)
       .send(value)
       .end((err, res) => {
@@ -334,7 +334,7 @@ describe('PATCH /parcels/:parcelId/currentLocation', () => {
       });
   });
   it('should change parcel currentLocation to provided value', (done) => {
-    chai.request(server).patch('/api/v1/parcels/1/currentLocation')
+    chai.request(server).patch('/api/v1/parcels/2/currentLocation')
       .set('x-access-token', userToken)
       .send(value)
       .end((err, res) => {
@@ -375,6 +375,86 @@ describe('PATCH /parcels/:parcelId/currentLocation', () => {
   });
   it('should return an error if no location passed', (done) => {
     chai.request(server).patch('/api/v1/parcels/1/currentLocation')
+      .set('x-access-token', userToken)
+      .send(noValue)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done(err);
+      });
+  });
+});
+
+// Test for changing status of a parcel
+describe('PATCH /parcels/:parcelId/status', () => {
+  const value = { status: 'In-transit' };
+  const errorValue = { status: 123 };
+  const noValue = {};
+  before((done) => {
+    const userCredentials = {
+      email: 'tikuokoye@yahoo.com',
+      password: 'cim',
+    };
+    chai.request(server).post('/api/v1/auth/login')
+      .send(userCredentials)
+      .end((err, res) => {
+        if (err) throw err;
+        userToken = res.body.data[0].token;
+        done(err);
+      });
+  });
+  it('should change parcel status to provided value', (done) => {
+    chai.request(server).patch('/api/v1/parcels/2/status')
+      .set('x-access-token', userToken)
+      .send(value)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.data[0].message).to.equal('Status updated');
+        done(err);
+      });
+  });
+  it('should return an error if parcel status = delivered or parcel not found', (done) => {
+    chai.request(server).patch('/api/v1/parcels/100/status')
+      .set('x-access-token', userToken)
+      .send(value)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('No parcel found or already delivered');
+        done(err);
+      });
+  });
+  it('should return an error if parcel status = delivered or parcel not found', (done) => {
+    chai.request(server).patch('/api/v1/parcels/1/status')
+      .set('x-access-token', userToken)
+      .send(value)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('No parcel found or already delivered');
+        done(err);
+      });
+  });
+  it('should return an error if no token provided', (done) => {
+    chai.request(server).patch('/api/v1/parcels/1/status')
+      .send(value)
+      .end((err, res) => {
+        expect(res.status).to.equal(403);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.equal('No token provided.');
+        done(err);
+      });
+  });
+  it('should return an error if invalid status passed', (done) => {
+    chai.request(server).patch('/api/v1/parcels/1/status')
+      .set('x-access-token', userToken)
+      .send(errorValue)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done(err);
+      });
+  });
+  it('should return an error if no status passed', (done) => {
+    chai.request(server).patch('/api/v1/parcels/1/status')
       .set('x-access-token', userToken)
       .send(noValue)
       .end((err, res) => {

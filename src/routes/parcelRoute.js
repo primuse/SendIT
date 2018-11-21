@@ -60,4 +60,12 @@ router.patch('/parcels/:parcelId/destination', ValidateMiddleware.validateToken,
 */
 router.patch('/parcels/:parcelId/currentlocation', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateLocation, ParcelController.locationParcel);
 
+/**
+* Route to cancel a parcel order
+* @param  {string} route The cancel url route
+* @param  {function} ParcelController.locationParcel The handler function
+* @returns {(obj|obj} success message or error message
+*/
+router.patch('/parcels/:parcelId/status', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateStatus, ParcelController.statusParcel);
+
 export default router;
