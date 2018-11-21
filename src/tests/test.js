@@ -7,23 +7,6 @@ import server from '../index';
 chai.use(chaiHttp);
 const { expect } = chai;
 
-let myToken = null;
-// before((done) => {
-//   const userCredentials = {
-//     email: 'belivokoye@gmail.com',
-//     password: 'john',
-//   };
-//   chai.request(server).post('/api/v1/auth/login')
-//     .send(userCredentials)
-//     .end((err, res) => {
-//       if (err) throw err;
-//       console.log(res.body.data);
-//       myToken = res.body.data[0].token;
-//       expect(res.status).to.equal(200);
-//       expect(res.body.data).to.be.an('array');
-//       done(err);
-//     });
-// });
 
 // Test index API route
 describe('GET /', () => {
@@ -39,6 +22,23 @@ describe('GET /', () => {
 
 // Test for creating new parcels with DB
 describe('POST /parcels', () => {
+  let myToken = null;
+  before((done) => {
+    const userCredentials = {
+      email: 'belivokoye@gmail.com',
+      password: 'john',
+    };
+    chai.request(server).post('/api/v1/auth/login')
+      .send(userCredentials)
+      .end((err, res) => {
+        if (err) throw err;
+        console.log(res.body.data);
+        myToken = res.body.data[0].token;
+        expect(res.status).to.equal(200);
+        expect(res.body.data).to.be.an('array');
+        done(err);
+      });
+  });
   it('should create a new parcel in the DB', (done) => {
     const parcel = {
       parcelName: 'Kiki',
