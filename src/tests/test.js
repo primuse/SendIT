@@ -7,7 +7,21 @@ import server from '../index';
 chai.use(chaiHttp);
 const { expect } = chai;
 
-
+let myToken = null;
+before((done) => {
+  const userCredentials = {
+    email: 'belivokoye@gmail.com',
+    password: 'john',
+  };
+  chai.request(server).post('/api/v1/auth/login')
+    .send(userCredentials)
+    .end((err, res) => {
+      if (err) throw err;
+      console.log(res.body.data);
+      myToken = res.body.data[0].token;
+      done(err);
+    });
+});
 // Test index API route
 describe('GET /', () => {
   it('should display welcome to SENDIT!', (done) => {
@@ -22,21 +36,6 @@ describe('GET /', () => {
 
 // Test for creating new parcels with DB
 describe('POST /parcels', () => {
-  let myToken = null;
-  before((done) => {
-    const userCredentials = {
-      email: 'belivokoye@gmail.com',
-      password: 'john',
-    };
-    chai.request(server).post('/api/v1/auth/login')
-      .send(userCredentials)
-      .end((err, res) => {
-        if (err) throw err;
-        console.log(res.body.data);
-        myToken = res.body.data[0].token;
-        done(err);
-      });
-  });
   it('should create a new parcel in the DB', (done) => {
     const parcel = {
       parcelName: 'Kiki',
