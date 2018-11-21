@@ -165,6 +165,7 @@ describe('POST /auth/login', () => {
 describe('GET /parcels', () => {
   it('should return all parcels', (done) => {
     chai.request(server).get('/api/v1/parcels')
+      .set('x-access-token', myToken)
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal(200);
@@ -183,7 +184,7 @@ describe('GET /parcels', () => {
   });
   it('should return an error if wrong token provided', (done) => {
     chai.request(server).get('/api/v1/parcels')
-      .set('x-access-token', 'tiku')
+      .set('x-access-token', myToken)
       .end((err, res) => {
         expect(res.status).to.equal(500);
         expect(res.body).to.be.an('object');
