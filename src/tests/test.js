@@ -17,7 +17,6 @@ before((done) => {
     .send(userCredentials)
     .end((err, res) => {
       if (err) throw err;
-      console.log(res.body.data);
       myToken = res.body.data[0].token;
       done(err);
     });
@@ -113,7 +112,6 @@ describe('POST /auth/login', () => {
     chai.request(server).post('/api/v1/auth/login')
       .send(user)
       .end((err, res) => {
-        console.log(res.body);
         expect(res.status).to.equal(200);
         expect(res.body.data).to.be.an('array');
         done(err);
