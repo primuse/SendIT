@@ -9,12 +9,12 @@
 * @requires @babel/polyfill
 * @requires dotenv
 */
-import '@babel/polyfill';
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import parcelRoute from './routes/parcelRoute';
 import userRoute from './routes/userRoute';
+import '@babel/polyfill';
 
 dotenv.config();
 

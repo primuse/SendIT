@@ -26,7 +26,6 @@ const firstName = Joi.string().required();
 const lastName = Joi.string().required();
 const otherNames = Joi.string().required();
 const username = Joi.string().required();
-const isAdmin = Joi.string().valid(['true', 'false']).required();
 const password = Joi.string().alphanum().required();
 
 /**
@@ -54,7 +53,6 @@ const userSchema = {
   otherNames,
   username,
   email,
-  isAdmin,
   password,
 };
 

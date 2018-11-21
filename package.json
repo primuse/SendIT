@@ -4,10 +4,12 @@
   "description": "API for SendIT application",
   "main": "./src/index.js",
   "scripts": {
-    "start": "nodemon ./src/index.js --exec babel-node",
+    "start": "node ./build/index.js",
+    "dev": "nodemon ./src/index.js --exec babel-node",
     "build": "babel src --out-dir build",
     "test": "nyc --reporter=text mocha --require @babel/register ./src/tests/test.js --timeout 15000 --recursive --exit || true",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,7 @@
   "homepage": "https://github.com/primuse/SendIT#readme",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@sendgrid/mail": "^6.3.1",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",

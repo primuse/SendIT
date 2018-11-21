@@ -9,12 +9,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
 /**
 * Connection URI to PostgreSQL database hosted online
 */
-const pool = new Client({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URI,
 });
 
