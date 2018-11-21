@@ -98,6 +98,20 @@ const createAdmin = () => {
     });
 };
 
+const createParcel = () => {
+  const parcelQuery = `INSERT INTO 
+  parcelTable(parcelName, placedBy, price, weight, metric,
+  pickupLocation, destination, status, receiver, email, phoneNumber, currentLocation, sentOn)
+  VALUES('Rice', '1', '100', '13', 'kg', 'Lagos', 'Owerri', 'Created', 'Belvi Nosa', 'belvinosa@gmail.com', '08129814330', 'Aba', '12-10-2018')`;
+  pool.query(parcelQuery)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 pool.on('remove', () => {
   console.log('client removed');
   process.exit(0);
@@ -108,6 +122,7 @@ module.exports = {
   dropParcelTable,
   dropUserTable,
   createAdmin,
+  createParcel,
 };
 
 require('make-runnable');

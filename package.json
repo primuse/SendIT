@@ -9,7 +9,7 @@
     "build": "babel src --out-dir build",
     "test": "nyc --reporter=text mocha --require @babel/register ./src/tests/test.js --timeout 15000 --recursive --exit || true",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build && node db createTables && node db createParcel"
   },
   "repository": {
     "type": "git",
