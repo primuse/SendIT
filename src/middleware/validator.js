@@ -138,7 +138,6 @@ class ValidateMiddleware {
     if (token) {
       jwt.verify(token, process.env.secret, (err, decoded) => {
         if (err) {
-          console.log(err);
           return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         }
         req.decoded = decoded.id;

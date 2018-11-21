@@ -218,6 +218,7 @@ class dbModel {
         if (result.rows.length === 0) {
           const response = {
             message: 'No parcel found or already delivered',
+            tiku: 'tiku',
           };
           reject(response);
         }
