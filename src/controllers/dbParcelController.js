@@ -22,13 +22,15 @@ class Parcel {
   * @returns {obj}
   */
   static createParcels(req, res) {
-    model.createParcel(req).then((rows) => {
+    const {
+      parcelName, price, weight, pickupLocation, destination,
+      status, receiver, email, phoneNumber, currentLocation,
+    } = req.body;
+    const userId = req.decoded;
+    model.createParcel(parcelName, price, weight, pickupLocation, destination,
+      status, receiver, email, phoneNumber, currentLocation, userId).then((rows) => {
       res.status(201).send({
-        status: 201,
-        data: [{
-          id: rows.id,
-          message: 'Order Created',
-        }],
+        rows,
       });
     }).catch((error) => {
       res.status(400).send({
@@ -47,7 +49,6 @@ class Parcel {
   static getAllParcels(req, res) {
     model.getAllParcels().then((rows) => {
       res.send({
-        status: 200,
         data: rows,
       });
     }).catch((error) => {
@@ -65,9 +66,9 @@ class Parcel {
   */
   static getParcel(req, res) {
     const id = req.params.parcelId;
-    model.findParcel(id).then((parcel) => {
+    const userId = req.decoded;
+    model.findParcel(id, userId).then((parcel) => {
       res.send({
-        status: 200,
         data: parcel,
       });
     }).catch((error) => {
@@ -85,13 +86,13 @@ class Parcel {
   */
   static cancelParcel(req, res) {
     const id = req.params.parcelId;
-    model.cancelParcel(id).then(() => {
+    const userId = req.decoded;
+    model.cancelParcel(id, userId).then(() => {
       res.send({
-        status: 200,
-        data: [{
+        data: {
           id,
           message: 'Order Canceled',
-        }],
+        },
       });
     }).catch((error) => {
       res.status(400)
@@ -109,13 +110,13 @@ class Parcel {
   static updateParcel(req, res) {
     const id = req.params.parcelId;
     const value = req.body.destination;
-    model.changeDestination(id, value).then(() => {
+    const userId = req.decoded;
+    model.changeDestination(id, value, userId).then(() => {
       res.send({
-        status: 200,
-        data: [{
+        data: {
           id,
           message: 'Order updated',
-        }],
+        },
       });
     }).catch((error) => {
       res.status(400)
@@ -135,11 +136,33 @@ class Parcel {
     const value = req.body.currentLocation;
     model.changeLocation(id, value).then(() => {
       res.send({
-        status: 200,
-        data: [{
+        data: {
           id,
           message: 'Location updated',
-        }],
+        },
+      });
+    }).catch((error) => {
+      res.status(400)
+        .send(error);
+    });
+  }
+
+  /**
+  * Handler Method to change status of a parcel order
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  * @returns {obj}
+  */
+  static statusParcel(req, res) {
+    const id = req.params.parcelId;
+    const value = req.body.status;
+    model.changeStatus(id, value).then(() => {
+      res.send({
+        data: {
+          id,
+          message: 'Status updated',
+        },
       });
     }).catch((error) => {
       res.status(400)

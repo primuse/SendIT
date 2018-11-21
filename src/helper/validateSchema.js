@@ -15,7 +15,7 @@ const price = Joi.number().integer().required();
 const weight = Joi.number().integer().required();
 const pickupLocation = Joi.string().required();
 const destination = Joi.string().required();
-const status = Joi.string().valid(['Created', 'In-transit', 'Delivered']).required();
+const status = Joi.string().valid(['Created', 'In-transit', 'Delivered', 'Canceled']).required();
 const receiver = Joi.string().required();
 const email = Joi.string().email().lowercase().required();
 const phoneNumber = Joi.number().integer()
@@ -26,7 +26,6 @@ const firstName = Joi.string().required();
 const lastName = Joi.string().required();
 const otherNames = Joi.string().required();
 const username = Joi.string().required();
-const isAdmin = Joi.string().valid(['true', 'false']).required();
 const password = Joi.string().alphanum().required();
 
 /**
@@ -54,7 +53,6 @@ const userSchema = {
   otherNames,
   username,
   email,
-  isAdmin,
   password,
 };
 
@@ -71,7 +69,11 @@ const locationSchema = {
   currentLocation,
 };
 
+const statusSchema = {
+  status,
+};
+
 
 export {
-  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema,
+  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema, statusSchema,
 };

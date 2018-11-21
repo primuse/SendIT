@@ -7,9 +7,9 @@
 
 import bcrypt from 'bcrypt';
 import moment from 'moment';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import DB from './DB';
+import Helper from '../helper/authPassword';
 
 dotenv.config();
 
@@ -19,18 +19,14 @@ class userModel {
 * @method
 * @param {obj} req HTTP request
 */
-  static createUser(req) {
+  static createUser(firstName, lastName, otherNames, username, email, password) {
     return new Promise((resolve, reject) => {
       const querytext = `INSERT INTO
       userTable(firstName, lastName, otherNames, username, email, registered, isAdmin, password)
       VALUES($1, $2, $3, $4, $5, $6, $7, $8)
       returning *`;
 
-      const {
-        firstName, lastName, otherNames, username, email, password, isAdmin,
-      } = req.body;
       const hashedPassword = bcrypt.hashSync(password, 8);
-
       const values = [
         firstName,
         lastName,
@@ -38,21 +34,26 @@ class userModel {
         username,
         email,
         moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-        isAdmin,
+        'false',
         hashedPassword,
       ];
 
       DB.query(querytext, values).then((result) => {
-        resolve(result.rows);
+        const user = result.rows[0];
+        const { id, isadmin } = user;
+        Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
+          resolve([{ token, user }]);
+        }).catch((err) => {
+          reject(err);
+        });
       }).catch((error) => {
         reject(error);
       });
     });
   }
 
-  static loginUser(req) {
+  static loginUser(email, password) {
     return new Promise((resolve, reject) => {
-      const { email, password } = req.body;
       const findOneQuery = `SELECT * FROM userTable WHERE email = '${email}'`;
       DB.query(findOneQuery).then((result) => {
         if (result.rows.length === 0) {
@@ -61,20 +62,34 @@ class userModel {
           };
           reject(response);
         }
-        bcrypt.compare(password, result.rows[0].password).then((res) => {
-          if (res) {
-            const user = result.rows[0];
-            const { id, isadmin } = user;
-            const token = jwt.sign({ id, isadmin }, process.env.secret, { expiresIn: '3h' });
+        Helper.comparePassword(password, result.rows[0].password).then(() => {
+          const user = result.rows[0];
+          const { id, isadmin } = user;
+          Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
             resolve([{ token, user }]);
-          }
-          const response = {
-            message: 'Invalid Password',
-          };
-          reject(response);
+          }).catch((err) => {
+            reject(err);
+          });
         }).catch((error) => {
           reject(error);
         });
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  static updateUser(id, value) {
+    return new Promise((resolve, reject) => {
+      const updateQuery = `UPDATE userTable SET isadmin = '${value}' WHERE id = '${id}' returning *`;
+      DB.query(updateQuery).then((result) => {
+        if (result.rows.length === 0) {
+          const response = {
+            message: 'No user found',
+          };
+          reject(response);
+        }
+        resolve(result.rows);
       }).catch((error) => {
         reject(error);
       });
