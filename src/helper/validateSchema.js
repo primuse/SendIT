@@ -67,6 +67,11 @@ const updateSchema = {
   destination,
 };
 
+const locationSchema = {
+  currentLocation,
+};
+
+
 export {
-  parcelSchema, userSchema, loginSchema, updateSchema,
+  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema,
 };

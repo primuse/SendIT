@@ -64,12 +64,8 @@ class userModel {
         bcrypt.compare(password, result.rows[0].password).then((res) => {
           if (res) {
             const user = result.rows[0];
-            const payload = {
-              user: result.rows[0].firstName,
-              id: user.id,
-              role: result.rows[0].isAdmin,
-            };
-            const token = jwt.sign(payload, process.env.secret, { expiresIn: '1h' });
+            const { id, isadmin } = user;
+            const token = jwt.sign({ id, isadmin }, process.env.secret, { expiresIn: '3h' });
             resolve([{ token, user }]);
           }
           const response = {

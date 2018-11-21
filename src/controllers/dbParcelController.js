@@ -100,7 +100,7 @@ class Parcel {
   }
 
   /**
-  * Handler Method to cancel a parcel order
+  * Handler Method to update a parcel order destination
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
@@ -115,6 +115,30 @@ class Parcel {
         data: [{
           id,
           message: 'Order updated',
+        }],
+      });
+    }).catch((error) => {
+      res.status(400)
+        .send(error);
+    });
+  }
+
+  /**
+  * Handler Method to change currentLocation of a parcel order
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  * @returns {obj}
+  */
+  static locationParcel(req, res) {
+    const id = req.params.parcelId;
+    const value = req.body.currentLocation;
+    model.changeLocation(id, value).then(() => {
+      res.send({
+        status: 200,
+        data: [{
+          id,
+          message: 'Location updated',
         }],
       });
     }).catch((error) => {

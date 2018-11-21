@@ -8,6 +8,8 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 let myToken = null;
+let userToken = null;
+
 before((done) => {
   const userCredentials = {
     email: 'belivokoye@gmail.com',
@@ -304,6 +306,76 @@ describe('PATCH /parcels/:parcelId/destination', () => {
   it('should return an error if no destination passed', (done) => {
     chai.request(server).patch('/api/v1/parcels/1/destination')
       .set('x-access-token', myToken)
+      .send(noValue)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done(err);
+      });
+  });
+});
+
+// Test for changing location of a parcel
+describe('PATCH /parcels/:parcelId/currentLocation', () => {
+  const value = { currentLocation: 'Uyo' };
+  const errorValue = { currentLocation: 123 };
+  const noValue = {};
+  before((done) => {
+    const userCredentials = {
+      email: 'tikuokoye@yahoo.com',
+      password: 'cim',
+    };
+    chai.request(server).post('/api/v1/auth/login')
+      .send(userCredentials)
+      .end((err, res) => {
+        if (err) throw err;
+        userToken = res.body.data[0].token;
+        done(err);
+      });
+  });
+  it('should change parcel currentLocation to provided value', (done) => {
+    chai.request(server).patch('/api/v1/parcels/1/currentLocation')
+      .set('x-access-token', userToken)
+      .send(value)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.data[0].message).to.equal('Location updated');
+        done(err);
+      });
+  });
+  it('should return an error if parcel status = delivered or parcel not found', (done) => {
+    chai.request(server).patch('/api/v1/parcels/100/currentLocation')
+      .set('x-access-token', userToken)
+      .send(value)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('No parcel found or already delivered');
+        done(err);
+      });
+  });
+  it('should return an error if no token provided', (done) => {
+    chai.request(server).patch('/api/v1/parcels/1/currentLocation')
+      .send(value)
+      .end((err, res) => {
+        expect(res.status).to.equal(403);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.equal('No token provided.');
+        done(err);
+      });
+  });
+  it('should return an error if invalid location passed', (done) => {
+    chai.request(server).patch('/api/v1/parcels/1/currentLocation')
+      .set('x-access-token', userToken)
+      .send(errorValue)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done(err);
+      });
+  });
+  it('should return an error if no location passed', (done) => {
+    chai.request(server).patch('/api/v1/parcels/1/currentLocation')
+      .set('x-access-token', userToken)
       .send(noValue)
       .end((err, res) => {
         expect(res.status).to.equal(400);

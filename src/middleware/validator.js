@@ -13,7 +13,7 @@ import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import {
-  parcelSchema, userSchema, loginSchema, updateSchema,
+  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema,
 } from '../helper/validateSchema';
 
 dotenv.config();
@@ -92,6 +92,23 @@ class ValidateMiddleware {
   }
 
   /**
+  * Method to validate location input
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  */
+  static validateLocation(req, res, next) {
+    Joi.validate(req.body, locationSchema)
+      .then(() => next())
+      .catch((err) => {
+        res.status(400).send({
+          message: err.details[0].message,
+        });
+      });
+  }
+
+  /**
   * Method to validate token
   * @method
   * @param {obj} req HTTP request
@@ -107,10 +124,26 @@ class ValidateMiddleware {
           return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         }
         req.decoded = decoded.id;
+        req.role = decoded.isadmin;
         next();
       });
     } else {
       return res.status(403).send({ auth: false, message: 'No token provided.' });
+    }
+  }
+
+  /**
+  * Method to validate user role
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  */
+  static validateUserRole(req, res, next) {
+    if (req.role === true) {
+      next();
+    } else {
+      return res.status(403).send({ auth: false, message: 'Unauthorized access' });
     }
   }
 }

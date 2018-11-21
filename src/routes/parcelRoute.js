@@ -45,11 +45,19 @@ router.get('/parcels/:parcelId', ValidateMiddleware.validateToken, ParcelControl
 router.patch('/parcels/:parcelId/cancel', ValidateMiddleware.validateToken, ParcelController.cancelParcel);
 
 /**
-* Route to cancel a parcel order
+* Route to change a parcel destination
 * @param  {string} route The cancel url route
-* @param  {function} ParcelController.cancelParcel The handler function
+* @param  {function} ParcelController.updateParcel The handler function
 * @returns {(obj|obj} success message or error message
 */
 router.patch('/parcels/:parcelId/destination', ValidateMiddleware.validateToken, ValidateMiddleware.validateDestination, ParcelController.updateParcel);
+
+/**
+* Route to cancel a parcel order
+* @param  {string} route The cancel url route
+* @param  {function} ParcelController.locationParcel The handler function
+* @returns {(obj|obj} success message or error message
+*/
+router.patch('/parcels/:parcelId/currentlocation', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateLocation, ParcelController.locationParcel);
 
 export default router;
