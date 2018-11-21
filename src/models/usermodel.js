@@ -27,7 +27,7 @@ class userModel {
       returning *`;
 
       const {
-        firstName, lastName, otherNames, username, email, password,
+        firstName, lastName, otherNames, username, email, password, isAdmin,
       } = req.body;
       const hashedPassword = bcrypt.hashSync(password, 8);
 
@@ -38,7 +38,7 @@ class userModel {
         username,
         email,
         moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-        'False',
+        isAdmin,
         hashedPassword,
       ];
 

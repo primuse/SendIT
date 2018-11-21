@@ -9,11 +9,4 @@ install:
 script: 
   - npm run test
 
-services:
-  - postgresql
-
-before_script:
-  - psql -U postgres -c 'CREATE DATABASE sendittest;'
-  - psql -U postgres -f ./db/createtables.sql -d sendittest
-
 after_success: npm run coverage

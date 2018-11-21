@@ -8,22 +8,22 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 let myToken = null;
-// before((done) => {
-//   const userCredentials = {
-//     email: 'tikuokoye@gmail.com',
-//     password: 'tiku',
-//   };
-//   chai.request(server).post('/api/v1/auth/login')
-//     .send(userCredentials)
-//     .end((err, res) => {
-//       if (err) throw err;
-//       console.log(res.body.data);
-//       myToken = res.body.data[0].token;
-//       expect(res.status).to.equal(200);
-//       expect(res.body.data).to.be.an('array');
-//       done(err);
-//     });
-// });
+before((done) => {
+  const userCredentials = {
+    email: 'belivokoye@gmail.com',
+    password: 'john',
+  };
+  chai.request(server).post('/api/v1/auth/login')
+    .send(userCredentials)
+    .end((err, res) => {
+      if (err) throw err;
+      console.log(res.body.data);
+      myToken = res.body.data[0].token;
+      expect(res.status).to.equal(200);
+      expect(res.body.data).to.be.an('array');
+      done(err);
+    });
+});
 
 // Test index API route
 describe('GET /', () => {
@@ -110,8 +110,8 @@ describe('POST /users', () => {
 describe('POST /auth/login', () => {
   it('should login users to the app', (done) => {
     const user = {
-      email: 'okoyetiku@yahoo.com',
-      password: 'tiku',
+      email: 'belivokoye@gmail.com',
+      password: 'john',
     };
     chai.request(server).post('/api/v1/auth/login')
       .send(user)
@@ -123,7 +123,7 @@ describe('POST /auth/login', () => {
   });
   it('should display error if invalid password passed', (done) => {
     const user = {
-      email: 'okoyetiku@yahoo.com',
+      email: 'belivokoye@gmail.com',
       password: 'okoye',
     };
     chai.request(server).post('/api/v1/auth/login')
