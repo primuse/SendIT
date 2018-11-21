@@ -21,7 +21,7 @@ const router = express.Router();
 router.post('/users', ValidateMiddleware.validateUser, UserController.createUsers);
 
 /**
-* Route to create new Parcel Orders
+* Route to login Users
 * @param  {string} route The Post url route
 * @param  {function} UserController.createUsers The handler method
 * @returns {(obj|obj} success message or error message

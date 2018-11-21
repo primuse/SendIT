@@ -171,7 +171,7 @@ class dbModel {
   }
 
   /**
-  * Method to change parcel location in DB
+  * Method to change parcel status in DB
   * @method
   * @param {obj} req HTTP request
   */

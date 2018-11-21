@@ -148,7 +148,7 @@ class Parcel {
   }
 
   /**
-  * Handler Method to change currentLocation of a parcel order
+  * Handler Method to change status of a parcel order
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response

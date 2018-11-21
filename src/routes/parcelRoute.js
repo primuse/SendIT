@@ -53,7 +53,7 @@ router.patch('/parcels/:parcelId/cancel', ValidateMiddleware.validateToken, Parc
 router.patch('/parcels/:parcelId/destination', ValidateMiddleware.validateToken, ValidateMiddleware.validateDestination, ParcelController.updateParcel);
 
 /**
-* Route to cancel a parcel order
+* Route to change currentLocation of a parcel order
 * @param  {string} route The cancel url route
 * @param  {function} ParcelController.locationParcel The handler function
 * @returns {(obj|obj} success message or error message
@@ -61,7 +61,7 @@ router.patch('/parcels/:parcelId/destination', ValidateMiddleware.validateToken,
 router.patch('/parcels/:parcelId/currentlocation', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateLocation, ParcelController.locationParcel);
 
 /**
-* Route to cancel a parcel order
+* Route to change status of a parcel order
 * @param  {string} route The cancel url route
 * @param  {function} ParcelController.locationParcel The handler function
 * @returns {(obj|obj} success message or error message
