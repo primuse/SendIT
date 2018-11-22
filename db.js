@@ -1,8 +1,7 @@
-import logger from './helper/logger';
-
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
+const logger = require('./helper/logger');
 
 dotenv.config();
 
