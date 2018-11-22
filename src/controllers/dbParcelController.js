@@ -106,12 +106,10 @@ class Parcel {
     const id = req.params.parcelId;
     const value = req.body.destination;
     const userId = req.decoded;
-    model.changeDestination(id, value, userId).then(() => {
+    model.changeDestination(id, value, userId).then((data) => {
       res.send({
-        data: {
-          id,
-          message: 'Order updated',
-        },
+        message: 'Order updated',
+        data
       });
     }).catch((error) => {
       res.status(400)
@@ -128,12 +126,10 @@ class Parcel {
   static locationParcel(req, res) {
     const id = req.params.parcelId;
     const value = req.body.currentLocation;
-    model.changeLocation(id, value).then(() => {
+    model.changeLocation(id, value).then((data) => {
       res.send({
-        data: {
-          id,
-          message: 'Location updated',
-        },
+        message: 'Location updated',
+        data
       });
     }).catch((error) => {
       res.status(400)
@@ -150,12 +146,10 @@ class Parcel {
   static statusParcel(req, res) {
     const id = req.params.parcelId;
     const value = req.body.status;
-    model.changeStatus(id, value).then(() => {
+    model.changeStatus(id, value).then((data) => {
       res.send({
-        data: {
-          id,
-          message: 'Status updated',
-        },
+        message: `Status has been updated to ${value}`,
+        data
       });
     }).catch((error) => {
       res.status(400)

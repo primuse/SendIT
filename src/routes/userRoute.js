@@ -26,7 +26,7 @@ router.post('/auth/signup', ValidateMiddleware.validateUser, UserController.crea
 * @param  {function} UserController.createUsers The handler method
 * @returns {(obj|obj} success message or error message
 */
-router.patch('/users/:userId/update', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, UserController.updateUser);
+router.patch('/users/:userId/update', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserParam, ValidateMiddleware.validateUserRole, UserController.updateUser);
 
 /**
 * Route to get all Parcel Orders
@@ -42,7 +42,7 @@ router.get('/users', ValidateMiddleware.validateToken, ValidateMiddleware.valida
 * @param  {function} ParcelController.getParcel The handler function
 * @returns {(obj|obj} parcel or error message
 */
-router.get('/users/:userId', ValidateMiddleware.validateToken, UserController.getUser);
+router.get('/users/:userId', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateUserParam, UserController.getUser);
 
 /**
 * Route to get all parcels by user
@@ -50,7 +50,7 @@ router.get('/users/:userId', ValidateMiddleware.validateToken, UserController.ge
 * @param  {function} UserController.userParcels The handler method
 * @returns {(obj|obj} success message or error message
 */
-router.get('/users/:userId/parcels', ValidateMiddleware.validateUsers, UserController.userParcels);
+router.get('/users/:userId/parcels', ValidateMiddleware.validateUsers, ValidateMiddleware.validateUserParam, UserController.userParcels);
 
 /**
 * Route to login Users

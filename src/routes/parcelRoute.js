@@ -34,7 +34,7 @@ router.get('/parcels', ValidateMiddleware.validateToken, ValidateMiddleware.vali
 * @param  {function} ParcelController.getParcel The handler function
 * @returns {(obj|obj} parcel or error message
 */
-router.get('/parcels/:parcelId', ValidateMiddleware.validateToken, ParcelController.getParcel);
+router.get('/parcels/:parcelId', ValidateMiddleware.validateToken, ValidateMiddleware.validateParcelParam, ParcelController.getParcel);
 
 /**
 * Route to cancel a parcel order
@@ -42,7 +42,7 @@ router.get('/parcels/:parcelId', ValidateMiddleware.validateToken, ParcelControl
 * @param  {function} ParcelController.cancelParcel The handler function
 * @returns {(obj|obj} success message or error message
 */
-router.patch('/parcels/:parcelId/cancel', ValidateMiddleware.validateToken, ParcelController.cancelParcel);
+router.patch('/parcels/:parcelId/cancel', ValidateMiddleware.validateToken, ValidateMiddleware.validateParcelParam, ParcelController.cancelParcel);
 
 /**
 * Route to change a parcel destination
@@ -50,7 +50,7 @@ router.patch('/parcels/:parcelId/cancel', ValidateMiddleware.validateToken, Parc
 * @param  {function} ParcelController.updateParcel The handler function
 * @returns {(obj|obj} success message or error message
 */
-router.patch('/parcels/:parcelId/destination', ValidateMiddleware.validateToken, ValidateMiddleware.validateDestination, ParcelController.updateParcel);
+router.patch('/parcels/:parcelId/destination', ValidateMiddleware.validateToken, ValidateMiddleware.validateParcelParam, ValidateMiddleware.validateDestination, ParcelController.updateParcel);
 
 /**
 * Route to change currentLocation of a parcel order
@@ -58,7 +58,7 @@ router.patch('/parcels/:parcelId/destination', ValidateMiddleware.validateToken,
 * @param  {function} ParcelController.locationParcel The handler function
 * @returns {(obj|obj} success message or error message
 */
-router.patch('/parcels/:parcelId/currentlocation', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateLocation, ParcelController.locationParcel);
+router.patch('/parcels/:parcelId/currentlocation', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateParcelParam, ValidateMiddleware.validateLocation, ParcelController.locationParcel);
 
 /**
 * Route to change status of a parcel order
@@ -66,6 +66,6 @@ router.patch('/parcels/:parcelId/currentlocation', ValidateMiddleware.validateTo
 * @param  {function} ParcelController.locationParcel The handler function
 * @returns {(obj|obj} success message or error message
 */
-router.patch('/parcels/:parcelId/status', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateStatus, ParcelController.statusParcel);
+router.patch('/parcels/:parcelId/status', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateParcelParam, ValidateMiddleware.validateStatus, ParcelController.statusParcel);
 
 export default router;

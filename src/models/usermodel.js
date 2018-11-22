@@ -19,7 +19,7 @@ dotenv.config();
 */
 class userModel {
   /**
-  * Method to create new parcel by inserting into DB
+  * Method to create new user by inserting into DB
   * @method
   * @param {string} firstName
   * @param {string} lastName
@@ -50,9 +50,10 @@ class userModel {
 
       DB.query(querytext, values).then((result) => {
         const user = result.rows[0];
+        delete user.password;
         const { id, isadmin } = user;
         Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
-          resolve([{ token, user }]);
+          resolve({ token, user });
         }).catch((err) => {
           reject(err);
         });
@@ -62,14 +63,15 @@ class userModel {
             error: 'Email or Username already in use',
           };
           reject(response);
+        } else {
+          reject(error);
         }
-        reject(error);
       });
     });
   }
 
   /**
-  * Method to get all parcels from DB
+  * Method to get all users from DB
   * @method
   * @param {obj} req HTTP request
   * @returns {function}
@@ -85,7 +87,9 @@ class userModel {
           };
           reject(response);
         }
-        resolve(result.rows);
+        const users = result.rows;
+        users.map(user => delete user.password);
+        resolve(users);
       }).catch((error) => {
         reject(error);
       });
@@ -93,7 +97,7 @@ class userModel {
   }
 
   /**
-  * Method to get a users from DB
+  * Method to get a user from DB
   * @method
   * @param {integer} id
   * @returns {function}
@@ -108,7 +112,9 @@ class userModel {
           };
           reject(response);
         }
-        resolve(result.rows);
+        const user = result.rows[0];
+        delete user.password;
+        resolve(user);
       }).catch((error) => {
         reject(error);
       });
@@ -116,7 +122,7 @@ class userModel {
   }
 
   /**
-  * Method to get a users from DB
+  * Method to login a user from DB
   * @method
   * @param {string} email
   * @param {string} password
@@ -135,6 +141,7 @@ class userModel {
         Helper.comparePassword(password, result.rows[0].password).then(() => {
           const user = result.rows[0];
           const { id, isadmin } = user;
+          delete user.password;
           Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
             resolve([{ token, user }]);
           }).catch((err) => {
@@ -150,7 +157,7 @@ class userModel {
   }
 
   /**
-  * Method to get a users from DB
+  * Method to update a user to admin from DB
   * @method
   * @param {integer} id
   * @param {string} value
@@ -166,6 +173,8 @@ class userModel {
           };
           reject(response);
         }
+        const user = result.rows[0];
+        delete user.password;
         resolve(result.rows);
       }).catch((error) => {
         reject(error);
@@ -174,7 +183,7 @@ class userModel {
   }
 
   /**
-  * Method to get a users from DB
+  * Method to get a users parcel from DB
   * @method
   * @param {integer} userId
   * @returns {function}
