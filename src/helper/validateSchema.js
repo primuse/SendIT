@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /**
 * @fileOverview Model with queries for database manipulation.
 *
@@ -11,52 +10,70 @@ import Joi from 'joi';
 /**
 * Joi validation constraints
 */
-const parcel_name = Joi.string().required();
-const placed_by = Joi.number().integer().required();
+const parcelName = Joi.string().required();
 const price = Joi.number().integer().required();
 const weight = Joi.number().integer().required();
-const pickup_location = Joi.string().required();
+const pickupLocation = Joi.string().required();
 const destination = Joi.string().required();
-const status = Joi.string().valid(['Created', 'In-transit', 'Delivered']).required();
+const status = Joi.string().valid(['Created', 'In-transit', 'Delivered', 'Canceled']).required();
 const receiver = Joi.string().required();
-const email = Joi.string().email().lowercase().required();
-const phone_number = Joi.number().integer()
+const email = Joi.string().email({ minDomainAtoms: 2 }).lowercase().required();
+const phoneNumber = Joi.number().integer()
   .required();
-const current_location = Joi.string().required();
+const currentLocation = Joi.string().required();
 
-const first_name = Joi.string().required();
-const last_name = Joi.string().required();
-const other_names = Joi.string().required();
-const username = Joi.string().required();
-const password = Joi.string().alphanum().required();
+const firstName = Joi.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid firstname'));
+const lastName = Joi.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid lastname'));
+const otherNames = Joi.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid name'));
+const username = Joi.string().alphanum().required().error(new Error('Enter a valid username'));
+const password = Joi.string().alphanum().required().error(new Error('Enter a valid password'));
 
 /**
 * Creates a new Joi schema.
 */
 const parcelSchema = {
-  parcel_name,
-  placed_by,
+  parcelName,
   price,
   weight,
-  pickup_location,
+  pickupLocation,
   destination,
   status,
   receiver,
   email,
-  phone_number,
-  current_location,
+  phoneNumber,
+  currentLocation,
 };
 
 /**
 * Creates a new Joi schema.
 */
 const userSchema = {
-  first_name,
-  last_name,
-  other_names,
+  firstName,
+  lastName,
+  otherNames,
   username,
   email,
   password,
 };
 
-export { parcelSchema, userSchema };
+const loginSchema = {
+  email,
+  password,
+};
+
+const updateSchema = {
+  destination,
+};
+
+const locationSchema = {
+  currentLocation,
+};
+
+const statusSchema = {
+  status,
+};
+
+
+export {
+  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema, statusSchema,
+};

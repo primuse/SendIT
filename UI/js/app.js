@@ -46,12 +46,6 @@ function toggleModal(modalElement) {
   modalElement.hide = function() {
     this.style.display = "none";
   }
-  const buttons = modalElement.querySelectorAll('button[type=submit]');
-  for (let button of buttons) {
-    button.addEventListener("click", () => {
-      modalElement.hide();
-    });
-  }
   window.onclick = function(event) {
     if (event.target == modalElement) {
       modalElement.hide();
@@ -93,3 +87,4 @@ function initMap() {
 
     flightPath.setMap(map);
 };
+
