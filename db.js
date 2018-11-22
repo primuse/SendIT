@@ -1,7 +1,6 @@
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
-const logger = require('./src/helper/logger');
 
 dotenv.config();
 
@@ -53,10 +52,10 @@ const createTables = () => {
   queries.forEach((queryText) => {
     pool.query(queryText)
       .then((res) => {
-        logger.info(res);
+        console.log(res);
       })
       .catch((err) => {
-        logger.info(err);
+        console.log(err);
       });
   });
 };
@@ -68,10 +67,10 @@ const dropParcelTable = () => {
   const queryText = 'DROP TABLE IF EXISTS parcelTable';
   pool.query(queryText)
     .then((res) => {
-      logger.info(res);
+      console.log(res);
     })
     .catch((err) => {
-      logger.info(err);
+      console.log(err);
     });
 };
 
@@ -79,10 +78,10 @@ const dropUserTable = () => {
   const queryText = 'DROP TABLE IF EXISTS userTable';
   pool.query(queryText)
     .then((res) => {
-      logger.info(res);
+      console.log(res);
     })
     .catch((err) => {
-      logger.info(err);
+      console.log(err);
     });
 };
 
@@ -91,10 +90,10 @@ const createAdmin = () => {
   VALUES('tiku', 'okoye', 'divine', 'cim', 'tikuokoye@yahoo.com', '12-10-18', 'true', '${hashedPassword}')`;
   pool.query(queryText)
     .then((res) => {
-      logger.info(res);
+      console.log(res);
     })
     .catch((err) => {
-      logger.info(err);
+      console.log(err);
     });
 };
 
@@ -105,16 +104,16 @@ const createParcel = () => {
   VALUES('Rice', '1', '100', '13', 'kg', 'Lagos', 'Owerri', 'Created', 'Belvi Nosa', 'belvinosa@gmail.com', '08129814330', 'Aba', '12-10-2018')`;
   pool.query(parcelQuery)
     .then((res) => {
-      logger.info(res);
+      console.log(res);
     })
     .catch((err) => {
-      logger.info(err);
+      console.log(err);
     });
 };
 
 
 pool.on('remove', () => {
-  logger.info('client removed');
+  console.log('client removed');
   process.exit(0);
 });
 
