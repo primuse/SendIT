@@ -10,23 +10,29 @@ import Joi from 'joi';
 /**
 * Joi validation constraints
 */
-const parcelName = Joi.string().required();
+const parcelName = Joi.string().trim().required();
 const price = Joi.number().integer().required();
 const weight = Joi.number().integer().required();
-const pickupLocation = Joi.string().required();
-const destination = Joi.string().required();
-const status = Joi.string().valid(['Created', 'In-transit', 'Delivered', 'Canceled']).required();
-const receiver = Joi.string().required();
-const email = Joi.string().email({ minDomainAtoms: 2 }).lowercase().required();
+const pickupLocation = Joi.string().trim().required();
+const destination = Joi.string().trim().required();
+const status = Joi.string().trim().valid(['Created', 'In-transit', 'Delivered', 'Canceled']).required();
+const receiver = Joi.string().trim().required();
+const email = Joi.string().trim().email({ minDomainAtoms: 2 }).lowercase()
+  .required();
 const phoneNumber = Joi.number().integer()
   .required();
-const currentLocation = Joi.string().required();
+const currentLocation = Joi.string().trim().required();
 
-const firstName = Joi.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid firstname'));
-const lastName = Joi.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid lastname'));
-const otherNames = Joi.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid name'));
-const username = Joi.string().alphanum().required().error(new Error('Enter a valid username'));
-const password = Joi.string().alphanum().required().error(new Error('Enter a valid password'));
+const firstName = Joi.string().trim().regex(/^[a-zA-Z]*$/).required()
+  .error(new Error('Enter a valid firstname'));
+const lastName = Joi.string().trim().regex(/^[a-zA-Z]*$/).required()
+  .error(new Error('Enter a valid lastname'));
+const otherNames = Joi.string().trim().regex(/^[a-zA-Z]*$/).required()
+  .error(new Error('Enter a valid name'));
+const username = Joi.string().trim().alphanum().required()
+  .error(new Error('Enter a valid username'));
+const password = Joi.string().alphanum().trim().required()
+  .error(new Error('Enter a valid password'));
 
 /**
 * Creates a new Joi schema.
