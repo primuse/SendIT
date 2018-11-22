@@ -12,9 +12,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import logger from './helper/logger';
 import parcelRoute from './routes/parcelRoute';
 import userRoute from './routes/userRoute';
 import '@babel/polyfill';
+
 
 dotenv.config();
 
@@ -44,7 +46,7 @@ app.get('/', (req, res) => {
 });
 
 const server = app.listen(port, () => {
-  console.log(`Server started on PORT ${port}`);
+  logger.info(`Server started on PORT ${port}`);
 });
 
 export default server;

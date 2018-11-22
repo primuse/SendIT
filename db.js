@@ -1,3 +1,5 @@
+import logger from './helper/logger';
+
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
@@ -11,7 +13,6 @@ const pool = new Pool({
 });
 
 pool.on('connect', () => {
-  console.log('connected to the db');
 });
 
 /**
@@ -53,10 +54,10 @@ const createTables = () => {
   queries.forEach((queryText) => {
     pool.query(queryText)
       .then((res) => {
-        console.log(res);
+        logger.info(res);
       })
       .catch((err) => {
-        console.log(err);
+        logger.info(err);
       });
   });
 };
@@ -68,10 +69,10 @@ const dropParcelTable = () => {
   const queryText = 'DROP TABLE IF EXISTS parcelTable';
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
+      logger.info(res);
     })
     .catch((err) => {
-      console.log(err);
+      logger.info(err);
     });
 };
 
@@ -79,10 +80,10 @@ const dropUserTable = () => {
   const queryText = 'DROP TABLE IF EXISTS userTable';
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
+      logger.info(res);
     })
     .catch((err) => {
-      console.log(err);
+      logger.info(err);
     });
 };
 
@@ -91,10 +92,10 @@ const createAdmin = () => {
   VALUES('tiku', 'okoye', 'divine', 'cim', 'tikuokoye@yahoo.com', '12-10-18', 'true', '${hashedPassword}')`;
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
+      logger.info(res);
     })
     .catch((err) => {
-      console.log(err);
+      logger.info(err);
     });
 };
 
@@ -105,16 +106,16 @@ const createParcel = () => {
   VALUES('Rice', '1', '100', '13', 'kg', 'Lagos', 'Owerri', 'Created', 'Belvi Nosa', 'belvinosa@gmail.com', '08129814330', 'Aba', '12-10-2018')`;
   pool.query(parcelQuery)
     .then((res) => {
-      console.log(res);
+      logger.info(res);
     })
     .catch((err) => {
-      console.log(err);
+      logger.info(err);
     });
 };
 
 
 pool.on('remove', () => {
-  console.log('client removed');
+  logger.info('client removed');
   process.exit(0);
 });
 

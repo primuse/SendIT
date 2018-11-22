@@ -35,7 +35,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          message: err.details[0].message.replace(/[\"]/gi, ''),
+          message: err.details[0].message.replace(/['"']/gi, ''),
         });
       });
   }
@@ -69,7 +69,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          message: err.details[0].message.replace(/[\"]/gi, ''),
+          message: err.details[0].message.replace(/['"']/gi, ''),
         });
       });
   }
@@ -86,7 +86,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          message: err.details[0].message.replace(/[\"]/gi, ''),
+          message: err.details[0].message.replace(/['"']/gi, ''),
         });
       });
   }
@@ -103,7 +103,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          message: err.details[0].message.replace(/[\"]/gi, ''),
+          message: err.details[0].message.replace(/['"']/gi, ''),
         });
       });
   }
@@ -120,7 +120,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          message: err.details[0].message.replace(/[\"]/gi, ''),
+          message: err.details[0].message.replace(/['"']/gi, ''),
         });
       });
   }
