@@ -44,6 +44,12 @@ app.get('/', (req, res) => {
   });
 });
 
+app.use('*/', (req, res) => {
+  res.status(404).send({
+    message: 'Page not found',
+  });
+});
+
 const server = app.listen(port, () => {
   console.log(`Server started on PORT ${port}`);
 });

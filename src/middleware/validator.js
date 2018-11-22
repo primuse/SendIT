@@ -163,18 +163,18 @@ class ValidateMiddleware {
     if (token) {
       jwt.verify(token, process.env.secret, (err, decoded) => {
         if (err) {
-          return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+          return res.status(500).send({ message: 'Failed to authenticate token.' });
         }
         req.decoded = decoded.id;
         req.role = decoded.isadmin;
         if (+userId === +req.decoded) {
           next();
         } else {
-          return res.status(403).send({ auth: false, message: 'Unauthorized access' });
+          return res.status(403).send({ message: 'Unauthorized access' });
         }
       });
     } else {
-      return res.status(403).send({ auth: false, message: 'No token provided.' });
+      return res.status(403).send({ message: 'No token provided.' });
     }
   }
 
@@ -190,7 +190,7 @@ class ValidateMiddleware {
     if (req.role === true) {
       next();
     } else {
-      return res.status(403).send({ auth: false, message: 'Unauthorized access' });
+      return res.status(403).send({ message: 'Unauthorized access' });
     }
   }
 }
