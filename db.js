@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
-const logger = require('./helper/logger');
+const logger = require('./src/helper/logger');
 
 dotenv.config();
 
