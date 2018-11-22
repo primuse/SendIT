@@ -6,6 +6,7 @@
 */
 import moment from 'moment';
 import DB from './DB';
+import Notification from '../helper/email';
 
 /**
 * Creates a new dbModel Class.
@@ -240,7 +241,13 @@ class dbModel {
           };
           reject(response);
         }
-        resolve(result.rows);
+        const { placedby } = result.rows[0];
+        const emailBody = `Your Parcel status has been changed to ${value}`;
+        Notification.sendMail(emailBody, placedby).then(() => {
+          resolve(result.rows);
+        }).catch((err) => {
+          reject(err);
+        });
       }).catch((error) => {
         reject(error);
       });
