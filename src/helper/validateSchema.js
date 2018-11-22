@@ -17,16 +17,16 @@ const pickupLocation = Joi.string().required();
 const destination = Joi.string().required();
 const status = Joi.string().valid(['Created', 'In-transit', 'Delivered', 'Canceled']).required();
 const receiver = Joi.string().required();
-const email = Joi.string().email().lowercase().required();
+const email = Joi.string().email({ minDomainAtoms: 2 }).lowercase().required();
 const phoneNumber = Joi.number().integer()
   .required();
 const currentLocation = Joi.string().required();
 
-const firstName = Joi.string().required();
-const lastName = Joi.string().required();
-const otherNames = Joi.string().required();
-const username = Joi.string().required();
-const password = Joi.string().alphanum().required();
+const firstName = Joi.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid firstname'));
+const lastName = Joi.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid lastname'));
+const otherNames = Joi.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid name'));
+const username = Joi.string().alphanum().required().error(new Error('Enter a valid username'));
+const password = Joi.string().alphanum().required().error(new Error('Enter a valid password'));
 
 /**
 * Creates a new Joi schema.

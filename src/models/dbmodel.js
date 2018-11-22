@@ -102,20 +102,17 @@ class dbModel {
   */
   static cancelParcel(id, userId) {
     return new Promise((resolve, reject) => {
-      const exception = 'Delivered';
       const status = 'Canceled';
-      let RealUser = null;
-      const findQuery = `SELECT * FROM parcelTable WHERE id = '${id}'`;
-      const cancelQuery = `UPDATE parcelTable SET status = '${status}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
-      DB.query(findQuery).then((result) => {
-        if (result.rows.length === 0) {
+      const cancelQuery = `UPDATE parcelTable SET status = '${status}' WHERE id = '${id}' returning *`;
+
+      this.findParcel(id, userId).then((parcel) => {
+        const { parcelStatus } = parcel[0];
+        if (parcelStatus === 'Canceled' || parcelStatus === 'Delivered') {
           const response = {
-            message: 'No parcel found or already delivered',
+            message: 'Parcel already delivered or canceled',
           };
           reject(response);
-        }
-        RealUser = result.rows[0].placedby;
-        if (RealUser === userId) {
+        } else {
           DB.query(cancelQuery).then((results) => {
             if (results.rows.length === 0) {
               const response = {
@@ -127,14 +124,9 @@ class dbModel {
           }).catch((error) => {
             reject(error);
           });
-        } else {
-          const response = {
-            message: 'Unauthorized access',
-          };
-          reject(response);
         }
-      }).catch((error) => {
-        reject(error);
+      }).catch((err) => {
+        reject(err);
       });
     });
   }
@@ -146,19 +138,16 @@ class dbModel {
   */
   static changeDestination(id, value, userId) {
     return new Promise((resolve, reject) => {
-      const exception = 'Delivered';
-      let RealUser = null;
-      const findQuery = `SELECT * FROM parcelTable WHERE id = '${id}'`;
-      const updateQuery = `UPDATE parcelTable SET destination = '${value}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
-      DB.query(findQuery).then((result) => {
-        if (result.rows.length === 0) {
+      const updateQuery = `UPDATE parcelTable SET destination = '${value}' WHERE id = '${id}' returning *`;
+
+      this.findParcel(id, userId).then((parcel) => {
+        const { status } = parcel[0];
+        if (status === 'Canceled' || status === 'Delivered') {
           const response = {
-            message: 'No parcel found or already delivered',
+            message: 'Parcel already delivered or canceled',
           };
           reject(response);
-        }
-        RealUser = result.rows[0].placedby;
-        if (RealUser === userId) {
+        } else {
           DB.query(updateQuery).then((results) => {
             if (results.rows.length === 0) {
               const response = {
@@ -170,14 +159,9 @@ class dbModel {
           }).catch((error) => {
             reject(error);
           });
-        } else {
-          const response = {
-            message: 'Unauthorized access',
-          };
-          reject(response);
         }
-      }).catch((error) => {
-        reject(error);
+      }).catch((err) => {
+        reject(err);
       });
     });
   }
@@ -191,8 +175,13 @@ class dbModel {
     return new Promise((resolve, reject) => {
       const exception = 'Delivered';
       const updateQuery = `UPDATE parcelTable SET currentLocation = '${value}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
+
       DB.query(updateQuery).then((result) => {
-        if (result.rows.length === 0) {
+        const { length } = result.rows;
+        let status = null;
+        status = length === 0 ? status = null : result.rows[0].status;
+
+        if (length === 0 || status === 'Canceled') {
           const response = {
             message: 'No parcel found or already delivered',
           };
@@ -213,17 +202,24 @@ class dbModel {
   static changeStatus(id, value) {
     return new Promise((resolve, reject) => {
       const exception = 'Delivered';
-      const updateQuery = `UPDATE parcelTable SET status = '${value}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
+      let updateQuery = null;
+      const today = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+      if (value.toLowerCase() === 'delivered') {
+        updateQuery = `UPDATE parcelTable SET status = '${value}', deliveredon = '${today}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
+      } else {
+        updateQuery = `UPDATE parcelTable SET status = '${value}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
+      }
+
       DB.query(updateQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
             message: 'No parcel found or already delivered',
-            tiku: 'tiku',
           };
           reject(response);
         }
         resolve(result.rows);
       }).catch((error) => {
+        console.log(error, updateQuery);
         reject(error);
       });
     });

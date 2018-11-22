@@ -47,6 +47,12 @@ class userModel {
           reject(err);
         });
       }).catch((error) => {
+        if (error.code === '23505') {
+          const response = {
+            error: 'Email or Username already in use',
+          };
+          reject(response);
+        }
         reject(error);
       });
     });

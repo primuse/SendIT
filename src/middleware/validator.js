@@ -12,7 +12,6 @@
 import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import DB from '../models/DB';
 import {
   parcelSchema, userSchema, loginSchema, updateSchema, locationSchema, statusSchema,
 } from '../helper/validateSchema';
@@ -53,7 +52,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          message: err.details[0].message.replace(/[\"]/gi, ''),
+          error: err.message,
         });
       });
   }
