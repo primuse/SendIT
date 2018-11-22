@@ -13,12 +13,22 @@ import Helper from '../helper/authPassword';
 
 dotenv.config();
 
-class userModel {
 /**
-* Method to create new parcel by inserting into DB
-* @method
-* @param {obj} req HTTP request
+* @class
+* @classdesc User model class with handler methods
 */
+class userModel {
+  /**
+  * Method to create new parcel by inserting into DB
+  * @method
+  * @param {string} firstName
+  * @param {string} lastName
+  * @param {string} otherNames
+  * @param {string} username
+  * @param {string} email
+  * @param {string} password
+  * @returns {function}
+  */
   static createUser(firstName, lastName, otherNames, username, email, password) {
     return new Promise((resolve, reject) => {
       const querytext = `INSERT INTO
@@ -58,6 +68,60 @@ class userModel {
     });
   }
 
+  /**
+  * Method to get all parcels from DB
+  * @method
+  * @param {obj} req HTTP request
+  * @returns {function}
+  */
+  static getAllUsers() {
+    return new Promise((resolve, reject) => {
+      const findAllQuery = 'SELECT * FROM userTable';
+
+      DB.query(findAllQuery).then((result) => {
+        if (result.rows.length === 0) {
+          const response = {
+            message: 'No Users',
+          };
+          reject(response);
+        }
+        resolve(result.rows);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+  * Method to get a users from DB
+  * @method
+  * @param {integer} id
+  * @returns {function}
+  */
+  static findUser(id) {
+    return new Promise((resolve, reject) => {
+      const findOneQuery = `SELECT * FROM userTable WHERE id = '${id}'`;
+      DB.query(findOneQuery).then((result) => {
+        if (result.rows.length === 0) {
+          const response = {
+            message: 'No User with given id',
+          };
+          reject(response);
+        }
+        resolve(result.rows);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+  * Method to get a users from DB
+  * @method
+  * @param {string} email
+  * @param {string} password
+  * @returns {function}
+  */
   static loginUser(email, password) {
     return new Promise((resolve, reject) => {
       const findOneQuery = `SELECT * FROM userTable WHERE email = '${email}'`;
@@ -85,6 +149,13 @@ class userModel {
     });
   }
 
+  /**
+  * Method to get a users from DB
+  * @method
+  * @param {integer} id
+  * @param {string} value
+  * @returns {function}
+  */
   static updateUser(id, value) {
     return new Promise((resolve, reject) => {
       const updateQuery = `UPDATE userTable SET isadmin = '${value}' WHERE id = '${id}' returning *`;
@@ -92,6 +163,29 @@ class userModel {
         if (result.rows.length === 0) {
           const response = {
             message: 'No user found',
+          };
+          reject(response);
+        }
+        resolve(result.rows);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+  * Method to get a users from DB
+  * @method
+  * @param {integer} userId
+  * @returns {function}
+  */
+  static findUserParcels(userId) {
+    return new Promise((resolve, reject) => {
+      const findQuery = `SELECT * FROM parcelTable WHERE placedby = '${userId}'`;
+      DB.query(findQuery).then((result) => {
+        if (result.rows.length === 0) {
+          const response = {
+            message: 'User has no parcels',
           };
           reject(response);
         }

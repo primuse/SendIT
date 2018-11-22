@@ -19,7 +19,6 @@ class Parcel {
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
-  * @returns {obj}
   */
   static createParcels(req, res) {
     const {
@@ -44,7 +43,6 @@ class Parcel {
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
-  * @returns {obj}
   */
   static getAllParcels(req, res) {
     model.getAllParcels().then((rows) => {
@@ -62,7 +60,6 @@ class Parcel {
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
-  * @returns {obj}
   */
   static getParcel(req, res) {
     const id = req.params.parcelId;
@@ -82,7 +79,6 @@ class Parcel {
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
-  * @returns {obj}
   */
   static cancelParcel(req, res) {
     const id = req.params.parcelId;
@@ -105,7 +101,6 @@ class Parcel {
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
-  * @returns {obj}
   */
   static updateParcel(req, res) {
     const id = req.params.parcelId;
@@ -129,7 +124,6 @@ class Parcel {
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
-  * @returns {obj}
   */
   static locationParcel(req, res) {
     const id = req.params.parcelId;
@@ -142,7 +136,6 @@ class Parcel {
         },
       });
     }).catch((error) => {
-      console.log(error);
       res.status(400)
         .send(error);
     });
@@ -153,7 +146,6 @@ class Parcel {
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
-  * @returns {obj}
   */
   static statusParcel(req, res) {
     const id = req.params.parcelId;

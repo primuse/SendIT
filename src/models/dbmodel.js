@@ -16,7 +16,18 @@ class dbModel {
   /**
   * Method to create new parcel by inserting into DB
   * @method
-  * @param {obj} req HTTP request
+  * @param {string} parcelName
+  * @param {integer} price
+  * @param {integer} weight
+  * @param {string} pickupLocation
+  * @param {string} destination
+  * @param {string} status
+  * @param {string} receiver
+  * @param {string} email
+  * @param {integer} phoneNumber
+  * @param {string} currentLocation
+  * @param {integer} userId
+  * @returns {function}
   */
   static createParcel(parcelName, price, weight, pickupLocation, destination,
     status, receiver, email, phoneNumber, currentLocation, userId) {
@@ -54,6 +65,7 @@ class dbModel {
   * Method to get all parcels from DB
   * @method
   * @param {obj} req HTTP request
+  * @returns {function}
   */
   static getAllParcels() {
     return new Promise((resolve, reject) => {
@@ -76,7 +88,9 @@ class dbModel {
   /**
   * Method to get a parcels from DB
   * @method
-  * @param {obj} req HTTP request
+  * @param {integer} id
+  * @param {integer} userId
+  * @returns {function}
   */
   static findParcel(id, userId) {
     return new Promise((resolve, reject) => {
@@ -98,7 +112,9 @@ class dbModel {
   /**
   * Method to cancel parcel in DB
   * @method
-  * @param {obj} req HTTP request
+  * @param {integer} id
+  * @param {integer} userId
+  * @returns {function}
   */
   static cancelParcel(id, userId) {
     return new Promise((resolve, reject) => {
@@ -134,7 +150,10 @@ class dbModel {
   /**
   * Method to change parcel destination in DB
   * @method
-  * @param {obj} req HTTP request
+  * @param {integer} id
+  * @param {string} value
+  * @param {integer} userId
+  * @returns {function}
   */
   static changeDestination(id, value, userId) {
     return new Promise((resolve, reject) => {
@@ -169,7 +188,9 @@ class dbModel {
   /**
   * Method to change parcel location in DB
   * @method
-  * @param {obj} req HTTP request
+  * @param {integer} id
+  * @param {string} value
+  * @returns {function}
   */
   static changeLocation(id, value) {
     return new Promise((resolve, reject) => {
@@ -197,7 +218,9 @@ class dbModel {
   /**
   * Method to change parcel status in DB
   * @method
-  * @param {obj} req HTTP request
+  * @param {integer} id
+  * @param {string} value
+  * @returns {function}
   */
   static changeStatus(id, value) {
     return new Promise((resolve, reject) => {
@@ -219,7 +242,6 @@ class dbModel {
         }
         resolve(result.rows);
       }).catch((error) => {
-        console.log(error, updateQuery);
         reject(error);
       });
     });

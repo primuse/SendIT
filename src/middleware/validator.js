@@ -131,6 +131,7 @@ class ValidateMiddleware {
   * @param {obj} req HTTP request
   * @param {obj} res HTTP response
   * @param {obj} next points to the next function down the line
+  * @returns {function}
   */
   static validateToken(req, res, next) {
     const token = req.headers['x-access-token'];
@@ -149,11 +150,41 @@ class ValidateMiddleware {
   }
 
   /**
+  * Method to validate token
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  * @returns {function}
+  */
+  static validateUsers(req, res, next) {
+    const token = req.headers['x-access-token'];
+    const { userId } = req.params;
+    if (token) {
+      jwt.verify(token, process.env.secret, (err, decoded) => {
+        if (err) {
+          return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        }
+        req.decoded = decoded.id;
+        req.role = decoded.isadmin;
+        if (+userId === +req.decoded) {
+          next();
+        } else {
+          return res.status(403).send({ auth: false, message: 'Unauthorized access' });
+        }
+      });
+    } else {
+      return res.status(403).send({ auth: false, message: 'No token provided.' });
+    }
+  }
+
+  /**
   * Method to validate user role
   * @method
   * @param {obj} req HTTP request
   * @param {obj} res HTTP response
   * @param {obj} next points to the next function down the line
+  * @returns {function}
   */
   static validateUserRole(req, res, next) {
     if (req.role === true) {
