@@ -3,13 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.userSchema = exports.parcelSchema = void 0;
+exports.statusSchema = exports.locationSchema = exports.updateSchema = exports.loginSchema = exports.userSchema = exports.parcelSchema = void 0;
 
 var _joi = _interopRequireDefault(require("joi"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/* eslint-disable camelcase */
 
 /**
 * @fileOverview Model with queries for database manipulation.
@@ -22,54 +20,53 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
 * Joi validation constraints
 */
-var parcel_name = _joi.default.string().required();
-
-var placed_by = _joi.default.number().integer().required();
+var parcelName = _joi.default.string().required();
 
 var price = _joi.default.number().integer().required();
 
 var weight = _joi.default.number().integer().required();
 
-var pickup_location = _joi.default.string().required();
+var pickupLocation = _joi.default.string().required();
 
 var destination = _joi.default.string().required();
 
-var status = _joi.default.string().valid(['Created', 'In-transit', 'Delivered']).required();
+var status = _joi.default.string().valid(['Created', 'In-transit', 'Delivered', 'Canceled']).required();
 
 var receiver = _joi.default.string().required();
 
-var email = _joi.default.string().email().lowercase().required();
+var email = _joi.default.string().email({
+  minDomainAtoms: 2
+}).lowercase().required();
 
-var phone_number = _joi.default.number().integer().required();
+var phoneNumber = _joi.default.number().integer().required();
 
-var current_location = _joi.default.string().required();
+var currentLocation = _joi.default.string().required();
 
-var first_name = _joi.default.string().required();
+var firstName = _joi.default.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid firstname'));
 
-var last_name = _joi.default.string().required();
+var lastName = _joi.default.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid lastname'));
 
-var other_names = _joi.default.string().required();
+var otherNames = _joi.default.string().regex(/^[a-zA-Z]*$/).required().error(new Error('Enter a valid name'));
 
-var username = _joi.default.string().required();
+var username = _joi.default.string().alphanum().required().error(new Error('Enter a valid username'));
 
-var password = _joi.default.string().alphanum().required();
+var password = _joi.default.string().alphanum().required().error(new Error('Enter a valid password'));
 /**
 * Creates a new Joi schema.
 */
 
 
 var parcelSchema = {
-  parcel_name: parcel_name,
-  placed_by: placed_by,
+  parcelName: parcelName,
   price: price,
   weight: weight,
-  pickup_location: pickup_location,
+  pickupLocation: pickupLocation,
   destination: destination,
   status: status,
   receiver: receiver,
   email: email,
-  phone_number: phone_number,
-  current_location: current_location
+  phoneNumber: phoneNumber,
+  currentLocation: currentLocation
 };
 /**
 * Creates a new Joi schema.
@@ -77,11 +74,28 @@ var parcelSchema = {
 
 exports.parcelSchema = parcelSchema;
 var userSchema = {
-  first_name: first_name,
-  last_name: last_name,
-  other_names: other_names,
+  firstName: firstName,
+  lastName: lastName,
+  otherNames: otherNames,
   username: username,
   email: email,
   password: password
 };
 exports.userSchema = userSchema;
+var loginSchema = {
+  email: email,
+  password: password
+};
+exports.loginSchema = loginSchema;
+var updateSchema = {
+  destination: destination
+};
+exports.updateSchema = updateSchema;
+var locationSchema = {
+  currentLocation: currentLocation
+};
+exports.locationSchema = locationSchema;
+var statusSchema = {
+  status: status
+};
+exports.statusSchema = statusSchema;

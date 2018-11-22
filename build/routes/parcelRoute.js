@@ -30,34 +30,54 @@ var router = _express.default.Router();
 */
 
 
-router.post('/parcels', _validator.default.validateParcel, _dbParcelController.default.createParcels); // /**
-// * Route to get all Parcel Orders
-// * @param  {string} route The Get Parcels url route
-// * @param  {function} ParcelController.getAllParcels The handler function
-// * @returns {(obj|obj} parcel or error message
-// */
-// router.get('/parcels', ParcelController.getAllParcels);
-// /**
-// * Route to get parcel order by ID
-// * @param  {string} route The Get parcels/:parcelID url route
-// * @param  {function} ParcelController.getParcel The handler function
-// * @returns {(obj|obj} parcel or error message
-// */
-// router.get('/parcels/:parcelId', ParcelController.getParcel);
-// /**
-// * Route to Update a Parcel
-// * @param  {string} route The Update url route
-// * @param  {function} ParcelController.updateParcel The handler function
-// * @returns {(obj|obj} success message or error message
-// */
-// router.put('/parcels/:parcelId/update', ParcelController.updateParcel);
-// /**
-// * Route to cancel a parcel order
-// * @param  {string} route The cancel url route
-// * @param  {function} ParcelController.cancelParcel The handler function
-// * @returns {(obj|obj} success message or error message
-// */
-// router.put('/parcels/:parcelId/cancel', ParcelController.cancelParcel);
+router.post('/parcels', _validator.default.validateToken, _validator.default.validateParcel, _dbParcelController.default.createParcels);
+/**
+* Route to get all Parcel Orders
+* @param  {string} route The Get Parcels url route
+* @param  {function} ParcelController.getAllParcels The handler function
+* @returns {(obj|obj} parcel or error message
+*/
 
+router.get('/parcels', _validator.default.validateToken, _validator.default.validateUserRole, _dbParcelController.default.getAllParcels);
+/**
+* Route to get parcel order by ID
+* @param  {string} route The Get parcels/:parcelID url route
+* @param  {function} ParcelController.getParcel The handler function
+* @returns {(obj|obj} parcel or error message
+*/
+
+router.get('/parcels/:parcelId', _validator.default.validateToken, _dbParcelController.default.getParcel);
+/**
+* Route to cancel a parcel order
+* @param  {string} route The cancel url route
+* @param  {function} ParcelController.cancelParcel The handler function
+* @returns {(obj|obj} success message or error message
+*/
+
+router.patch('/parcels/:parcelId/cancel', _validator.default.validateToken, _dbParcelController.default.cancelParcel);
+/**
+* Route to change a parcel destination
+* @param  {string} route The cancel url route
+* @param  {function} ParcelController.updateParcel The handler function
+* @returns {(obj|obj} success message or error message
+*/
+
+router.patch('/parcels/:parcelId/destination', _validator.default.validateToken, _validator.default.validateDestination, _dbParcelController.default.updateParcel);
+/**
+* Route to change currentLocation of a parcel order
+* @param  {string} route The cancel url route
+* @param  {function} ParcelController.locationParcel The handler function
+* @returns {(obj|obj} success message or error message
+*/
+
+router.patch('/parcels/:parcelId/currentlocation', _validator.default.validateToken, _validator.default.validateUserRole, _validator.default.validateLocation, _dbParcelController.default.locationParcel);
+/**
+* Route to change status of a parcel order
+* @param  {string} route The cancel url route
+* @param  {function} ParcelController.locationParcel The handler function
+* @returns {(obj|obj} success message or error message
+*/
+
+router.patch('/parcels/:parcelId/status', _validator.default.validateToken, _validator.default.validateUserRole, _validator.default.validateStatus, _dbParcelController.default.statusParcel);
 var _default = router;
 exports.default = _default;
