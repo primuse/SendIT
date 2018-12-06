@@ -23,25 +23,21 @@ class userModel {
   * @method
   * @param {string} firstName
   * @param {string} lastName
-  * @param {string} otherNames
-  * @param {string} username
   * @param {string} email
   * @param {string} password
   * @returns {function}
   */
-  static createUser(firstName, lastName, otherNames, username, email, password) {
+  static createUser(firstName, lastName, email, password) {
     return new Promise((resolve, reject) => {
       const querytext = `INSERT INTO
-      userTable(firstName, lastName, otherNames, username, email, registered, isAdmin, password)
-      VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+      userTable(firstName, lastName, email, registered, isAdmin, password)
+      VALUES($1, $2, $3, $4, $5, $6)
       returning *`;
 
       const hashedPassword = bcrypt.hashSync(password, 8);
       const values = [
         firstName,
         lastName,
-        otherNames,
-        username,
         email,
         moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
         'false',
@@ -60,7 +56,7 @@ class userModel {
       }).catch((error) => {
         if (error.code === '23505') {
           const response = {
-            error: 'Email or Username already in use',
+            error: 'Email already Registered',
           };
           reject(response);
         } else {
@@ -89,6 +85,7 @@ class userModel {
         }
         const users = result.rows;
         users.map(user => delete user.password);
+        users.map(user => delete user.isadmin);
         resolve(users);
       }).catch((error) => {
         reject(error);
@@ -114,6 +111,7 @@ class userModel {
         }
         const user = result.rows[0];
         delete user.password;
+        delete user.isadmin;
         resolve(user);
       }).catch((error) => {
         reject(error);
@@ -142,6 +140,7 @@ class userModel {
           const user = result.rows[0];
           const { id, isadmin } = user;
           delete user.password;
+          delete user.isadmin;
           Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
             resolve([{ token, user }]);
           }).catch((err) => {
@@ -175,6 +174,7 @@ class userModel {
         }
         const user = result.rows[0];
         delete user.password;
+        delete user.isadmin;
         resolve(result.rows);
       }).catch((error) => {
         reject(error);

@@ -69,7 +69,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          message: err.details[0].message.replace(/['"']/gi, ''),
+          message: err.message,
         });
       });
   }
@@ -205,7 +205,7 @@ class ValidateMiddleware {
   static validateParcelParam(req, res, next) {
     const parcelId = Number(req.params.parcelId);
     if (isNaN(parcelId)) {
-      return res.status(400).send({ message: 'Invalid Parameter passed' });
+      return res.status(404).send({ message: 'Page not found' });
     }
     next();
   }
@@ -221,7 +221,7 @@ class ValidateMiddleware {
   static validateUserParam(req, res, next) {
     const userId = Number(req.params.userId);
     if (isNaN(userId)) {
-      return res.status(400).send({ message: 'Invalid Parameter passed' });
+      return res.status(404).send({ message: 'Page not Found' });
     }
     next();
   }

@@ -26,7 +26,7 @@ router.post('/auth/signup', ValidateMiddleware.validateUser, UserController.crea
 * @param  {function} UserController.createUsers The handler method
 * @returns {(obj|obj} success message or error message
 */
-router.patch('/users/:userId/update', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserParam, ValidateMiddleware.validateUserRole, UserController.updateUser);
+router.patch('/users/:userId/upgrade', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserParam, ValidateMiddleware.validateUserRole, UserController.updateUser);
 
 /**
 * Route to get all Parcel Orders

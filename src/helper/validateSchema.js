@@ -31,8 +31,7 @@ const otherNames = Joi.string().trim().regex(/^[a-zA-Z]*$/).required()
   .error(new Error('Enter a valid name'));
 const username = Joi.string().trim().alphanum().required()
   .error(new Error('Enter a valid username'));
-const password = Joi.string().alphanum().trim().required()
-  .error(new Error('Enter a valid password'));
+const password = Joi.string().alphanum().trim().required().error(new Error('Enter a valid password'));
 
 /**
 * Creates a new Joi schema.

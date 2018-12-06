@@ -202,7 +202,6 @@ function () {
         _jsonwebtoken.default.verify(token, process.env.secret, function (err, decoded) {
           if (err) {
             return res.status(500).send({
-              auth: false,
               message: 'Failed to authenticate token.'
             });
           }
@@ -214,14 +213,12 @@ function () {
             next();
           } else {
             return res.status(403).send({
-              auth: false,
               message: 'Unauthorized access'
             });
           }
         });
       } else {
         return res.status(403).send({
-          auth: false,
           message: 'No token provided.'
         });
       }
@@ -242,7 +239,6 @@ function () {
         next();
       } else {
         return res.status(403).send({
-          auth: false,
           message: 'Unauthorized access'
         });
       }

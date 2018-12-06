@@ -23,8 +23,6 @@ const createTables = () => {
         id SERIAL PRIMARY KEY,
         firstName VARCHAR (128) NOT NULL,
         lastName VARCHAR (128) NOT NULL,
-        otherNames VARCHAR (128) NOT NULL,
-        username VARCHAR (128) UNIQUE NOT NULL,
         email VARCHAR (355) UNIQUE NOT NULL,
         registered VARCHAR NOT NULL,
         isAdmin BOOLEAN NOT NULL,

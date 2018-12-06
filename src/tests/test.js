@@ -87,8 +87,6 @@ describe('POST /auth/signup', () => {
     const user = {
       firstName: 'Joseph',
       lastName: 'Julius',
-      otherNames: 'John',
-      username: 'jude',
       email: 'okoyetiku@yahoo.com',
       password: 'tiku',
     };

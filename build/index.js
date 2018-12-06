@@ -11,8 +11,6 @@ var _dotenv = _interopRequireDefault(require("dotenv"));
 
 var _bodyParser = _interopRequireDefault(require("body-parser"));
 
-var _logger = _interopRequireDefault(require("./helper/logger"));
-
 var _parcelRoute = _interopRequireDefault(require("./routes/parcelRoute"));
 
 var _userRoute = _interopRequireDefault(require("./routes/userRoute"));
@@ -59,8 +57,13 @@ app.get('/', function (req, res) {
     message: 'Welcome to SendIT!'
   });
 });
+app.use('*/', function (req, res) {
+  res.status(404).send({
+    message: 'Page not found'
+  });
+});
 var server = app.listen(port, function () {
-  _logger.default.info("Server started on PORT ".concat(port));
+  console.log("Server started on PORT ".concat(port));
 });
 var _default = server;
 exports.default = _default;
