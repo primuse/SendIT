@@ -26,6 +26,7 @@ class User {
     } = req.body;
     model.createUser(firstName, lastName, otherNames, username, email, password).then((data) => {
       res.status(201).send({
+        message: 'User Created',
         data,
       });
     }).catch((error) => {
@@ -44,6 +45,7 @@ class User {
   static getAllUsers(req, res) {
     model.getAllUsers().then((rows) => {
       res.send({
+        message: 'All Users',
         data: rows,
       });
     }).catch((error) => {
@@ -62,6 +64,7 @@ class User {
     const id = req.params.userId;
     model.findUser(id).then((parcel) => {
       res.send({
+        message: `User with ID:${id}`,
         data: parcel,
       });
     }).catch((error) => {
@@ -80,6 +83,7 @@ class User {
     const { email, password } = req.body;
     model.loginUser(email, password).then((data) => {
       res.status(200).send({
+        message: 'User logged in',
         data,
       });
     }).catch((error) => {
@@ -100,6 +104,7 @@ class User {
     const value = req.body.isadmin;
     model.updateUser(id, value).then((data) => {
       res.status(200).send({
+        message: 'User has been successfully updated',
         data,
       });
     }).catch((error) => {
@@ -119,6 +124,7 @@ class User {
     const { userId } = req.params;
     model.findUserParcels(userId).then((data) => {
       res.status(200).send({
+        message: `User ${userId} Parcels`,
         data,
       });
     }).catch((error) => {

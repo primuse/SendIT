@@ -99,7 +99,7 @@ class dbModel {
       DB.query(findOneQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
-            message: 'No parcel with given id',
+            message: 'No Permission to view this parcel',
           };
           reject(response);
         }
@@ -175,7 +175,7 @@ class dbModel {
               };
               reject(response);
             }
-            resolve(results.rows);
+            resolve(results.rows[0]);
           }).catch((error) => {
             reject(error);
           });
@@ -209,7 +209,7 @@ class dbModel {
           };
           reject(response);
         }
-        resolve(result.rows);
+        resolve(result.rows[0]);
       }).catch((error) => {
         reject(error);
       });
@@ -233,7 +233,6 @@ class dbModel {
       } else {
         updateQuery = `UPDATE parcelTable SET status = '${value}' WHERE id = '${id}' AND status <> '${exception}' returning *`;
       }
-
       DB.query(updateQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
@@ -242,9 +241,9 @@ class dbModel {
           reject(response);
         }
         const { placedby } = result.rows[0];
-        const emailBody = `Your Parcel status has been changed to ${value}`;
+        const emailBody = `Your Parcel status has been changed to ${value} <br><br> The SendIT Team`;
         Notification.sendMail(emailBody, placedby).then(() => {
-          resolve(result.rows);
+          resolve(result.rows[0]);
         }).catch((err) => {
           reject(err);
         });

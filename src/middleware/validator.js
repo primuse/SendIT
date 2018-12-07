@@ -69,7 +69,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          message: err.details[0].message.replace(/['"']/gi, ''),
+          message: err.message,
         });
       });
   }
@@ -138,14 +138,14 @@ class ValidateMiddleware {
     if (token) {
       jwt.verify(token, process.env.secret, (err, decoded) => {
         if (err) {
-          return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+          return res.status(500).send({ message: 'Failed to authenticate token.' });
         }
         req.decoded = decoded.id;
         req.role = decoded.isadmin;
         next();
       });
     } else {
-      return res.status(403).send({ auth: false, message: 'No token provided.' });
+      return res.status(403).send({ message: 'No token provided.' });
     }
   }
 
@@ -192,6 +192,38 @@ class ValidateMiddleware {
     } else {
       return res.status(403).send({ message: 'Unauthorized access' });
     }
+  }
+
+  /**
+  * Method to validate parcel Parameter
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  * @returns {function}
+  */
+  static validateParcelParam(req, res, next) {
+    const parcelId = Number(req.params.parcelId);
+    if (isNaN(parcelId)) {
+      return res.status(404).send({ message: 'Page not found' });
+    }
+    next();
+  }
+
+  /**
+  * Method to validate parcel Parameter
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  * @returns {function}
+  */
+  static validateUserParam(req, res, next) {
+    const userId = Number(req.params.userId);
+    if (isNaN(userId)) {
+      return res.status(404).send({ message: 'Page not Found' });
+    }
+    next();
   }
 }
 

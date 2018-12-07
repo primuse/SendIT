@@ -22,7 +22,7 @@ class Notification {
   static sendMail(emailBody, userId) {
     return new Promise((resolve, reject) => {
       UserModel.findUser(userId).then((user) => {
-        const { email, firstname } = user[0];
+        const { email, firstname } = user;
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const msg = {
           to: email,

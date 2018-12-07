@@ -19,29 +19,25 @@ dotenv.config();
 */
 class userModel {
   /**
-  * Method to create new parcel by inserting into DB
+  * Method to create new user by inserting into DB
   * @method
   * @param {string} firstName
   * @param {string} lastName
-  * @param {string} otherNames
-  * @param {string} username
   * @param {string} email
   * @param {string} password
   * @returns {function}
   */
-  static createUser(firstName, lastName, otherNames, username, email, password) {
+  static createUser(firstName, lastName, email, password) {
     return new Promise((resolve, reject) => {
       const querytext = `INSERT INTO
-      userTable(firstName, lastName, otherNames, username, email, registered, isAdmin, password)
-      VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+      userTable(firstName, lastName, email, registered, isAdmin, password)
+      VALUES($1, $2, $3, $4, $5, $6)
       returning *`;
 
       const hashedPassword = bcrypt.hashSync(password, 8);
       const values = [
         firstName,
         lastName,
-        otherNames,
-        username,
         email,
         moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
         'false',
@@ -50,26 +46,28 @@ class userModel {
 
       DB.query(querytext, values).then((result) => {
         const user = result.rows[0];
+        delete user.password;
         const { id, isadmin } = user;
         Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
-          resolve([{ token, user }]);
+          resolve({ token, user });
         }).catch((err) => {
           reject(err);
         });
       }).catch((error) => {
         if (error.code === '23505') {
           const response = {
-            error: 'Email or Username already in use',
+            error: 'Email already Registered',
           };
           reject(response);
+        } else {
+          reject(error);
         }
-        reject(error);
       });
     });
   }
 
   /**
-  * Method to get all parcels from DB
+  * Method to get all users from DB
   * @method
   * @param {obj} req HTTP request
   * @returns {function}
@@ -85,7 +83,10 @@ class userModel {
           };
           reject(response);
         }
-        resolve(result.rows);
+        const users = result.rows;
+        users.map(user => delete user.password);
+        users.map(user => delete user.isadmin);
+        resolve(users);
       }).catch((error) => {
         reject(error);
       });
@@ -93,7 +94,7 @@ class userModel {
   }
 
   /**
-  * Method to get a users from DB
+  * Method to get a user from DB
   * @method
   * @param {integer} id
   * @returns {function}
@@ -108,7 +109,10 @@ class userModel {
           };
           reject(response);
         }
-        resolve(result.rows);
+        const user = result.rows[0];
+        delete user.password;
+        delete user.isadmin;
+        resolve(user);
       }).catch((error) => {
         reject(error);
       });
@@ -116,7 +120,7 @@ class userModel {
   }
 
   /**
-  * Method to get a users from DB
+  * Method to login a user from DB
   * @method
   * @param {string} email
   * @param {string} password
@@ -135,6 +139,8 @@ class userModel {
         Helper.comparePassword(password, result.rows[0].password).then(() => {
           const user = result.rows[0];
           const { id, isadmin } = user;
+          delete user.password;
+          delete user.isadmin;
           Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
             resolve([{ token, user }]);
           }).catch((err) => {
@@ -150,7 +156,7 @@ class userModel {
   }
 
   /**
-  * Method to get a users from DB
+  * Method to update a user to admin from DB
   * @method
   * @param {integer} id
   * @param {string} value
@@ -166,6 +172,9 @@ class userModel {
           };
           reject(response);
         }
+        const user = result.rows[0];
+        delete user.password;
+        delete user.isadmin;
         resolve(result.rows);
       }).catch((error) => {
         reject(error);
@@ -174,7 +183,7 @@ class userModel {
   }
 
   /**
-  * Method to get a users from DB
+  * Method to get a users parcel from DB
   * @method
   * @param {integer} userId
   * @returns {function}

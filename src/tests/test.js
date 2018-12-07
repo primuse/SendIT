@@ -87,8 +87,6 @@ describe('POST /auth/signup', () => {
     const user = {
       firstName: 'Joseph',
       lastName: 'Julius',
-      otherNames: 'John',
-      username: 'jude',
       email: 'okoyetiku@yahoo.com',
       password: 'tiku',
     };
@@ -195,7 +193,7 @@ describe('GET /parcels/:parcelId', () => {
       .end((err, res) => {
         expect(res.status).to.equal(404);
         expect(res.body).to.be.an('object');
-        expect(res.body.message).to.equal('No parcel with given id');
+        expect(res.body.message).to.equal('No Permission to view this parcel');
         done(err);
       });
   });
@@ -221,7 +219,7 @@ describe('PATCH /parcels/:parcelId/destination', () => {
       .send(value)
       .end((err, res) => {
         expect(res.status).to.be.oneOf([200, 400]);
-        expect(res.body.data.message).to.equal('Order updated');
+        expect(res.body.message).to.equal('Order updated');
         done(err);
       });
   });
@@ -231,7 +229,7 @@ describe('PATCH /parcels/:parcelId/destination', () => {
       .send(value)
       .end((err, res) => {
         expect(res.status).to.equal(400);
-        expect(res.body.message).to.equal('No parcel with given id');
+        expect(res.body.message).to.equal('No Permission to view this parcel');
         done(err);
       });
   });
@@ -278,7 +276,7 @@ describe('PATCH /parcels/:parcelId/currentLocation', () => {
       .send(value)
       .end((err, res) => {
         expect(res.status).to.be.oneOf([200, 400]);
-        expect(res.body.data.message).to.equal('Location updated');
+        expect(res.body.message).to.equal('Location updated');
         done(err);
       });
   });
@@ -340,7 +338,7 @@ describe('PATCH /parcels/:parcelID/cancel', () => {
       .set('x-access-token', myToken)
       .end((err, res) => {
         expect(res.status).to.equal(400);
-        expect(res.body.message).to.equal('No parcel with given id');
+        expect(res.body.message).to.equal('No Permission to view this parcel');
         done(err);
       });
   });
@@ -366,7 +364,7 @@ describe('PATCH /parcels/:parcelId/status', () => {
       .send(value)
       .end((err, res) => {
         expect(res.status).to.equal(200);
-        expect(res.body.data.message).to.equal('Status updated');
+        expect(res.body.message).to.equal('Status has been updated to In-transit');
         done(err);
       });
   });
