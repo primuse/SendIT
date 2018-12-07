@@ -41,7 +41,7 @@ class dbModel {
       const values = [
         parcelName,
         userId,
-        price,
+        Number(weight) * 200,
         weight,
         'kg',
         pickupLocation,
@@ -99,7 +99,7 @@ class dbModel {
       DB.query(findOneQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
-            message: 'No Permission to view this parcel',
+            message: 'Unauthorized Access',
           };
           reject(response);
         }

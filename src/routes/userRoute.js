@@ -51,7 +51,6 @@ router.get('/users/:userId', ValidateMiddleware.validateToken, ValidateMiddlewar
 * @returns {(obj|obj} success message or error message
 */
 router.get('/users/:userId/parcels', ValidateMiddleware.validateUsers, ValidateMiddleware.validateUserParam, UserController.userParcels);
-
 /**
 * Route to login Users
 * @param  {string} route The Post url route

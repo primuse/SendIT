@@ -35,7 +35,7 @@ class ValidateMiddleware {
       .then(() => next())
       .catch((err) => {
         res.status(400).send({
-          message: err.details[0].message.replace(/['"']/gi, ''),
+          message: err.message,
         });
       });
   }
@@ -51,6 +51,7 @@ class ValidateMiddleware {
     Joi.validate(req.body, userSchema)
       .then(() => next())
       .catch((err) => {
+        console.log(err);
         res.status(400).send({
           error: err.message,
         });

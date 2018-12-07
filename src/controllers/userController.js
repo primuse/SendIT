@@ -24,7 +24,7 @@ class User {
     const {
       firstName, lastName, otherNames, username, email, password,
     } = req.body;
-    model.createUser(firstName, lastName, otherNames, username, email, password).then((data) => {
+    model.createUser(firstName, lastName, email, password).then((data) => {
       res.status(201).send({
         message: 'User Created',
         data,

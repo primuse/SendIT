@@ -11,7 +11,6 @@ import Joi from 'joi';
 * Joi validation constraints
 */
 const parcelName = Joi.string().trim().required();
-const price = Joi.number().integer().required();
 const weight = Joi.number().integer().required();
 const pickupLocation = Joi.string().trim().required();
 const destination = Joi.string().trim().required();
@@ -27,10 +26,6 @@ const firstName = Joi.string().trim().regex(/^[a-zA-Z]*$/).required()
   .error(new Error('Enter a valid firstname'));
 const lastName = Joi.string().trim().regex(/^[a-zA-Z]*$/).required()
   .error(new Error('Enter a valid lastname'));
-const otherNames = Joi.string().trim().regex(/^[a-zA-Z]*$/).required()
-  .error(new Error('Enter a valid name'));
-const username = Joi.string().trim().alphanum().required()
-  .error(new Error('Enter a valid username'));
 const password = Joi.string().alphanum().trim().required().error(new Error('Enter a valid password'));
 
 /**
@@ -38,7 +33,6 @@ const password = Joi.string().alphanum().trim().required().error(new Error('Ente
 */
 const parcelSchema = {
   parcelName,
-  price,
   weight,
   pickupLocation,
   destination,
@@ -55,8 +49,6 @@ const parcelSchema = {
 const userSchema = {
   firstName,
   lastName,
-  otherNames,
-  username,
   email,
   password,
 };
