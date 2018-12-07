@@ -15,6 +15,7 @@ import bodyParser from 'body-parser';
 import parcelRoute from './routes/parcelRoute';
 import userRoute from './routes/userRoute';
 import '@babel/polyfill';
+import cors from 'cors';
 
 
 dotenv.config();
@@ -26,6 +27,7 @@ const port = process.env.PORT;
  * support json encoded bodies
  * support encoded bodies
  */
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
