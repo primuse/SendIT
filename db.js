@@ -84,8 +84,8 @@ const dropUserTable = () => {
 };
 
 const createAdmin = () => {
-  const queryText = `INSERT INTO userTable(firstName, lastName, otherNames, username, email, registered, isAdmin, password)
-  VALUES('tiku', 'okoye', 'divine', 'cim', 'tikuokoye@yahoo.com', '12-10-18', 'true', '${hashedPassword}')`;
+  const queryText = `INSERT INTO userTable(firstName, lastName, email, registered, isAdmin, password)
+  VALUES('tiku', 'okoye', 'tikuokoye@yahoo.com', '12-10-18', 'true', '${hashedPassword}')`;
   pool.query(queryText)
     .then((res) => {
       console.log(res);
