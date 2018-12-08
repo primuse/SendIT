@@ -22,7 +22,7 @@ class Fetch {
 			window.location = 'dashboard.html';
 		})
 		.catch((err) => {
-			console.log(err);
+		  notif.make({text: 'Invalid Email or Password', type: 'danger' });
 		})
 	}
 
@@ -70,3 +70,7 @@ function handleErrors(res) {
 	}
 	return res.json();
 }
+
+
+const notif = new Notification()
+document.body.append(notif.getElement());
