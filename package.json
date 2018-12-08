@@ -53,6 +53,9 @@
     "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "coveralls": "^3.0.2",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "jsdoc": "^3.5.5",
     "nodemon": "^1.18.5",
     "nyc": "^13.1.0"

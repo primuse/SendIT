@@ -37,7 +37,7 @@ ul {
   text-align: center;
 }
 
-#form-box {
+#form-box, #login-form {
   max-width: 400px;
   width: 100%;
 }

@@ -22,7 +22,7 @@ class User {
   */
   static createUsers(req, res) {
     const {
-      firstName, lastName, otherNames, username, email, password,
+      firstName, lastName, email, password,
     } = req.body;
     model.createUser(firstName, lastName, email, password).then((data) => {
       res.status(201).send({

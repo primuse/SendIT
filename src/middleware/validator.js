@@ -66,7 +66,6 @@ class ValidateMiddleware {
   * @param {obj} next points to the next function down the line
   */
   static validateLogin(req, res, next) {
-    console.log(req.body)
     Joi.validate(req.body, loginSchema)
       .then(() => next())
       .catch((err) => {
