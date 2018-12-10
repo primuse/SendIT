@@ -72,6 +72,7 @@ if (signupForm !== null) {
 	signupForm.addEventListener('submit', Fetch.signup);
 }
 
+// Function to handle errors
 function handleErrors(res) {
 	if(!res.ok) {
 		throw new Error(res.statusText);
