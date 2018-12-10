@@ -170,13 +170,12 @@
     <div class="modal-box">
       <div class="modal-content">
         <h2 class="text-center">New Parcel</h2>
-        <form class="text-right">
+        <form id="createParcel" class="text-right">
           <div class="column is-two form-row text-left">
             <div>
-              <label for="parcelType">Parcel Type</label>
-              <input type="text" id="parcelType" required>
+              <label for="parcelType">Parcel Name</label>
+              <input type="text" id="parcelName" required>
             </div>
-
             <div>
               <label for="weight">Weight</label>
               <input type="number" id="weight" required>
@@ -191,8 +190,8 @@
           <h5 class="text-center">Addressed To</h5>
           <div class="column is-two form-row text-left">
             <div>
-              <label for="name">Name</label>
-              <input type="text" id="name" required>
+              <label for="name">Receiver</label>
+              <input type="text" id="receiver" required>
             </div>
             <div>
               <label for="email">Email</label>

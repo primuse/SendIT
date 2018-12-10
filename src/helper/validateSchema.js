@@ -38,11 +38,9 @@ const parcelSchema = {
   weight,
   pickupLocation,
   destination,
-  status,
   receiver,
   email,
   phoneNumber,
-  currentLocation,
 };
 
 /**

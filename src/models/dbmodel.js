@@ -30,8 +30,8 @@ class dbModel {
   * @param {integer} userId
   * @returns {function}
   */
-  static createParcel(parcelName, price, weight, pickupLocation, destination,
-    status, receiver, email, phoneNumber, currentLocation, userId) {
+  static createParcel(parcelName, weight, pickupLocation, destination, receiver,
+    email, phoneNumber, userId) {
     return new Promise((resolve, reject) => {
       const querytext = `INSERT INTO
       parcelTable(parcelName, placedBy, price, weight, metric,
@@ -46,11 +46,11 @@ class dbModel {
         'kg',
         pickupLocation,
         destination,
-        status,
+        'Created',
         receiver,
         email,
         phoneNumber,
-        currentLocation,
+        pickupLocation,
         moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
       ];
 

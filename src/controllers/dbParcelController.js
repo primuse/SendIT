@@ -22,12 +22,12 @@ class Parcel {
   */
   static createParcels(req, res) {
     const {
-      parcelName, price, weight, pickupLocation, destination,
-      status, receiver, email, phoneNumber, currentLocation,
+      parcelName, weight, pickupLocation, destination,
+      receiver, email, phoneNumber
     } = req.body;
     const userId = req.decoded;
-    model.createParcel(parcelName, price, weight, pickupLocation, destination,
-      status, receiver, email, phoneNumber, currentLocation, userId).then((rows) => {
+    model.createParcel(parcelName, weight, pickupLocation, destination,
+      receiver, email, phoneNumber, userId).then((rows) => {
       res.status(201).send({
         rows,
       });

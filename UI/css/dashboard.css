@@ -9,6 +9,43 @@ main {
   grid-template-rows: 100vh;
 }
 
+.notification {
+  color: #554;
+  background: #cccc;
+  border-radius: 15px 0;
+  padding: .7rem 1.3rem;
+  display: inline-block;
+  position: fixed;
+  z-index: 3;
+  right: 0;
+  bottom: 10%;
+  transition: 2s;
+  opacity: 0;
+}
+
+.swipe-left {
+  opacity: 1;
+  transform: translateX(-80%);
+}
+
+.notification.is-info {
+  color: #00529B;
+  background-color: #BDE5F8;
+}
+.is-success {
+  color: #4F8A10;
+  background-color: #DFF2BF;
+}
+.is-warning {
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+.is-danger {
+  color: #D8000C;
+  background-color: #FFD2D2;
+}
+
+
 #menu {
   padding: 30px 22px 30px 17px;
   /*height: 110vh;*/

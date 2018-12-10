@@ -1,7 +1,6 @@
 const table = document.createElement('table');
 
 class User {
-
 	static getUserId() {
 		return +localStorage.getItem('id');
 	}
@@ -17,12 +16,10 @@ class User {
 		userIdCont.innerHTML = `SD0${User.getUserId()}`;
 
 	}
-
 }
 
 
 class Parcel {
-
 	static getUserParcels() {
 		const token = localStorage.getItem('token'),
 			userId = User.getUserId(),
@@ -40,6 +37,52 @@ class Parcel {
 				Parcel.populateTable();
 				Parcel.renderFilters();
 			});
+	}
+
+	static createParcel(event) {
+		event.preventDefault();
+		const token = localStorage.getItem('token'),
+			parcelName = document.getElementById('parcelName').value,
+			weight = document.getElementById('weight').value,
+			pickupLocation = document.getElementById('PickupLocation').value,
+			destination = document.getElementById('destination').value,
+			receiver = document.getElementById('receiver').value,
+			email = document.getElementById('email').value,
+			phoneNumber = document.getElementById('phoneNumber').value,
+			modal = document.getElementById('parcelmodal'),
+			myData = {
+				parcelName, 
+				weight, 
+				pickupLocation, 
+				destination, 
+				receiver,
+				email, 
+				phoneNumber
+			},
+			config = {
+				method: 'POST',
+				headers: new Headers({
+					'Content-Type': 'application/json',
+					'x-access-token': token
+				}),
+				body: JSON.stringify(myData),
+			};
+
+		fetch('http://localhost:3000/api/v1//parcels', config)
+			.then(handleErrors)
+			.then(res => {
+				hide(modal);
+				document.forms.createParcel.reset()
+				console.log(res);
+			})
+			.catch((err) => {
+				if(err.message === 'Failed to fetch') {
+					console.log('yay');
+					notif.make({text: 'Create Parcel Failed, You are Offline', type: 'danger' });
+				}
+				// console.log(arguments);
+			})
+
 	}
 
 	static buildParcelCollection(parcels) {
@@ -159,3 +202,25 @@ function createTable() {
 
 	return table;
 }
+
+// Implementing the create parcel modal
+let createParcel = document.getElementById("createParcel");
+if (createParcel !== null) {
+	createParcel.addEventListener('submit', Parcel.createParcel);
+}
+
+
+function handleErrors(res) {
+	if(!res.ok) {
+		console.log(res);
+		throw new Error(res.statusText);
+	}
+	return res.json();
+}
+
+function hide(modal) {
+	modal.style.display = 'none';
+}
+
+const notif = new Notification()
+document.body.append(notif.getElement());
