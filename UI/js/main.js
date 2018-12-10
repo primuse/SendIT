@@ -20,6 +20,8 @@ class Fetch {
 		.then(res =>  { 
 			localStorage.setItem('token', res.data[0].token);
 			localStorage.setItem('id', res.data[0].user.id);
+			localStorage.setItem('fistName', res.data[0].user.firstname);
+			localStorage.setItem('lastName', res.data[0].user.lastname)
 			window.location = 'dashboard.html';
 		})
 		.catch((err) => {
@@ -52,6 +54,8 @@ class Fetch {
 		.then(res =>  { 
 			localStorage.setItem('token', res.data.token);
 			localStorage.setItem('id', res.data.user.id);
+			localStorage.setItem('fistName', res.data.user.firstname);
+			localStorage.setItem('lastName', res.data.user.lastname)
 			window.location = 'new_dashboard.html'
 		})
 		.catch((err) => {
@@ -71,6 +75,9 @@ let signupForm = document.getElementById("signupForm");
 if (signupForm !== null) {
 	signupForm.addEventListener('submit', Fetch.signup);
 }
+
+// Implementing Dashboard page
+
 
 // Function to handle errors
 function handleErrors(res) {

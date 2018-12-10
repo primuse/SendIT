@@ -51,7 +51,6 @@ class ValidateMiddleware {
     Joi.validate(req.body, userSchema)
       .then(() => next())
       .catch((err) => {
-        console.log(err);
         res.status(400).send({
           error: err.message,
         });
