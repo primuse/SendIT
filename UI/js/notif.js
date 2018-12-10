@@ -20,7 +20,6 @@ class Notification {
 		}
 		const keys = Object.keys(types);
 		if(keys.includes(type)) {
-			console.log(types[type]);
 			const className = types[type];
 			const replaced = this.notification.classList[1];
 			this.notification.classList.replace(replaced, className);
