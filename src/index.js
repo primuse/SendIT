@@ -12,10 +12,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import parcelRoute from './routes/parcelRoute';
 import userRoute from './routes/userRoute';
 import '@babel/polyfill';
-
 
 dotenv.config();
 
@@ -26,6 +26,12 @@ const port = process.env.PORT;
  * support json encoded bodies
  * support encoded bodies
  */
+const corsOptions = {
+  origin: '*',
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
