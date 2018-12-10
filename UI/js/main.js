@@ -20,7 +20,7 @@ class Fetch {
 		.then(res =>  { 
 			localStorage.setItem('token', res.data[0].token);
 			localStorage.setItem('id', res.data[0].user.id);
-			localStorage.setItem('fistName', res.data[0].user.firstname);
+			localStorage.setItem('firstName', res.data[0].user.firstname);
 			localStorage.setItem('lastName', res.data[0].user.lastname)
 			window.location = 'dashboard.html';
 		})
@@ -54,13 +54,33 @@ class Fetch {
 		.then(res =>  { 
 			localStorage.setItem('token', res.data.token);
 			localStorage.setItem('id', res.data.user.id);
-			localStorage.setItem('fistName', res.data.user.firstname);
+			localStorage.setItem('firstName', res.data.user.firstname);
 			localStorage.setItem('lastName', res.data.user.lastname)
 			window.location = 'new_dashboard.html'
 		})
 		.catch((err) => {
 		  notif.make({text: 'Email already Registered', type: 'danger' });
 		})
+	}
+
+	static getUserParcels(event) {
+		const id = Number(localStorage.getItem('id'));
+		const token = localStorage.getItem('token');
+
+		const config = {
+			method: 'GET',
+			headers: new Headers({
+				'x-access-token': token
+			}),
+		};
+
+		fetch(`http://localhost:3000/api/v1/users/${id}/parcels`, config)
+		.then(res => res.json())
+		.then(res => {
+			const parcels = res.data[0]; 
+			console.log(parcels);
+
+		});
 	}
 }
 
@@ -76,7 +96,6 @@ if (signupForm !== null) {
 	signupForm.addEventListener('submit', Fetch.signup);
 }
 
-// Implementing Dashboard page
 
 
 // Function to handle errors
