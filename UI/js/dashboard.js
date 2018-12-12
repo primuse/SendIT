@@ -17,6 +17,62 @@ class User {
 
 
 class Parcel {
+	static getAllParcels() {
+		const token = localStorage.getItem('token'),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+		fetch('http://localhost:3000/api/v1/parcels', config)
+			.then(res => res.json())
+			.then(res => {
+				Parcel.buildAllParcelCollection(res.data);
+				Parcel.populateTable();
+				Parcel.renderFilters();
+			});
+	}
+
+	static getDeliveredParcels() {
+		const token = localStorage.getItem('token'),
+			userId = User.getUserId(),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+			fetch('http://localhost:3000/api/v1/parcels', config)
+			.then(res => res.json())
+			.then(res => {
+				Parcel.buildDeliveredParcelCollection(res.data);
+				Parcel.populateTable();
+				Parcel.renderFilters();
+			});
+	}
+
+	static getTransitParcels() {
+		const token = localStorage.getItem('token'),
+			userId = User.getUserId(),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+			fetch('http://localhost:3000/api/v1/parcels', config)
+			.then(res => res.json())
+			.then(res => {
+				Parcel.buildTransitParcelCollection(res.data);
+				Parcel.populateTable();
+				Parcel.renderFilters();
+			});
+	}
+
 	static getUserParcels() {
 		const token = localStorage.getItem('token'),
 			userId = User.getUserId(),
