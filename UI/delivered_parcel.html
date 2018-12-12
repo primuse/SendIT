@@ -2,176 +2,179 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SendIT</title>
-    <link rel="icon" href="asset/imgs/parcel.jpg" type="image/jpg">
-    <!-- stylesheets link -->
-    <link rel="stylesheet" href="css/modules.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>SendIT</title>
+  <link rel="icon" href="asset/imgs/parcel.jpg" type="image/jpg">
+  <!-- stylesheets link -->
+  <link rel="stylesheet" href="css/modules.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
-    <main>
-        <!-- Dashboard side Menu  -->
-        <aside>
-          <div class="bg-blue" id="menu">
-            <div id="aside-profile">
-                <a href="dashboard.html">
-                  <h3 class="m-0 pb-10">Send<span class="head-span">IT</span></h3>
-                </a>
-                <small class="d-block pb-10 white-3">HSDB3UUQ2</small>
-                <small>Welcome!<br> Tiku Okoye</small>
-            </div>
-            <ul class="mt-80">
-              <li>
-                <img src="asset/imgs/ico/home.svg" class="menu-ico">
-                <a href="dashboard.html"><span>Dashboard</span></a>
-              </li>
-              <li>
-                <img src="asset/imgs/ico/box-open.svg" class="menu-ico">
-                <a href="#" data-modal data-target="#parcelmodal"><span>New Parcel</span></a>
-              </li>
-              <li>
-                <img src="asset/imgs/ico/archive.svg" class="menu-ico">
-                <a href="delivered_parcel.html"><span>Delivered Parcels</span></a>
-              </li>
-              <li>
-                <img src="asset/imgs/ico/box.svg" class="menu-ico">
-                <a href="intransit_parcel.html"><span>In-transit Parcels</span></a>
-              </li>
-            </ul>
+<body onload="Parcel.getDeliveredUserParcels()">
+  <main>
+    <!-- Dashboard side Menu  -->
+    <aside>
+      <div class="bg-blue" id="menu">
+        <div id="aside-profile">
+          <a href="dashboard.html">
+            <h3 class="m-0 pb-10">Send<span class="head-span">IT</span></h3>
+          </a>
+          <small id="user-id" class="d-block pb-10 white-3"></small>
+          <small>
+            <p class="m-0">Welcome</p>
+            <p id="username"></p>
+          </small>
+        </div>
+        <ul class="mt-80">
+          <li>
+            <img src="asset/imgs/ico/home.svg" class="menu-ico">
+            <a href="dashboard.html"><span>Dashboard</span></a>
+          </li>
+          <li>
+            <img src="asset/imgs/ico/box-open.svg" class="menu-ico">
+            <a href="#" data-modal data-target="#parcelmodal"><span>New Parcel</span></a>
+          </li>
+          <li>
+            <img src="asset/imgs/ico/archive.svg" class="menu-ico">
+            <a href="delivered_parcel.html"><span>Delivered Parcels</span></a>
+          </li>
+          <li>
+            <img src="asset/imgs/ico/box.svg" class="menu-ico">
+            <a href="intransit_parcel.html"><span>In-transit Parcels</span></a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+    <!-- Main Content  -->
+    <section class="grey" id="dash">
+      <!-- Dashboard Top Nav -->
+      <nav>
+        <a href="#" class="toggler mr-1" id="toggle"><img src="asset/imgs/ico/bars.svg"></a>
+        <ul class="p-0">
+          <li>
+            Dashboard
+          </li>
+        </ul>
+        <ul class="p-0 ml-auto">
+          <li class="mr-1">
+            <a href="profile.html">My Profile</a>
+          </li>
+          <li>
+            <a href="index.html">Logout</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- Dashboard Content -->
+      <div id="main-content-page">
+        <div id="info-cont" class="mb-34">
+          <div class="info-box">
+            <small>Created</small>
+            <h4 id="created" class="m-0"></h4>
           </div>
-        </aside>
-        <!-- Main Content  -->
-        <section class="grey" id="dash">
-          <!-- Dashboard Top Nav -->
-          <nav>
-            <a href="#" class="toggler mr-1" id="toggle"><img src="asset/imgs/ico/bars.svg"></a>
-            <ul class="p-0">
-              <li>
-                Dashboard
-              </li>
-            </ul>
-            <ul class="p-0 ml-auto">
-              <li class="mr-1">
-                <a href="profile.html">My Profile</a>
-            </li>
-              <li>
-                <a href="index.html">Logout</a>
-              </li>
-            </ul>
-          </nav>
-            <!-- Dashboard Content -->
-          <div id="main-content-page">
-            <div id="info-cont" class="mb-34">
-              <div class="info-box">
-                  <small>Created</small>
-                  <h4 class="m-0">20</h4>
-              </div>
-              <div class="info-box">
-                  <small>In Transit</small>
-                  <h4 class="m-0 blue">10</h4>
-              </div>
-              <div class="info-box">
-                  <small>Delivered</small>
-                  <h4 class="m-0 green">10</h4>
-              </div>
-            </div>
-            <div class="dash-cont">
-              <div id="table-info">
-                <a href="#">Delivered</a>
-              </div>
-              <div id="table-cont">
-                <table>
-                  <tr id="table-head">
-                    <th>ID</th>
-                    <th>Type</th>
-                    <th>Weight</th>
-                    <th>Price</th>
-                    <th>Destination</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                  </tr> 
-                  <tr>
-                    <td>101</td>
-                    <td>Document</td>
-                    <td>10kg</td>
-                    <td>#1000</td>
-                    <td>No 14 Asobruewu street, Rumuigbo</td>
-                    <td>31/10/2018</td>
-                    <td>Delivered</td>
-                    <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-                  </tr>
-                  <tr>
-                    <td>101</td>
-                    <td>Document</td>
-                    <td>10kg</td>
-                    <td>#1000</td>
-                    <td>No 14 Asobruewu street, Rumuigbo</td>
-                    <td>31/10/2018</td>
-                    <td>Delivered</td>
-                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-                  </tr>
-                  <tr>
-                    <td>101</td>
-                    <td>Document</td>
-                    <td>10kg</td>
-                    <td>#1000</td>
-                    <td>No 14 Asobruewu street, Rumuigbo</td>
-                    <td>31/10/2018</td>
-                    <td>Delivered</td>
-                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-                  </tr>
-                  <tr>
-                    <td>101</td>
-                    <td>Document</td>
-                    <td>10kg</td>
-                    <td>#1000</td>
-                    <td>No 14 Asobruewu street, Rumuigbo</td>
-                    <td>31/10/2018</td>
-                    <td>Delivered</td>
-                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-                  </tr>
-                  <tr>
-                    <td>101</td>
-                    <td>Document</td>
-                    <td>10kg</td>
-                    <td>#1000</td>
-                    <td>No 14 Asobruewu street, Rumuigbo</td>
-                    <td>31/10/2018</td>
-                    <td>Delivered</td>
-                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-                  </tr>
-                  <tr>
-                    <td>101</td>
-                    <td>Document</td>
-                    <td>10kg</td>
-                    <td>#1000</td>
-                    <td>No 14 Asobruewu street, Rumuigbo</td>
-                    <td>31/10/2018</td>
-                    <td>Delivered</td>
-                      <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-                  </tr>
-                </table>
-              </div>
-            </div>
+          <div class="info-box">
+            <small>In Transit</small>
+            <h4 id="in-transit" class="m-0 blue"></h4>
           </div>
-        </section>
-    </main>
+          <div class="info-box">
+            <small>Delivered</small>
+            <h4 id="delivered" class="m-0 green"></h4>
+          </div>
+        </div>
+        <div class="dash-cont">
+          <div id="table-info">
+            <a href="#">Delivered</a>
+          </div>
+          <div id="table-cont">
+            <!-- <table>
+              <tr id="table-head">
+                <th>ID</th>
+                <th>Type</th>
+                <th>Weight</th>
+                <th>Price</th>
+                <th>Destination</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+              <tr>
+                <td>101</td>
+                <td>Document</td>
+                <td>10kg</td>
+                <td>#1000</td>
+                <td>No 14 Asobruewu street, Rumuigbo</td>
+                <td>31/10/2018</td>
+                <td>Delivered</td>
+                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+              </tr>
+              <tr>
+                <td>101</td>
+                <td>Document</td>
+                <td>10kg</td>
+                <td>#1000</td>
+                <td>No 14 Asobruewu street, Rumuigbo</td>
+                <td>31/10/2018</td>
+                <td>Delivered</td>
+                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+              </tr>
+              <tr>
+                <td>101</td>
+                <td>Document</td>
+                <td>10kg</td>
+                <td>#1000</td>
+                <td>No 14 Asobruewu street, Rumuigbo</td>
+                <td>31/10/2018</td>
+                <td>Delivered</td>
+                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+              </tr>
+              <tr>
+                <td>101</td>
+                <td>Document</td>
+                <td>10kg</td>
+                <td>#1000</td>
+                <td>No 14 Asobruewu street, Rumuigbo</td>
+                <td>31/10/2018</td>
+                <td>Delivered</td>
+                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+              </tr>
+              <tr>
+                <td>101</td>
+                <td>Document</td>
+                <td>10kg</td>
+                <td>#1000</td>
+                <td>No 14 Asobruewu street, Rumuigbo</td>
+                <td>31/10/2018</td>
+                <td>Delivered</td>
+                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+              </tr>
+              <tr>
+                <td>101</td>
+                <td>Document</td>
+                <td>10kg</td>
+                <td>#1000</td>
+                <td>No 14 Asobruewu street, Rumuigbo</td>
+                <td>31/10/2018</td>
+                <td>Delivered</td>
+                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
+              </tr>
+            </table> -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <!-- Modal -->
-    <!-- To create parcel -->
-    <div id="parcelmodal" class="modal">
+  <!-- Modal -->
+  <!-- To create parcel -->
+  <div id="parcelmodal" class="modal">
       <div class="modal-box">
         <div class="modal-content">
           <h2 class="text-center">New Parcel</h2>
-          <form class="text-right">
+          <form id="createParcel" class="text-right">
             <div class="column is-two form-row text-left">
               <div>
-                <label for="parcelType">Parcel Type</label>
-                <input type="text" id="parcelType" required>
+                <label for="parcelType">Parcel Name</label>
+                <input type="text" id="parcelName" required>
               </div>
               <div>
                 <label for="weight">Weight</label>
@@ -187,15 +190,15 @@
             <h5 class="text-center">Addressed To</h5>
             <div class="column is-two form-row text-left">
               <div>
-                <label for="name">Name</label>
-                <input type="text" id="name" required>
+                <label for="name">Receiver</label>
+                <input type="text" id="receiver" required>
               </div>
               <div>
                 <label for="email">Email</label>
                 <input type="text" id="email" required>
               </div>
             </div>
-            <div class="column is-two form-row text-left">            
+            <div class="column is-two form-row text-left">
               <div>
                 <label for="phoneNumber">PhoneNumber</label>
                 <input type="text" id="phoneNumber" required>
@@ -209,11 +212,12 @@
           </form>
         </div>
       </div>
-    </div>
+  </div>
 
-
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/app.js"></script>
+  <script src="js/notif.js"></script>
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 
 </html>

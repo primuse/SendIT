@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body onload="Parcel.getDeliveredParcels()">
   <main>
     <!-- Dashboard side Menu  -->
     <aside>
@@ -21,8 +21,11 @@
           <a href="admin.html">
             <h3 class="m-0 pb-10">Send<span class="head-span">IT</span></h3>
           </a>
-          <small class="d-block pb-10 white-3">HSDB3UUQ2</small>
-          <small>Welcome!<br> ADMIN</small>
+          <small id="user-id" class="d-block pb-10 white-3"></small>
+          <small>
+            <p class="m-0">Welcome!<br> ADMIN</p>
+            <p id="username"></p>
+          </small>
         </div>
         <ul class="mt-80">
           <li>
@@ -68,15 +71,15 @@
         <div id="info-cont" class="mb-34">
           <div class="info-box">
             <small>Created</small>
-            <h4 class="m-0">20</h4>
+            <h4 id="created" class="m-0"></h4>
           </div>
           <div class="info-box">
             <small>In Transit</small>
-            <h4 class="m-0 blue">10</h4>
+            <h4 id="in-transit" class="m-0 blue"></h4>
           </div>
           <div class="info-box">
             <small>Delivered</small>
-            <h4 class="m-0 green">10</h4>
+            <h4 id="delivered" class="m-0 green"></h4>
           </div>
         </div>
         <div class="dash-cont">
@@ -84,7 +87,7 @@
             <a href="#">Delivered</a>
           </div>
           <div id="table-cont">
-            <table>
+            <!-- <table>
               <tr id="table-head">
                 <th>ID</th>
                 <th>Type</th>
@@ -154,7 +157,7 @@
                 <td>Delivered</td>
                 <td><a href="admin_parcel_details.html" class="btn xsm bg-bright-blue white">View</a></td>
               </tr>
-            </table>
+            </table> -->
           </div>
         </div>
       </div>
@@ -164,56 +167,57 @@
   <!-- Modal -->
   <!-- To create parcel -->
   <div id="parcelmodal" class="modal">
-    <div class="modal-box">
-      <div class="modal-content">
-        <h2 class="text-center">New Parcel</h2>
-        <form class="text-right">
-          <div class="column is-two form-row text-left">
-            <div>
-              <label for="parcelType">Parcel Type</label>
-              <input type="text" id="parcelType" required>
+      <div class="modal-box">
+        <div class="modal-content">
+          <h2 class="text-center">New Parcel</h2>
+          <form id="createParcel" class="text-right">
+            <div class="column is-two form-row text-left">
+              <div>
+                <label for="parcelType">Parcel Name</label>
+                <input type="text" id="parcelName" required>
+              </div>
+              <div>
+                <label for="weight">Weight</label>
+                <input type="number" id="weight" required>
+              </div>
             </div>
-            <div>
-              <label for="weight">Weight</label>
-              <input type="number" id="weight" required>
+            <div class="form-row text-left">
+              <div>
+                <label for="destination">Destination</label>
+                <textarea id="destination" required></textarea>
+              </div>
             </div>
-          </div>
-          <div class="form-row text-left">
-            <div>
-              <label for="destination">Destination</label>
-              <textarea id="destination" required></textarea>
+            <h5 class="text-center">Addressed To</h5>
+            <div class="column is-two form-row text-left">
+              <div>
+                <label for="name">Receiver</label>
+                <input type="text" id="receiver" required>
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input type="text" id="email" required>
+              </div>
             </div>
-          </div>
-          <h5 class="text-center">Addressed To</h5>
-          <div class="column is-two form-row text-left">
-            <div>
-              <label for="name">Name</label>
-              <input type="text" id="name" required>
+            <div class="column is-two form-row text-left">
+              <div>
+                <label for="phoneNumber">PhoneNumber</label>
+                <input type="text" id="phoneNumber" required>
+              </div>
+              <div>
+                <label for="PickupLocation">Pickup Location</label>
+                <input type="text" id="PickupLocation" required>
+              </div>
             </div>
-            <div>
-              <label for="email">Email</label>
-              <input type="text" id="email" required>
-            </div>
-          </div>
-          <div class="column is-two form-row text-left">
-            <div>
-              <label for="phoneNumber">PhoneNumber</label>
-              <input type="text" id="phoneNumber" required>
-            </div>
-            <div>
-              <label for="PickupLocation">Pickup Location</label>
-              <input type="text" id="PickupLocation" required>
-            </div>
-          </div>
-          <button type="submit" class="btn sm bg-bright-blue text-right white">Create</button>
-        </form>
+            <button type="submit" class="btn sm bg-bright-blue text-right white">Create</button>
+          </form>
+        </div>
       </div>
-    </div>
   </div>
 
-
+  <script src="js/notif.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 
 </html>
