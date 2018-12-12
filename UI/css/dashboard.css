@@ -135,13 +135,32 @@ tr:nth-child(even) {
   height: auto;
   margin: auto;
 }
+
+.parcel-details {
+  width: 50%;
+  flex: 1 0 auto;
+}
+
+.parcel-details .parcel-title {
+  min-height: 50px;
+  line-height: 50px;
+}
+
+.parcel-details .parcel-footer-btns {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.parcel-details #details div > * {
+  margin: 0;
+  padding: 10px 50px 10px 5px;
+}
+
 #details {
-  justify-content: center;
+  justify-content: flex-start;
   display: flex;
 }
-#details > div:first-child {
-  margin-right: 80px;
-}
+
 #map {
   width: 300px;
   height: 400px;

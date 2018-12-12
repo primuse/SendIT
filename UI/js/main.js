@@ -24,7 +24,7 @@ class Fetch {
 			localStorage.setItem('firstName', res.data[0].user.firstname);
 			localStorage.setItem('lastName', res.data[0].user.lastname)
 			if (Object.keys(res.data[0].user).includes('auth')) {
-				console.log('yaay');
+				localStorage.setItem('auth', res.data[0].user.auth)
 				window.location = 'admin.html';
 			} else {
 				window.location = 'dashboard.html';

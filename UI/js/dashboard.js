@@ -37,7 +37,6 @@ class Parcel {
 
 	static getDeliveredParcels() {
 		const token = localStorage.getItem('token'),
-			userId = User.getUserId(),
 			config = {
 				method: 'GET',
 				headers: new Headers({
@@ -56,7 +55,6 @@ class Parcel {
 
 	static getTransitParcels() {
 		const token = localStorage.getItem('token'),
-			userId = User.getUserId(),
 			config = {
 				method: 'GET',
 				headers: new Headers({
@@ -127,6 +125,26 @@ class Parcel {
 				Parcel.buildTransitParcelCollection(res.data);
 				Parcel.populateTable();
 				Parcel.renderFilters();
+			});
+	}
+
+	static getParcel() {
+		const token = localStorage.getItem('token'),
+			parcelId = window.location.search.slice(4),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/parcels/${parcelId}`, config)
+			.then(res => res.json())
+			.then(res => {
+				console.log(res);
+				const parcel = res.data[0];
+				Parcel.renderDetails(parcel);
+				(new ParcelItem(parcel)).getLongAndLat();
 			});
 	}
 
@@ -207,6 +225,26 @@ class Parcel {
 		inTransit.innerText = Parcel.collection.filter(parcelItem => parcelItem.isInTransit()).length;
 		delivered.innerText = Parcel.collection.filter(parcelItem => parcelItem.isDelivered()).length;
 	}
+
+	static renderDetails(parcel) {
+		const name = document.getElementById("parcel-name"),
+			destination = document.getElementById("parcel-destination"),
+			pickup = document.getElementById("parcel-pickup"),
+			receiver = document.getElementById("parcel-receiver"),
+			phoneNumber = document.getElementById("receiver-phone"),
+			price = document.getElementById("parcel-price"),
+			status = document.getElementById("parcel-status"),
+			parcelId = document.getElementById("parcel-Id");
+
+		name.innerText = parcel.parcelname;
+		destination.innerText = parcel.destination;
+		pickup.innerText = parcel.pickuplocation;
+		receiver.innerText = parcel.receiver;
+		phoneNumber.innerText = parcel.phonenumber;
+		price.innerText = `N${parcel.price}`;
+		status.innerText = parcel.status;
+		parcelId.innerText = `PO${parcel.id}`;
+	}
 }
 
 Parcel.filteredCollection = [];
@@ -243,6 +281,7 @@ class ParcelItem  {
 			senton,
 			status
 		} = this.parcel
+		id = `PO${id}`;
 		weight = `${weight}${metric}`;
 		const datas = [id, parcelname, weight, price, destination, receiver, senton, status];
 		const row = document.createElement('tr');
@@ -261,15 +300,33 @@ class ParcelItem  {
 	}
 	
 	buildButton() {
-		const anchor = document.createElement('a');
-		anchor.href = 'details.html';
+		const anchor = document.createElement('a'),
+			auth = localStorage.getItem('auth');
+		anchor.href = '#';
 		anchor.innerText = 'View';
 		const classes = ['btn', 'xsm', 'bg-bright-blue', 'white'];
 		for (let clas of classes) {
 			anchor.classList.add(clas);
 		}
+		anchor.addEventListener('click', (event) => {
+			event.preventDefault();
+			auth != null ? window.location = 'admin_parcel_details.html?id='+this.parcel.id
+				:window.location = 'details.html?id='+this.parcel.id;
+		})
 		return anchor;
 	}
+	drawFlightPath() {}
+  getLongAndLat() { //dot
+		Promise.all([
+			getLongAndLat(this.parcel.destination), 
+			getLongAndLat(this.parcel.pickuplocation)
+		]).then((response) => {
+			const [firstPosiiton, secondPosition] = response;
+			MapObject.map.setCenter(secondPosition)
+			drawFlightPath(firstPosiiton, secondPosition)
+		});
+	}
+	
 }
 
 function createTable() {
@@ -326,3 +383,4 @@ function hide(modal) {
 
 const notif = new Notification()
 document.body.append(notif.getElement());
+

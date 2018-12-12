@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body onload="Parcel.getUserParcels()">
+<body>
   <main>
     <!-- Dashboard side Menu  -->
     <aside>
@@ -214,6 +214,11 @@
     </div>
   </div>
 
+  <script>
+    window.addEventListener('load', () => {
+      Parcel.getUserParcels();
+    });
+  </script>
   <script src="js/notif.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/app.js"></script>
