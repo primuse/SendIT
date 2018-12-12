@@ -6,15 +6,12 @@ class User {
 	}
 
 	static renderUserName() {
-
 		const firstname = localStorage.getItem('firstName');
 		const lastname = localStorage.getItem('lastName');
 		const username = document.getElementById('username');
 		const userIdCont = document.getElementById('user-id');
-
 		username.innerHTML = `${firstname} ${lastname}`;
 		userIdCont.innerHTML = `SD0${User.getUserId()}`;
-
 	}
 }
 
@@ -33,7 +30,45 @@ class Parcel {
 		fetch(`http://localhost:3000/api/v1/users/${userId}/parcels`, config)
 			.then(res => res.json())
 			.then(res => {
-				Parcel.buildParcelCollection(res.data);
+				Parcel.buildAllParcelCollection(res.data);
+				Parcel.populateTable();
+				Parcel.renderFilters();
+			});
+	}
+
+	static getDeliveredUserParcels() {
+		const token = localStorage.getItem('token'),
+			userId = User.getUserId(),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/users/${userId}/parcels`, config)
+			.then(res => res.json())
+			.then(res => {
+				Parcel.buildDeliveredParcelCollection(res.data);
+				Parcel.populateTable();
+				Parcel.renderFilters();
+			});
+	}
+
+	static getTransitUserParcels() {
+		const token = localStorage.getItem('token'),
+			userId = User.getUserId(),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/users/${userId}/parcels`, config)
+			.then(res => res.json())
+			.then(res => {
+				Parcel.buildTransitParcelCollection(res.data);
 				Parcel.populateTable();
 				Parcel.renderFilters();
 			});
@@ -71,37 +106,43 @@ class Parcel {
 		fetch('http://localhost:3000/api/v1//parcels', config)
 			.then(handleErrors)
 			.then(res => {
+        notif.make({text: 'Successfully created parcel', type: 'success' });
 				hide(modal);
 				document.forms.createParcel.reset()
-				console.log(res);
 			})
 			.catch((err) => {
 				if(err.message === 'Failed to fetch') {
-					console.log('yay');
 					notif.make({text: 'Create Parcel Failed, You are Offline', type: 'danger' });
 				}
-				// console.log(arguments);
 			})
 
 	}
 
-	static buildParcelCollection(parcels) {
+	static buildAllParcelCollection(parcels) {
 		Parcel.collection = parcels.map((parcel) => new ParcelItem(parcel));
+		Parcel.filteredCollection = parcels.map((parcel) => new ParcelItem(parcel));
+	}
+
+	static buildDeliveredParcelCollection(parcels) {
+		Parcel.collection = parcels.map((parcel) => new ParcelItem(parcel));
+		Parcel.filteredCollection = Parcel.collection.filter(parcelItem => parcelItem.isDelivered());
+	}
+
+	static buildTransitParcelCollection(parcels) {
+		Parcel.collection = parcels.map((parcel) => new ParcelItem(parcel));
+		Parcel.filteredCollection = Parcel.collection.filter(parcelItem => parcelItem.isInTransit());
 	}
 
 	static populateTable() {
 		const table = createTable();
 
-		Parcel.collection
+		Parcel.filteredCollection
 		.map(parcelItem => {
 			table.append(parcelItem.buildRow());
 		});
 	}
 
 	static renderFilters() {
-
-		console.log(Parcel.collection);
-
 		const created = document.getElementById('created');
 		const inTransit = document.getElementById('in-transit');
 		const delivered = document.getElementById('delivered');
@@ -112,9 +153,8 @@ class Parcel {
 	}
 }
 
-Parcel.collection = []
-
-Parcel.getUserParcels()
+Parcel.filteredCollection = [];
+Parcel.collection = [];
 User.renderUserName()
 
 class ParcelItem  {
@@ -138,6 +178,7 @@ class ParcelItem  {
 	buildRow() {
 		let {
 			id,
+			parcelname,
 			weight,
 			metric,
 			price,
@@ -147,7 +188,7 @@ class ParcelItem  {
 			status
 		} = this.parcel
 		weight = `${weight}${metric}`;
-		const datas = [id, weight, price, destination, receiver, senton, status];
+		const datas = [id, parcelname, weight, price, destination, receiver, senton, status];
 		const row = document.createElement('tr');
 
 		for (let data of datas) {
@@ -179,21 +220,23 @@ function createTable() {
 	const main = document.getElementById('table-cont');
 	const tableRow = document.createElement('tr');
 	const id = document.createElement('th');
-	id.innerHTML = 'ID';
+	id.innerText = 'ID';
+	const name = document.createElement('th');
+	name.innerText = 'Name';
 	const weight = document.createElement('th');
-	weight.innerHTML = 'Weight';
+	weight.innerText = 'Weight';
 	const price = document.createElement('th');
-	price.innerHTML = 'Price';
+	price.innerText = 'Price';
 	const destination = document.createElement('th');
-	destination.innerHTML = 'Destination';
+	destination.innerText = 'Destination';
 	const receiver = document.createElement('th');
-	receiver.innerHTML = 'Receiver';
+	receiver.innerText = 'Receiver';
 	const sentOn = document.createElement('th');
-	sentOn.innerHTML = 'Sent On';
+	sentOn.innerText = 'Sent On';
 	const status = document.createElement('th');
-	status.innerHTML = 'Status';
+	status.innerText = 'Status';
 
-	const headers = [id, weight, price, destination, receiver, sentOn, status];
+	const headers = [id, name, weight, price, destination, receiver, sentOn, status];
 	for (let i = 0; i < headers.length; i++) {
 		tableRow.appendChild(headers[i]);
 	};
@@ -212,7 +255,10 @@ if (createParcel !== null) {
 
 function handleErrors(res) {
 	if(!res.ok) {
-		console.log(res);
+    console.log(res);
+    if(res.statusText === 'Bad Request') {
+      notif.make({text: 'Create Parcel Failed, You are Offline', type: 'danger' })
+    }
 		throw new Error(res.statusText);
 	}
 	return res.json();

@@ -140,6 +140,9 @@ class userModel {
           const user = result.rows[0];
           const { id, isadmin } = user;
           delete user.password;
+          if (user.isadmin) {
+            user.auth = 0;
+          }
           delete user.isadmin;
           Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
             resolve([{ token, user }]);

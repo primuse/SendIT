@@ -18,11 +18,17 @@ class Fetch {
 		fetch('http://localhost:3000/api/v1/auth/login', config)
 		.then(handleErrors)
 		.then(res =>  { 
+			console.log(res);
 			localStorage.setItem('token', res.data[0].token);
 			localStorage.setItem('id', res.data[0].user.id);
 			localStorage.setItem('firstName', res.data[0].user.firstname);
 			localStorage.setItem('lastName', res.data[0].user.lastname)
-			window.location = 'dashboard.html';
+			if (Object.keys(res.data[0].user).includes('auth')) {
+				console.log('yaay');
+				window.location = 'admin.html';
+			} else {
+				window.location = 'dashboard.html';
+			}
 		})
 		.catch((err) => {
 		  notif.make({text: 'Invalid Email or Password', type: 'danger' });

@@ -51,7 +51,7 @@ class dbModel {
         email,
         phoneNumber,
         pickupLocation,
-        moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+        moment(new Date()).format('DD-MM-YYYY'),
       ];
 
       DB.query(querytext, values).then((result) => {
