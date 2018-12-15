@@ -23,10 +23,18 @@ router.post('/auth/signup', ValidateMiddleware.validateUser, UserController.crea
 /**
 * Route to update user
 * @param  {string} route The Post url route
-* @param  {function} UserController.createUsers The handler method
+* @param  {function} UserController.updateUser The handler method
 * @returns {(obj|obj} success message or error message
 */
 router.patch('/users/:userId/upgrade', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserParam, ValidateMiddleware.validateUserRole, UserController.updateUser);
+
+/**
+* Route to downgrade user
+* @param  {string} route The Post url route
+* @param  {function} UserController.downgradeUser The handler method
+* @returns {(obj|obj} success message or error message
+*/
+router.patch('/users/:userId/downgrade', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserParam, ValidateMiddleware.validateUserRole, UserController.downgradeUser);
 
 /**
 * Route to get all Parcel Orders

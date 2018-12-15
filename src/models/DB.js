@@ -18,7 +18,9 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URI,
 });
 
-pool.connect();
+pool.connect().catch((err) => {
+  console.log(err);
+});
 
 
 export default pool;

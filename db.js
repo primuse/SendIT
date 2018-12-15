@@ -11,6 +11,8 @@ const pool = new Pool({
 });
 
 pool.on('connect', () => {
+}).catch((err) => {
+  console.log(err);
 });
 
 /**

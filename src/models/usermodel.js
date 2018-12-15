@@ -85,7 +85,6 @@ class userModel {
         }
         const users = result.rows;
         users.map(user => delete user.password);
-        users.map(user => delete user.isadmin);
         resolve(users);
       }).catch((error) => {
         reject(error);
@@ -143,7 +142,7 @@ class userModel {
           if (user.isadmin) {
             user.auth = 0;
           }
-          delete user.isadmin;
+          // delete user.isadmin;
           Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
             resolve([{ token, user }]);
           }).catch((err) => {
@@ -165,9 +164,36 @@ class userModel {
   * @param {string} value
   * @returns {function}
   */
-  static updateUser(id, value) {
+  static updateUser(id) {
     return new Promise((resolve, reject) => {
-      const updateQuery = `UPDATE userTable SET isadmin = '${value}' WHERE id = '${id}' returning *`;
+      const updateQuery = `UPDATE userTable SET isadmin = 'true' WHERE id = '${id}' returning *`;
+      DB.query(updateQuery).then((result) => {
+        if (result.rows.length === 0) {
+          const response = {
+            message: 'No user found',
+          };
+          reject(response);
+        }
+        const user = result.rows[0];
+        delete user.password;
+        delete user.isadmin;
+        resolve(result.rows);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+  * Method to downgrade an admin to user from DB
+  * @method
+  * @param {integer} id
+  * @param {string} value
+  * @returns {function}
+  */
+  static downgradeUser(id) {
+    return new Promise((resolve, reject) => {
+      const updateQuery = `UPDATE userTable SET isadmin = 'false' WHERE id = '${id}' returning *`;
       DB.query(updateQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {

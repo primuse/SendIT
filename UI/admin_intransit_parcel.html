@@ -33,16 +33,16 @@
             <a href="admin.html"><span>Dashboard</span></a>
           </li>
           <li>
-            <img src="asset/imgs/ico/box-open.svg" class="menu-ico">
-            <a href="#" data-modal data-target="#parcelmodal"><span>New Parcel</span></a>
-          </li>
-          <li>
             <img src="asset/imgs/ico/archive.svg" class="menu-ico">
             <a href="admin_delivered_parcel.html"><span>Delivered Parcels</span></a>
           </li>
           <li>
             <img src="asset/imgs/ico/box.svg" class="menu-ico">
             <a href="admin_intransit_parcel.html"><span>In-transit Parcels</span></a>
+          </li>
+          <li>
+            <img src="asset/imgs/ico/user.svg" class="menu-ico">
+            <a href="admin_all_users.html"><span>All Users</span></a>
           </li>
         </ul>
       </div>
@@ -62,7 +62,7 @@
             <a href="admin_profile.html">My Profile</a>
           </li>
           <li>
-            <a href="index.html">Logout</a>
+            <a href="index.html" id="logout">Logout</a>
           </li>
         </ul>
       </nav>
@@ -87,132 +87,12 @@
             <a href="#">In-Transit</a>
           </div>
           <div id="table-cont">
-            <!-- <table>
-              <tr id="table-head">
-                <th>ID</th>
-                <th>Type</th>
-                <th>Weight</th>
-                <th>Price</th>
-                <th>Destination</th>
-                <th>Date</th>
-                <th>Status</th>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>In-transit</td>
-                <td><a href="admin_parcel_details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>In-transit</td>
-                <td><a href="admin_parcel_details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>In-transit</td>
-                <td><a href="admin_parcel_details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>In-transit</td>
-                <td><a href="admin_parcel_details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>In-transit</td>
-                <td><a href="admin_parcel_details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>In-transit</td>
-                <td><a href="admin_parcel_details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-            </table> -->
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Modal -->
-  <!-- To create parcel -->
-  <div id="parcelmodal" class="modal">
-      <div class="modal-box">
-        <div class="modal-content">
-          <h2 class="text-center">New Parcel</h2>
-          <form id="createParcel" class="text-right">
-            <div class="column is-two form-row text-left">
-              <div>
-                <label for="parcelType">Parcel Name</label>
-                <input type="text" id="parcelName" required>
-              </div>
-              <div>
-                <label for="weight">Weight</label>
-                <input type="number" id="weight" required>
-              </div>
-            </div>
-            <div class="form-row text-left">
-              <div>
-                <label for="destination">Destination</label>
-                <textarea id="destination" required></textarea>
-              </div>
-            </div>
-            <h5 class="text-center">Addressed To</h5>
-            <div class="column is-two form-row text-left">
-              <div>
-                <label for="name">Receiver</label>
-                <input type="text" id="receiver" required>
-              </div>
-              <div>
-                <label for="email">Email</label>
-                <input type="text" id="email" required>
-              </div>
-            </div>
-            <div class="column is-two form-row text-left">
-              <div>
-                <label for="phoneNumber">PhoneNumber</label>
-                <input type="text" id="phoneNumber" required>
-              </div>
-              <div>
-                <label for="PickupLocation">Pickup Location</label>
-                <input type="text" id="PickupLocation" required>
-              </div>
-            </div>
-            <button type="submit" class="btn sm bg-bright-blue text-right white">Create</button>
-          </form>
-        </div>
-      </div>
-  </div>
 
   <script>
     window.addEventListener('load', () => {

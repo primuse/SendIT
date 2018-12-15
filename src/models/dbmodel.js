@@ -18,15 +18,12 @@ class dbModel {
   * Method to create new parcel by inserting into DB
   * @method
   * @param {string} parcelName
-  * @param {integer} price
   * @param {integer} weight
   * @param {string} pickupLocation
   * @param {string} destination
-  * @param {string} status
   * @param {string} receiver
   * @param {string} email
   * @param {integer} phoneNumber
-  * @param {string} currentLocation
   * @param {integer} userId
   * @returns {function}
   */
@@ -91,22 +88,38 @@ class dbModel {
   * @method
   * @param {integer} id
   * @param {integer} userId
+  * @param {integer} role
   * @returns {function}
   */
-  static findParcel(id, userId) {
+  static findParcel(id, userId, role) {
     return new Promise((resolve, reject) => {
-      const findOneQuery = `SELECT * FROM parcelTable WHERE id = '${id}' AND placedby = '${userId}'`;
-      DB.query(findOneQuery).then((result) => {
-        if (result.rows.length === 0) {
-          const response = {
-            message: 'Unauthorized Access',
-          };
-          reject(response);
-        }
-        resolve(result.rows);
-      }).catch((error) => {
-        reject(error);
-      });
+      let findOneQuery = `SELECT * FROM parcelTable WHERE id = '${id}' AND placedby = '${userId}'`;
+      if (role) {
+        findOneQuery = `SELECT * FROM parcelTable WHERE id = '${id}'`;
+        DB.query(findOneQuery).then((result) => {
+          if (result.rows.length === 0) {
+            const response = {
+              message: 'No parcel with given ID',
+            };
+            reject(response);
+          }
+          resolve(result.rows);
+        }).catch((error) => {
+          reject(error);
+        });
+      } else {
+        DB.query(findOneQuery).then((result) => {
+          if (result.rows.length === 0) {
+            const response = {
+              message: 'No Parcel Found',
+            };
+            reject(response);
+          }
+          resolve(result.rows);
+        }).catch((error) => {
+          reject(error);
+        });
+      }
     });
   }
 
@@ -205,7 +218,7 @@ class dbModel {
 
         if (length === 0 || status === 'Canceled') {
           const response = {
-            message: 'No parcel found or already delivered',
+            message: 'No parcel found or Already delivered or canceled',
           };
           reject(response);
         }
@@ -236,7 +249,7 @@ class dbModel {
       DB.query(updateQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
-            message: 'No parcel found or already delivered',
+            message: 'No parcel found or Already delivered',
           };
           reject(response);
         }

@@ -21,17 +21,16 @@
 					<a href="admin.html">
 						<h3 class="m-0 pb-10">Send<span class="head-span">IT</span></h3>
 					</a>
-					<small class="d-block pb-10 white-3">HSDB3UUQ2</small>
-					<small>Welcome!<br> Tiku Okoye</small>
+					<small id="user-id" class="d-block pb-10 white-3"></small>
+          <small>
+            <p class="m-0">Welcome!<br> ADMIN</p>
+            <p id="username"></p>
+          </small>
 				</div>
 				<ul class="mt-80">
 					<li>
 						<img src="asset/imgs/ico/home.svg" class="menu-ico">
 						<a href="admin.html"><span>Dashboard</span></a>
-					</li>
-					<li>
-						<img src="asset/imgs/ico/box-open.svg" class="menu-ico">
-						<a href="#" data-modal data-target="#parcelmodal"><span>New Parcel</span></a>
 					</li>
 					<li>
 						<img src="asset/imgs/ico/archive.svg" class="menu-ico">
@@ -40,6 +39,10 @@
 					<li>
 						<img src="asset/imgs/ico/box.svg" class="menu-ico">
 						<a href="admin_intransit_parcel.html"><span>In-transit Parcels</span></a>
+					</li>
+					<li>
+						<img src="asset/imgs/ico/user.svg" class="menu-ico">
+						<a href="admin_all_users.html"><span>All Users</span></a>
 					</li>
 				</ul>
 			</div>
@@ -65,48 +68,38 @@
 			</nav>
 			<!-- Dashboard Content -->
 			<div id="main-content-page">
-				<div id="info-cont">
-					<div class="info-box">
-						<small>Created</small>
-						<h4 class="m-0">20</h4>
-					</div>
-					<div class="info-box text-center">
-						<small>In Transit</small>
-						<h4 class="m-0 blue">10</h4>
-					</div>
-					<div class="info-box text-center">
-						<small>Delivered</small>
-						<h4 class="m-0 green">10</h4>
-					</div>
-				</div>
 				<div id="parcel" class="dash-cont d-flex mt-40">
-					<div class="p-10">
-						<img src="asset/imgs/parcel.jpg" id="parcel-ico">
-					</div>
-					<div class="p-10">
-						<h4 class="text-center m-0 mb-24">101</h4>
+					<div id="map"></div>
+					<div class="parcel-details p-10">
+						<h4 id="parcel-Id" class="parcel-title text-center m-0 mb-24"></h4>
 						<div id="details" class="pb-10">
 							<div>
-								<h6>Type:</h6>
-								<h6>Destination:</h6>
+                <h6>Name:</h6>
+                <h6>Destination:</h6>
 								<h6>Pickup Location:</h6>
-								<h6>Addressed to:</h6>
-								<h6>Phone Number</h6>
-								<h6>Price</h6>
-								<h6>Status:</h6>
-							</div>
-							<div>
-								<p>Official Document</p>
-								<p>Ajah, Lagos</p>
-								<p>GIGM Ajah, Lagos</p>
-								<p>Mrs Cynthia Ume</p>
-								<p>+2348134576598</p>
-								<p>1,000</p>
-								<p>In Transit</p>
-							</div>
+								<h6>Current Location:</h6>
+                <h6>Addressed to:</h6>
+                <h6>Phone Number:</h6>
+								<h6>Price:</h6>
+								<h6>Sent On:</h6>
+								<h6>Delivered On:</h6>
+                <h6>Status:</h6>
+              </div>
+              <div>
+                <p id="parcel-name"></p>
+                <p id="parcel-destination"></p>
+								<p id="parcel-pickup"></p>
+								<p id="parcel-location"></p>
+                <p id="parcel-receiver"></p>
+                <p id="receiver-phone"></p>
+								<p id="parcel-price"></p>
+								<p id="parcel-sent"></p>
+								<p id="parcel-delivered"></p>
+                <p id="parcel-status"></p>
+              </div>
 						</div>
-						<div class="text-center">
-							<a href="#" data-modal data-target="#location-modal" class="btn sm bg-blue mr-5 white">Change Location</a>
+						<div>
+							<a href="#" data-modal data-target="#location-modal" class="btn sm bg-blue mr-3 white">Change Location</a>
 							<a href="#" data-modal data-target="#update-modal" class="btn sm is-outlined-blue">Update Status</a>
 						</div>
 					</div>
@@ -121,9 +114,9 @@
 		<div class="modal-box">
 			<div class="modal-content">
 				<h5 class="text-center">Enter current Location</h5>
-				<form class="text-right">
+				<form id="locationForm" class="text-right">
 					<div class="form-row">
-						<input type="text" required>
+						<input type="text" id="location" required>
 					</div>
 					<button type="submit" class="btn xsm is-outlined white">Save</button>
 				</form>
@@ -136,9 +129,9 @@
 		<div class="modal-box">
 			<div class="modal-content text-right">
 				<h5 class="text-center">Update Status</h5>
-				<form>
+				<form id="statusForm">
 					<div class="form-row">
-						<input type="text" placeholder="In-transit, Delivered, Canceled" required>
+						<input type="text" id="status" placeholder="In-transit, Delivered, Canceled" required>
 					</div>
 					<button type="submit" class="btn xsm is-outlined white">Save</button>
 				</form>
@@ -146,57 +139,18 @@
 		</div>
 	</div>
 
-	<!-- To create parcel -->
-	<div id="parcelmodal" class="modal">
-		<div class="modal-box">
-			<div class="modal-content">
-				<h2 class="text-center">New Parcel</h2>
-				<form class="text-right">
-					<div class="column is-two form-row text-left">
-						<div>
-							<label for="parcelType">Parcel Type</label>
-							<input type="text" id="parcelType" required>
-						</div>
-						<div>
-							<label for="weight">Weight</label>
-							<input type="number" id="weight" required>
-						</div>
-					</div>
-					<div class="form-row text-left">
-						<div>
-							<label for="destination">Destination</label>
-							<textarea id="destination" required></textarea>
-						</div>
-					</div>
-					<h5 class="text-center">Addressed To</h5>
-					<div class="column is-two form-row text-left">
-						<div>
-							<label for="name">Name</label>
-							<input type="text" id="name" required>
-						</div>
-						<div>
-							<label for="email">Email</label>
-							<input type="text" id="email" required>
-						</div>
-					</div>
-					<div class="column is-two form-row text-left">
-						<div>
-							<label for="phoneNumber">PhoneNumber</label>
-							<input type="text" id="phoneNumber" required>
-						</div>
-						<div>
-							<label for="PickupLocation">Pickup Location</label>
-							<input type="text" id="PickupLocation" required>
-						</div>
-					</div>
-					<button type="submit" class="btn sm bg-bright-blue text-right white">Create</button>
-				</form>
-			</div>
-		</div>
-	</div>
 
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/app.js"></script>
+	<script>
+    window.addEventListener('load', () => {
+      Parcel.getParcel();
+    });
+	</script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4ZUDn2mPTdTrFMPxrzPTa_-WWPs1ZdUo&callback=initMap" type="text/javascript">
+	</script>
+	<script src="js/notif.js"></script>
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 
 </html>

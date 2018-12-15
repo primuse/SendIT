@@ -31,7 +31,9 @@ class Fetch {
 			}
 		})
 		.catch((err) => {
-		  notif.make({text: 'Invalid Email or Password', type: 'danger' });
+			err.json().then( obj => {
+				notif.make({text: obj.message, type: 'danger' })
+			})
 		})
 	}
 
@@ -81,7 +83,7 @@ class Fetch {
 		};
 
 		fetch(`http://localhost:3000/api/v1/users/${id}/parcels`, config)
-		.then(res => res.json())
+		.then(handleErrors)
 		.then(res => {
 			const parcels = res.data[0]; 
 			console.log(parcels);
@@ -107,9 +109,11 @@ if (signupForm !== null) {
 // Function to handle errors
 function handleErrors(res) {
 	if(!res.ok) {
-		throw new Error(res.statusText);
+		throw res;	
 	}
+	else {
 	return res.json();
+	}
 }
 
 
