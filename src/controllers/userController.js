@@ -37,7 +37,7 @@ class User {
   }
 
   /**
-  * Handler Method to get all Parcel orders
+  * Handler Method to get all users
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
@@ -74,7 +74,7 @@ class User {
   }
 
   /**
-  * Hanlder Method to get a user by ID
+  * Hanlder Method to login a user by ID
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
@@ -94,17 +94,16 @@ class User {
   }
 
   /**
-  * Hanlder Method to get a user by ID
+  * Hanlder Method to get a upgrade user by ID
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response
   */
   static updateUser(req, res) {
     const id = req.params.userId;
-    const value = req.body.isadmin;
-    model.updateUser(id, value).then((data) => {
+    model.updateUser(id).then((data) => {
       res.status(200).send({
-        message: 'User has been successfully updated',
+        message: 'User has been successfully upgraded',
         data,
       });
     }).catch((error) => {
@@ -116,6 +115,26 @@ class User {
 
   /**
   * Hanlder Method to get a user by ID
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  */
+  static downgradeUser(req, res) {
+    const id = req.params.userId;
+    model.downgradeUser(id).then((data) => {
+      res.status(200).send({
+        message: 'User has been successfully downgraded',
+        data,
+      });
+    }).catch((error) => {
+      res.status(401).send({
+        message: error.message,
+      });
+    });
+  }
+
+  /**
+  * Hanlder Method to get a user parcels by ID
   * @method
   * @param  {obj} req The HTTP request
   * @param  {obj} res The HTTP response

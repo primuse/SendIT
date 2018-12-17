@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body onload="Parcel.getUserParcels()">
+<body>
   <main>
     <!-- Dashboard side Menu  -->
     <aside>
@@ -62,7 +62,7 @@
             <a href="profile.html">My Profile</a>
           </li>
           <li>
-            <a href="index.html">Logout</a>
+            <a href="index.html" id="logout">Logout</a>
           </li>
         </ul>
       </nav>
@@ -87,77 +87,6 @@
             <a href="#">All</a>
           </div>
           <div id="table-cont">
-            <!-- <table>
-              <tr id="table-head">
-                <th>ID</th>
-                <th>Type</th>
-                <th>Weight</th>
-                <th>Price</th>
-                <th>Destination</th>
-                <th>Date</th>
-                <th>Status</th>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>Delivered</td>
-                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>In-transit</td>
-                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>Delivered</td>
-                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>Delivered</td>
-                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>Delivered</td>
-                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-              <tr>
-                <td>101</td>
-                <td>Document</td>
-                <td>10kg</td>
-                <td>#1000</td>
-                <td>No 14 Asobruewu street, Rumuigbo</td>
-                <td>31/10/2018</td>
-                <td>Canceled</td>
-                <td><a href="details.html" class="btn xsm bg-bright-blue white">View</a></td>
-              </tr>
-            </table> -->
           </div>
         </div>
       </div>
@@ -214,6 +143,11 @@
     </div>
   </div>
 
+  <script>
+    window.addEventListener('load', () => {
+      Parcel.getUserParcels();
+    });
+  </script>
   <script src="js/notif.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/app.js"></script>

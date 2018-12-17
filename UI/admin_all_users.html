@@ -39,11 +39,11 @@
           <li>
             <img src="asset/imgs/ico/box.svg" class="menu-ico">
             <a href="admin_intransit_parcel.html"><span>In-transit Parcels</span></a>
-          </li>
-          <li>
-            <img src="asset/imgs/ico/user.svg" class="menu-ico">
-            <a href="admin_all_users.html"><span>All Users</span></a>
-          </li>
+					</li>
+					<li>
+						<img src="asset/imgs/ico/user.svg" class="menu-ico">
+						<a href="admin_all_users.html"><span>All Users</span></a>
+					</li>
         </ul>
       </div>
     </aside>
@@ -68,23 +68,9 @@
       </nav>
       <!-- Dashboard Content -->
       <div id="main-content-page">
-        <div id="info-cont" class="mb-34">
-          <div class="info-box">
-            <small>Created</small>
-            <h4 id="created" class="m-0"></h4>
-          </div>
-          <div class="info-box">
-            <small>In Transit</small>
-            <h4 id="in-transit" class="m-0 blue"></h4>
-          </div>
-          <div class="info-box">
-            <small>Delivered</small>
-            <h4 id="delivered" class="m-0 green"></h4>
-          </div>
-        </div>
         <div class="dash-cont">
           <div id="table-info">
-            <a href="#">Delivered</a>
+            <a href="#">All</a>
           </div>
           <div id="table-cont">
           </div>
@@ -95,7 +81,7 @@
 
   <script>
     window.addEventListener('load', () => {
-      Parcel.getDeliveredParcels();
+      User.getAllUsers();
     });
   </script>
   <script src="js/notif.js"></script>

@@ -64,7 +64,8 @@ class Parcel {
   static getParcel(req, res) {
     const id = req.params.parcelId;
     const userId = req.decoded;
-    model.findParcel(id, userId).then((parcel) => {
+    const { role } = req;
+    model.findParcel(id, userId, role).then((parcel) => {
       res.send({
         data: parcel,
       });

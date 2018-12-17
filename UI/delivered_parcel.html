@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body onload="Parcel.getDeliveredUserParcels()">
+<body>
   <main>
     <!-- Dashboard side Menu  -->
     <aside>
@@ -62,7 +62,7 @@
             <a href="profile.html">My Profile</a>
           </li>
           <li>
-            <a href="index.html">Logout</a>
+            <a href="index.html" id="logout">Logout</a>
           </li>
         </ul>
       </nav>
@@ -214,6 +214,11 @@
       </div>
   </div>
 
+  <script>
+    window.addEventListener('load', () => {
+      Parcel.getDeliveredUserParcels();
+    });
+  </script>
   <script src="js/notif.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/app.js"></script>
