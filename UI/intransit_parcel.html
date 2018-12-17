@@ -5,6 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>SendIT</title>
+  <script>
+    const token = localStorage.getItem('token');
+    if(!token) {
+      window.location = '/UI';
+    }
+  </script>
   <link rel="icon" href="asset/imgs/parcel.jpg" type="image/jpg">
   <!-- stylesheets link -->
   <link rel="stylesheet" href="css/modules.css">

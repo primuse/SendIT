@@ -13,7 +13,8 @@ import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import {
-  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema, statusSchema,
+  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema, statusSchema, resetSchema,
+  passwordSchema,
 } from '../helper/validateSchema';
 
 dotenv.config();
@@ -53,6 +54,40 @@ class ValidateMiddleware {
       .catch((err) => {
         res.status(400).send({
           error: err.message,
+        });
+      });
+  }
+
+  /**
+  * Method to validate parcel input before inserting into DB
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  */
+  static validateReset(req, res, next) {
+    Joi.validate(req.body, resetSchema)
+      .then(() => next())
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message,
+        });
+      });
+  }
+
+  /**
+  * Method to validate parcel input before inserting into DB
+  * @method
+  * @param {obj} req HTTP request
+  * @param {obj} res HTTP response
+  * @param {obj} next points to the next function down the line
+  */
+  static validatePassword(req, res, next) {
+    Joi.validate(req.body, passwordSchema)
+      .then(() => next())
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message,
         });
       });
   }

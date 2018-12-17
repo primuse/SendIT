@@ -21,9 +21,131 @@ class User {
 				User.populateUserTable();
 			})
 			.catch((err) => {
-				// err.json().then( obj => {
-				// 	notif.make({text: obj.message, type: 'danger' })
-				// })
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			})
+	}
+
+	static getUser() {
+		const token = localStorage.getItem('token'),
+			userId = User.getUserId(),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/users/${userId}`, config)
+			.then(handleErrors)
+			.then(res => {
+				const user = res.data;
+				User.renderProfile(user);
+				User.renderFilters();
+			})
+			.catch((err) => {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			})
+	}
+
+	static getUserByAdmin() {
+		const token = localStorage.getItem('token'),
+			userId = window.location.search.slice(4),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/auth/users/${userId}`, config)
+			.then(handleErrors)
+			.then(res => {
+				const user = res.data;
+				User.renderProfile(user);
+			})
+			.catch((err) => {
+				console.log(err);
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			})
+	}
+
+	static upgradeUser() {
+		event.preventDefault();
+		const token = localStorage.getItem('token'),
+			userId = window.location.search.slice(4),
+			config = {
+				method: 'PATCH',
+				headers: new Headers({
+					'Content-Type': 'application/json',
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/users/${userId}/upgrade`, config)
+			.then(handleErrors)
+			.then(res => {
+				notif.make({text: 'Successfully Upgraded User', type: 'success' });
+			})
+			.catch((err) => {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			})
+	}
+
+	static downgradeUser() {
+		event.preventDefault();
+		const token = localStorage.getItem('token'),
+			userId = window.location.search.slice(4),
+			config = {
+				method: 'PATCH',
+				headers: new Headers({
+					'Content-Type': 'application/json',
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/users/${userId}/downgrade`, config)
+			.then(handleErrors)
+			.then(res => {
+				console.log(res);
+				notif.make({text: 'Successfully Downgraded User', type: 'success' });
+			})
+			.catch((err) => {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			})
+	}
+
+	static downgradeUser() {
+		event.preventDefault();
+		const token = localStorage.getItem('token'),
+			userId = window.location.search.slice(4),
+			config = {
+				method: 'PATCH',
+				headers: new Headers({
+					'Content-Type': 'application/json',
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/users/${userId}/downgrade`, config)
+			.then(handleErrors)
+			.then(res => {
+				console.log(res);
+				notif.make({text: 'Successfully Downgraded User', type: 'success' });
+			})
+			.catch((err) => {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
 			})
 	}
 
@@ -34,6 +156,20 @@ class User {
 		const userIdCont = document.getElementById('user-id');
 		username.innerHTML = `${firstname} ${lastname}`;
 		userIdCont.innerHTML = `SD0${User.getUserId()}`;
+	}
+
+	static renderProfile(user) {
+		const ID = document.getElementById('id'),
+					firstName = document.getElementById('firstName'),
+					lastName = document.getElementById('lastName'),
+					emails = document.getElementById('email'),
+					registeredOn = document.getElementById('registered');
+		const { id, firstname, lastname, email, registered } = user;
+		ID.innerText = `SD0${id}`;
+		firstName.innerText = firstname;
+		lastName.innerText = lastname;
+		emails.innerText = email;
+		registeredOn.innerText = `Registered On: ${registered}`;
 	}
 
 	static buildAllUserCollection(users) {
@@ -47,6 +183,22 @@ class User {
 		.map(userItem => {
 			table.append(userItem.buildRow());
 		});
+	}
+
+	static renderFilters() {
+		const created = document.getElementById('created'),
+				inTransit = document.getElementById('in-transit'),
+				delivered = document.getElementById('delivered'),
+				canceled = document.getElementById('canceled'),
+				createdParcels = localStorage.getItem('created'),
+				inTransitParcels = localStorage.getItem('inTransit'),
+				deliveredParcels = localStorage.getItem('delivered'),
+				canceledParcels = localStorage.getItem('canceled')
+
+		created.innerText = createdParcels;
+		inTransit.innerText = inTransitParcels;
+		delivered.innerText = deliveredParcels;
+		canceled.innerText = canceledParcels;
 	}
 }
 
@@ -139,6 +291,7 @@ class Parcel {
 				Parcel.renderFilters();
 			})
 			.catch((err) => {
+				console.log(err);
 				err.json().then( obj => {
 					notif.make({text: obj.message, type: 'danger' })
 				})
@@ -397,6 +550,7 @@ class Parcel {
 
 	static buildAllParcelCollection(parcels) {
 		Parcel.collection = parcels.map((parcel) => new ParcelItem(parcel));
+		console.log(Parcel.collection);
 		Parcel.filteredCollection = parcels.map((parcel) => new ParcelItem(parcel));
 	}
 
@@ -420,13 +574,21 @@ class Parcel {
 	}
 
 	static renderFilters() {
-		const created = document.getElementById('created');
-		const inTransit = document.getElementById('in-transit');
-		const delivered = document.getElementById('delivered');
+		const created = document.getElementById('created'),
+				inTransit = document.getElementById('in-transit'),
+				delivered = document.getElementById('delivered'),
+				createdParcels = Parcel.collection.filter(parcelItem => parcelItem.isCreated()).length,
+				inTransitParcels = Parcel.collection.filter(parcelItem => parcelItem.isInTransit()).length,
+				deliveredParcels = Parcel.collection.filter(parcelItem => parcelItem.isDelivered()).length,
+				canceledParcels = Parcel.collection.filter(parcelItem => parcelItem.isCanceled()).length;
 
-		created.innerText = Parcel.collection.filter(parcelItem => parcelItem.isCreated()).length;
-		inTransit.innerText = Parcel.collection.filter(parcelItem => parcelItem.isInTransit()).length;
-		delivered.innerText = Parcel.collection.filter(parcelItem => parcelItem.isDelivered()).length;
+		created.innerText = createdParcels;
+		inTransit.innerText = inTransitParcels;
+		delivered.innerText = deliveredParcels;
+		localStorage.setItem('created', createdParcels);
+		localStorage.setItem('delivered', deliveredParcels);
+		localStorage.setItem('inTransit', inTransitParcels);
+		localStorage.setItem('canceled', canceledParcels);
 	}
 
 	static renderDetails(parcel) {
@@ -484,6 +646,10 @@ class ParcelItem  {
 
 	isDelivered() {
 		return this.parcel.status === 'Delivered';
+	}
+
+	isCanceled() {
+		return this.parcel.status === 'Canceled';
 	}
 
 	buildRow() {
@@ -581,7 +747,7 @@ class UserItem {
 	buildButton() {
 		const anchor = document.createElement('a');
 		anchor.href = '#';
-		anchor.innerText = 'Upgrade';
+		anchor.innerText = 'Edit';
 		const classes = ['btn', 'xsm', 'bg-bright-blue', 'white'];
 		for (let clas of classes) {
 			anchor.classList.add(clas);
@@ -669,6 +835,20 @@ const statusParcel = document.getElementById('statusForm');
 if (statusParcel !== null) {
 	statusParcel.addEventListener('submit', Parcel.editParcelStatus);
 }
+
+// Implementing the upgrade user functionality
+const upgrade = document.getElementById('upgrade');
+if (upgrade !== null) {
+	upgrade.addEventListener('click', User.upgradeUser);
+}
+
+// Implementing the downgrade user functionality
+const downgrade = document.getElementById('downgrade');
+if (downgrade !== null) {
+	downgrade.addEventListener('click', User.downgradeUser);
+}
+
+
 
 
 function handleErrors(res) {

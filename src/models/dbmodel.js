@@ -2,11 +2,14 @@
 * @fileOverview Model with queries for database manipulation.
 * @exports dbModel
 * @requires moment
+* @requires bcrypt
 * @requires DB
 */
 import moment from 'moment';
+import bcrypt from 'bcrypt';
 import DB from './DB';
 import Notification from '../helper/email';
+import Helper from '../helper/authPassword';
 
 /**
 * Creates a new dbModel Class.
@@ -260,6 +263,73 @@ class dbModel {
         }).catch((err) => {
           reject(err);
         });
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+  * Method to send a reset mail
+  * @method
+  * @param {string} email
+  * @returns {function}
+  */
+  static sendResetEmail(email) {
+    return new Promise((resolve, reject) => {
+      const findQuery = `SELECT * FROM userTable WHERE email = '${email}'`;
+      DB.query(findQuery).then((result) => {
+        if (result.rows.length === 0) {
+          const response = {
+            message: 'No account found for this email',
+          };
+          reject(response);
+        }
+        const { id, isadmin } = result.rows[0];
+        Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '1d' }).then((token) => {
+          const emailBody = `Click on this link to reset your password <br> <a href="http://127.0.0.1:5500/UI/password_reset.html?id=${id}&auth=${token}">Reset Password</a> <br><br> The SendIT Team`;
+          Notification.sendMail(emailBody, id).then(() => {
+            resolve(result.rows[0]);
+          }).catch((err) => {
+            reject(err);
+          });
+        }).catch((err) => {
+          reject(err);
+        });
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+  * Method to update a user's password in DB
+  * @method
+  * @param {integer} id
+  * @param {string} password
+  * @returns {function}
+  */
+  static updatePassword(id, password) {
+    return new Promise((resolve, reject) => {
+      const hashedPassword = bcrypt.hashSync(password, 8);
+      const updateQuery = `UPDATE userTable SET password = '${hashedPassword}' WHERE id = '${id}' returning *`;
+      DB.query(updateQuery).then((result) => {
+        if (result.rows.length === 0) {
+          const response = {
+            message: 'Invalid request',
+          };
+          reject(response);
+        }
+        const user = result.rows[0];
+        delete user.password;
+        delete user.isadmin;
+        const emailBody = `Your password has been succesfully changed to: <br> <b>${password}</b> <br><br> The SendIT Team`;
+        Notification.sendMail(emailBody, id).then(() => {
+          resolve(result.rows[0]);
+        }).catch((err) => {
+          reject(err);
+        });
+        resolve(result.rows);
       }).catch((error) => {
         reject(error);
       });

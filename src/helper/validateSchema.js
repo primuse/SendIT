@@ -62,6 +62,10 @@ const updateSchema = {
   destination,
 };
 
+const resetSchema = {
+  email,
+};
+
 const locationSchema = {
   currentLocation,
 };
@@ -70,7 +74,12 @@ const statusSchema = {
   status,
 };
 
+const passwordSchema = {
+  password,
+};
+
 
 export {
-  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema, statusSchema,
+  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema, statusSchema, resetSchema,
+  passwordSchema,
 };

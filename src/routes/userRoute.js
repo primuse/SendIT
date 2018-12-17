@@ -37,7 +37,7 @@ router.patch('/users/:userId/upgrade', ValidateMiddleware.validateToken, Validat
 router.patch('/users/:userId/downgrade', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserParam, ValidateMiddleware.validateUserRole, UserController.downgradeUser);
 
 /**
-* Route to get all Parcel Orders
+* Route to get all Users
 * @param  {string} route The Get Parcels url route
 * @param  {function} ParcelController.getAllParcels The handler function
 * @returns {(obj|obj} parcel or error message
@@ -45,12 +45,20 @@ router.patch('/users/:userId/downgrade', ValidateMiddleware.validateToken, Valid
 router.get('/users', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, UserController.getAllUsers);
 
 /**
-* Route to get parcel order by ID
+* Route to get user by user
 * @param  {string} route The Get parcels/:parcelID url route
 * @param  {function} ParcelController.getParcel The handler function
 * @returns {(obj|obj} parcel or error message
 */
-router.get('/users/:userId', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateUserParam, UserController.getUser);
+router.get('/users/:userId', ValidateMiddleware.validateToken, ValidateMiddleware.validateUsers, ValidateMiddleware.validateUserParam, UserController.getUser);
+
+/**
+* Route to get a user by admin
+* @param  {string} route The Get parcels/:parcelID url route
+* @param  {function} ParcelController.getParcel The handler function
+* @returns {(obj|obj} parcel or error message
+*/
+router.get('/auth/users/:userId', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateUserParam, UserController.getUser);
 
 /**
 * Route to get all parcels by user

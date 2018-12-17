@@ -68,4 +68,20 @@ router.patch('/parcels/:parcelId/currentlocation', ValidateMiddleware.validateTo
 */
 router.patch('/parcels/:parcelId/status', ValidateMiddleware.validateToken, ValidateMiddleware.validateUserRole, ValidateMiddleware.validateParcelParam, ValidateMiddleware.validateStatus, ParcelController.statusParcel);
 
+/**
+* Route to request email reset link
+* @param  {string} route The reset email
+* @param  {function} ParcelController.sendResetEmail The handler function
+* @returns {(obj|obj} success message or error message
+*/
+router.post('/reset/email', ValidateMiddleware.validateReset, ParcelController.sendResetEmail);
+
+/**
+* Route to reset user password
+* @param  {string} route The reset email
+* @param  {function} ParcelController.updatePassword The handler function
+* @returns {(obj|obj} success message or error message
+*/
+router.patch('/reset/:userId', ValidateMiddleware.validateUsers, ValidateMiddleware.validatePassword, ParcelController.updatePassword);
+
 export default router;
