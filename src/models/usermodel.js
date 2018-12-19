@@ -10,6 +10,7 @@ import moment from 'moment';
 import dotenv from 'dotenv';
 import DB from './DB';
 import Helper from '../helper/authPassword';
+import Notification from '../helper/email';
 
 dotenv.config();
 
@@ -74,7 +75,7 @@ class userModel {
   */
   static getAllUsers() {
     return new Promise((resolve, reject) => {
-      const findAllQuery = 'SELECT * FROM userTable';
+      const findAllQuery = 'SELECT * FROM userTable ORDER BY id ASC';
 
       DB.query(findAllQuery).then((result) => {
         if (result.rows.length === 0) {
@@ -165,21 +166,33 @@ class userModel {
   */
   static updateUser(id) {
     return new Promise((resolve, reject) => {
-      const updateQuery = `UPDATE userTable SET isadmin = 'true' WHERE id = '${id}' AND isadmin = 'false' returning *`;
-      DB.query(updateQuery).then((result) => {
-        if (result.rows.length === 0) {
-          const response = {
-            message: 'Already Upgraded',
-          };
-          reject(response);
-        }
-        const user = result.rows[0];
-        delete user.password;
-        delete user.isadmin;
-        resolve(result.rows);
-      }).catch((error) => {
-        reject(error);
-      });
+      if (+id === 1) {
+        const response = {
+          message: 'Cannot Upgrade Super Admin'
+        };
+        reject(response);
+      } else {
+        const updateQuery = `UPDATE userTable SET isadmin = 'true' WHERE id = '${id}' AND isadmin = 'false' returning *`;
+        DB.query(updateQuery).then((result) => {
+          if (result.rows.length === 0) {
+            const response = {
+              message: 'Already Upgraded',
+            };
+            reject(response);
+          }
+          const user = result.rows[0];
+          delete user.password;
+          delete user.isadmin;
+          const emailBody = 'You have been successfully upgraded to Admin <br><br> The SendIT Team';
+          Notification.sendMail(emailBody, id).then(() => {
+            resolve(result.rows[0]);
+          }).catch((err) => {
+            reject(err);
+          });
+        }).catch((error) => {
+          reject(error);
+        });
+      }
     });
   }
 
@@ -192,21 +205,33 @@ class userModel {
   */
   static downgradeUser(id) {
     return new Promise((resolve, reject) => {
-      const updateQuery = `UPDATE userTable SET isadmin = 'false' WHERE id = '${id}' AND isadmin = 'true' returning *`;
-      DB.query(updateQuery).then((result) => {
-        if (result.rows.length === 0) {
-          const response = {
-            message: 'Already Downgraded',
-          };
-          reject(response);
-        }
-        const user = result.rows[0];
-        delete user.password;
-        delete user.isadmin;
-        resolve(result.rows);
-      }).catch((error) => {
-        reject(error);
-      });
+      if (+id === 1) {
+        const response = {
+          message: 'Cannot Downgrade Super Admin'
+        };
+        reject(response);
+      } else {
+        const updateQuery = `UPDATE userTable SET isadmin = 'false' WHERE id = '${id}' AND isadmin = 'true' returning *`;
+        DB.query(updateQuery).then((result) => {
+          if (result.rows.length === 0) {
+            const response = {
+              message: 'Already Downgraded',
+            };
+            reject(response);
+          }
+          const user = result.rows[0];
+          delete user.password;
+          delete user.isadmin;
+          const emailBody = 'You have been successfully downgraded from Admin. <br> All Admin Priviledges have been revoked <br><br> The SendIT Team';
+          Notification.sendMail(emailBody, id).then(() => {
+            resolve(result.rows[0]);
+          }).catch((err) => {
+            reject(err);
+          });
+        }).catch((error) => {
+          reject(error);
+        });
+      }
     });
   }
 
@@ -218,13 +243,13 @@ class userModel {
   */
   static findUserParcels(userId) {
     return new Promise((resolve, reject) => {
-      const findQuery = `SELECT * FROM parcelTable WHERE placedby = '${userId}'`;
+      const findQuery = `SELECT * FROM parcelTable WHERE placedby = '${userId}' ORDER BY id ASC`;
       DB.query(findQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
             message: 'User has no parcels',
           };
-          reject(response);
+          resolve(response);
         }
         resolve(result.rows);
       }).catch((error) => {

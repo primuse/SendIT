@@ -63,7 +63,7 @@ class Fetch {
 			localStorage.setItem('id', res.data.user.id);
 			localStorage.setItem('firstName', res.data.user.firstname);
 			localStorage.setItem('lastName', res.data.user.lastname)
-			window.location = 'new_dashboard.html'
+			window.location = 'dashboard.html'
 		})
 		.catch((err) => {
 		  notif.make({text: 'Email already Registered', type: 'danger' });
@@ -124,26 +124,6 @@ class Fetch {
 				notif.make({text: obj.message, type: 'danger' })
 			})
 		})
-	}
-
-	static getUserParcels(event) {
-		const id = Number(localStorage.getItem('id'));
-		const token = localStorage.getItem('token');
-
-		const config = {
-			method: 'GET',
-			headers: new Headers({
-				'x-access-token': token
-			}),
-		};
-
-		fetch(`http://localhost:3000/api/v1/users/${id}/parcels`, config)
-		.then(handleErrors)
-		.then(res => {
-			const parcels = res.data[0]; 
-			console.log(parcels);
-
-		});
 	}
 }
 
