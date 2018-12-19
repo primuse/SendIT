@@ -538,7 +538,8 @@ class Parcel {
 			.then(res => {
         notif.make({text: 'Successfully created parcel', type: 'success' });
 				hide(modal);
-				document.forms.createParcel.reset()
+				document.forms.createParcel.reset();
+				Parcel.getUserParcels();
 			})
 			.catch((err) => {
 				if(err.message === 'Failed to fetch') {
@@ -549,9 +550,11 @@ class Parcel {
 	}
 
 	static buildAllParcelCollection(parcels) {
-		Parcel.collection = parcels.map((parcel) => new ParcelItem(parcel));
-		console.log(Parcel.collection);
-		Parcel.filteredCollection = parcels.map((parcel) => new ParcelItem(parcel));
+		if(parcels.length) {
+			Parcel.collection = parcels.map((parcel) => new ParcelItem(parcel));
+			console.log(Parcel.collection);
+			Parcel.filteredCollection = parcels.map((parcel) => new ParcelItem(parcel));
+		}
 	}
 
 	static buildDeliveredParcelCollection(parcels) {
@@ -577,7 +580,7 @@ class Parcel {
 		const created = document.getElementById('created'),
 				inTransit = document.getElementById('in-transit'),
 				delivered = document.getElementById('delivered'),
-				createdParcels = Parcel.collection.filter(parcelItem => parcelItem.isCreated()).length,
+				createdParcels = Parcel.collection.length,
 				inTransitParcels = Parcel.collection.filter(parcelItem => parcelItem.isInTransit()).length,
 				deliveredParcels = Parcel.collection.filter(parcelItem => parcelItem.isDelivered()).length,
 				canceledParcels = Parcel.collection.filter(parcelItem => parcelItem.isCanceled()).length;

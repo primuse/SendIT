@@ -70,7 +70,7 @@ class dbModel {
   */
   static getAllParcels() {
     return new Promise((resolve, reject) => {
-      const findAllQuery = 'SELECT * FROM parcelTable';
+      const findAllQuery = 'SELECT * FROM parcelTable ORDER BY id ASC';
 
       DB.query(findAllQuery).then((result) => {
         if (result.rows.length === 0) {
@@ -329,7 +329,6 @@ class dbModel {
         }).catch((err) => {
           reject(err);
         });
-        resolve(result.rows);
       }).catch((error) => {
         reject(error);
       });
