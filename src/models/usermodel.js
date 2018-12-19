@@ -142,7 +142,6 @@ class userModel {
           if (user.isadmin) {
             user.auth = 0;
           }
-          // delete user.isadmin;
           Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
             resolve([{ token, user }]);
           }).catch((err) => {
@@ -166,11 +165,11 @@ class userModel {
   */
   static updateUser(id) {
     return new Promise((resolve, reject) => {
-      const updateQuery = `UPDATE userTable SET isadmin = 'true' WHERE id = '${id}' returning *`;
+      const updateQuery = `UPDATE userTable SET isadmin = 'true' WHERE id = '${id}' AND isadmin = 'false' returning *`;
       DB.query(updateQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
-            message: 'No user found',
+            message: 'Already Upgraded',
           };
           reject(response);
         }
@@ -193,11 +192,11 @@ class userModel {
   */
   static downgradeUser(id) {
     return new Promise((resolve, reject) => {
-      const updateQuery = `UPDATE userTable SET isadmin = 'false' WHERE id = '${id}' returning *`;
+      const updateQuery = `UPDATE userTable SET isadmin = 'false' WHERE id = '${id}' AND isadmin = 'true' returning *`;
       DB.query(updateQuery).then((result) => {
         if (result.rows.length === 0) {
           const response = {
-            message: 'No user found',
+            message: 'Already Downgraded',
           };
           reject(response);
         }

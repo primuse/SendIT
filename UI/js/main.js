@@ -18,7 +18,6 @@ class Fetch {
 		fetch('http://localhost:3000/api/v1/auth/login', config)
 		.then(handleErrors)
 		.then(res =>  { 
-			console.log(res);
 			localStorage.setItem('token', res.data[0].token);
 			localStorage.setItem('id', res.data[0].user.id);
 			localStorage.setItem('firstName', res.data[0].user.firstname);
@@ -71,6 +70,62 @@ class Fetch {
 		})
 	}
 
+	static sendResetEmail(event) {
+		event.preventDefault();
+		const email = document.getElementById('email').value;
+		const myData = {
+			email,
+		};
+		const config = {
+			method: 'POST',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
+			body: JSON.stringify(myData),
+		};
+
+		fetch('http://localhost:3000/api/v1/reset/email', config)
+		.then(handleErrors)
+		.then(res =>  { 
+			notif.make({text: 'A reset link has been sent to your mail', type: 'success'});
+		})
+		.catch((err) => {
+			err.json().then( obj => {
+				notif.make({text: obj.message, type: 'danger' })
+			})
+		})
+	}
+
+	static updatePassword(event) {
+		event.preventDefault();
+		const password = document.getElementById('password').value,
+					myData = {
+						password,
+					},
+					urlParams = new URLSearchParams(window.location.search),
+					token = urlParams.get('auth'),
+					userId = urlParams.get('id'),
+					config = {
+						method: 'PATCH',
+						headers: new Headers({
+							'Content-Type': 'application/json',
+							'x-access-token': token
+						}),
+						body: JSON.stringify(myData),
+					};
+
+		fetch(`http://localhost:3000/api/v1/reset/${userId}`, config)
+		.then(handleErrors)
+		.then(res =>  { 
+			notif.make({text: 'Successfuly updated Password', type: 'success'});
+		})
+		.catch((err) => {
+			err.json().then( obj => {
+				notif.make({text: obj.message, type: 'danger' })
+			})
+		})
+	}
+
 	static getUserParcels(event) {
 		const id = Number(localStorage.getItem('id'));
 		const token = localStorage.getItem('token');
@@ -102,6 +157,18 @@ if (loginForm !== null) {
 let signupForm = document.getElementById("signupForm");
 if (signupForm !== null) {
 	signupForm.addEventListener('submit', Fetch.signup);
+}
+
+// Implementing the signup page
+let resetForm = document.getElementById("resetForm");
+if (resetForm !== null) {
+	resetForm.addEventListener('submit', Fetch.sendResetEmail);
+}
+
+// Implementing the signup page
+let passwordForm = document.getElementById("passwordForm");
+if (passwordForm !== null) {
+	passwordForm.addEventListener('submit', Fetch.updatePassword);
 }
 
 

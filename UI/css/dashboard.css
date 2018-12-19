@@ -171,13 +171,15 @@ tr:nth-child(even) {
   border-radius: 6px;
   width: 100%;
 }
+#user-profile {
+  min-height: 150px;
+}
 #user-img {
   width: 140px;
   height: auto;
 }
 #user-desc {
   flex: 0 1 30%;
-  border-right: 1px solid rgba(112, 112, 112, 0.27);
   padding: 20px;
 }
 #user-desc h4 {

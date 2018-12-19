@@ -33,6 +33,7 @@ class Notification {
         sgMail.send(msg);
         resolve();
       }).catch((error) => {
+        console.log(error);
         reject(error);
       });
     });

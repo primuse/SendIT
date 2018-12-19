@@ -119,6 +119,27 @@ class Parcel {
   }
 
   /**
+  * Hanlder Method to change a user's password
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  */
+  static updatePassword(req, res) {
+    const { userId } = req.params;
+    const { password } = req.body;
+    model.updatePassword(userId, password).then((data) => {
+      res.status(200).send({
+        message: 'Password Updated',
+        data,
+      });
+    }).catch((error) => {
+      res.status(401).send({
+        message: error.message,
+      });
+    });
+  }
+
+  /**
   * Handler Method to change currentLocation of a parcel order
   * @method
   * @param  {obj} req The HTTP request
@@ -150,6 +171,25 @@ class Parcel {
     model.changeStatus(id, value).then((data) => {
       res.send({
         message: `Status has been updated to ${value}`,
+        data
+      });
+    }).catch((error) => {
+      res.status(400)
+        .send(error);
+    });
+  }
+
+  /**
+  * Handler Method to request password reset email
+  * @method
+  * @param  {obj} req The HTTP request
+  * @param  {obj} res The HTTP response
+  */
+  static sendResetEmail(req, res) {
+    const { email } = req.body;
+    model.sendResetEmail(email).then((data) => {
+      res.send({
+        message: 'Email has been sent',
         data
       });
     }).catch((error) => {
