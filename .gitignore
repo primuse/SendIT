@@ -2,11 +2,5 @@ src/
 node_modules/
 .nyc_output/
 .env
-.eslintignore
-.eslintrc.json
-.travis.yml
 package-lock.json
-package.json
-Procfile
-
 

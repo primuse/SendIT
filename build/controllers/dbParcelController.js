@@ -36,138 +36,161 @@ function () {
     * @method
     * @param  {obj} req The HTTP request
     * @param  {obj} res The HTTP response
-    * @returns {obj}
     */
     value: function createParcels(req, res) {
-      model.createParcel(req).then(function () {
+      var _req$body = req.body,
+          parcelName = _req$body.parcelName,
+          price = _req$body.price,
+          weight = _req$body.weight,
+          pickupLocation = _req$body.pickupLocation,
+          destination = _req$body.destination,
+          status = _req$body.status,
+          receiver = _req$body.receiver,
+          email = _req$body.email,
+          phoneNumber = _req$body.phoneNumber,
+          currentLocation = _req$body.currentLocation;
+      var userId = req.decoded;
+      model.createParcel(parcelName, price, weight, pickupLocation, destination, status, receiver, email, phoneNumber, currentLocation, userId).then(function (rows) {
         res.status(201).send({
-          status: 201,
-          data: [{
-            message: 'Order Created'
-          }]
+          rows: rows
         });
       }).catch(function (error) {
         res.status(400).send({
-          status: 400,
-          data: [{
-            message: error
-          }]
+          message: error
         });
       });
-    } // /**
-    // * Handler Method to get all Parcel orders
-    // * @method
-    // * @param  {obj} req The HTTP request
-    // * @param  {obj} res The HTTP response
-    // * @returns {obj}
-    // */
-    // static getAllParcels(req, res) {
-    //   model.read((err, buf) => {
-    //     if (!err) {
-    //       const parcels = JSON.parse(buf.toString());
-    //       const { weight } = req.query;
-    //       if (weight === undefined) {
-    //         res.send({
-    //           status: 200,
-    //           data: [parcels],
-    //         });
-    //       } else {
-    //         const filteredParcel = parcels.filter(item => item.weight === weight);
-    //         if (filteredParcel.length > 0) {
-    //           res.send({
-    //             status: 200,
-    //             data: [filteredParcel],
-    //           });
-    //         } else {
-    //           res.status(404).send({
-    //             status: 404,
-    //             data: [{
-    //               message: 'No parcel found',
-    //             }],
-    //           });
-    //         }
-    //       }
-    //     }
-    //   });
-    // }
-    // /**
-    // * Hanlder Method to get a parcel order by ID
-    // * @method
-    // * @param  {obj} req The HTTP request
-    // * @param  {obj} res The HTTP response
-    // * @returns {obj}
-    // */
-    // static getParcel(req, res) {
-    //   const id = req.params.parcelId;
-    //   model.findParcel(id).then((parcel) => {
-    //     res.send({
-    //       status: 200,
-    //       data: [parcel],
-    //     });
-    //   }).catch((error) => {
-    //     res.status(404).send({
-    //       status: 404,
-    //       data: [{
-    //         message: error,
-    //       }],
-    //     });
-    //   });
-    // }
-    // /**
-    // * Handler Method to update a parcel order
-    // * @method
-    // * @param  {obj} req The HTTP request
-    // * @param  {obj} res The HTTP response
-    // * @returns {obj}
-    // */
-    // static updateParcel(req, res) {
-    //   const id = req.params.parcelId;
-    //   const value = req.body;
-    //   model.updateParcel(id, value).then(() => {
-    //     res.send({
-    //       status: 200,
-    //       data: [{
-    //         id,
-    //         message: 'Sucessfully updated Parcel',
-    //       }],
-    //     });
-    //   }).catch((error) => {
-    //     res.status(400).send({
-    //       status: 400,
-    //       data: [{
-    //         id,
-    //         message: error,
-    //       }],
-    //     });
-    //   });
-    // }
-    // /**
-    // * Handler Method to cancel a parcel order
-    // * @method
-    // * @param  {obj} req The HTTP request
-    // * @param  {obj} res The HTTP response
-    // * @returns {obj}
-    // */
-    // static cancelParcel(req, res) {
-    //   const id = req.params.parcelId;
-    //   model.cancelParcel(id).then(() => {
-    //     res.send({
-    //       status: 200,
-    //       data: [{
-    //         id,
-    //         message: 'Order Canceled',
-    //       }],
-    //     });
-    //   }).catch((error) => {
-    //     res.status(400).send({
-    //       status: 400,
-    //       data: [{
-    //         message: error,
-    //       }],
-    //     });
-    //   });
-    // }
+    }
+    /**
+    * Handler Method to get all Parcel orders
+    * @method
+    * @param  {obj} req The HTTP request
+    * @param  {obj} res The HTTP response
+    */
 
+  }, {
+    key: "getAllParcels",
+    value: function getAllParcels(req, res) {
+      model.getAllParcels().then(function (rows) {
+        res.send({
+          data: rows
+        });
+      }).catch(function (error) {
+        res.status(404).send(error);
+      });
+    }
+    /**
+    * Hanlder Method to get a parcel order by ID
+    * @method
+    * @param  {obj} req The HTTP request
+    * @param  {obj} res The HTTP response
+    */
+
+  }, {
+    key: "getParcel",
+    value: function getParcel(req, res) {
+      var id = req.params.parcelId;
+      var userId = req.decoded;
+      model.findParcel(id, userId).then(function (parcel) {
+        res.send({
+          data: parcel
+        });
+      }).catch(function (error) {
+        res.status(404).send(error);
+      });
+    }
+    /**
+    * Handler Method to cancel a parcel order
+    * @method
+    * @param  {obj} req The HTTP request
+    * @param  {obj} res The HTTP response
+    */
+
+  }, {
+    key: "cancelParcel",
+    value: function cancelParcel(req, res) {
+      var id = req.params.parcelId;
+      var userId = req.decoded;
+      model.cancelParcel(id, userId).then(function () {
+        res.send({
+          data: {
+            id: id,
+            message: 'Order Canceled'
+          }
+        });
+      }).catch(function (error) {
+        res.status(400).send(error);
+      });
+    }
+    /**
+    * Handler Method to update a parcel order destination
+    * @method
+    * @param  {obj} req The HTTP request
+    * @param  {obj} res The HTTP response
+    */
+
+  }, {
+    key: "updateParcel",
+    value: function updateParcel(req, res) {
+      var id = req.params.parcelId;
+      var value = req.body.destination;
+      var userId = req.decoded;
+      model.changeDestination(id, value, userId).then(function () {
+        res.send({
+          data: {
+            id: id,
+            message: 'Order updated'
+          }
+        });
+      }).catch(function (error) {
+        res.status(400).send(error);
+      });
+    }
+    /**
+    * Handler Method to change currentLocation of a parcel order
+    * @method
+    * @param  {obj} req The HTTP request
+    * @param  {obj} res The HTTP response
+    */
+
+  }, {
+    key: "locationParcel",
+    value: function locationParcel(req, res) {
+      var id = req.params.parcelId;
+      var value = req.body.currentLocation;
+      model.changeLocation(id, value).then(function () {
+        res.send({
+          data: {
+            id: id,
+            message: 'Location updated'
+          }
+        });
+      }).catch(function (error) {
+        res.status(400).send(error);
+      });
+    }
+    /**
+    * Handler Method to change status of a parcel order
+    * @method
+    * @param  {obj} req The HTTP request
+    * @param  {obj} res The HTTP response
+    */
+
+  }, {
+    key: "statusParcel",
+    value: function statusParcel(req, res) {
+      var id = req.params.parcelId;
+      var value = req.body.status;
+      model.changeStatus(id, value).then(function () {
+        res.send({
+          data: {
+            id: id,
+            message: 'Status updated'
+          }
+        });
+      }).catch(function (error) {
+        res.status(400).send(error);
+      });
+    }
   }]);
 
   return Parcel;

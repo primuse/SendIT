@@ -6,15 +6,11 @@
 
 [SendIT](https://primuse.github.io/SendIT/index.html) is a courier service app that helps users deliver parcels to different destinations all around the world. 
 
-It provides courier quotes based on weight categories.
-
 #### Current Feautures: 
 * Users can create parcel orders, specifying who it is addressed to and destination.
 * Users can cancel parcels and change parcel destination.
 * Admin can change the current location and update status of a parcel.
 * Users can see Pickup location and destination on google map
-
-#### Future Features:
 * Users receive live email notification anytime Admin changes parcel status.
 
 **N/B: Admin functionalities can be accessed through [admin.html](https://primuse.github.io/SendIT/admin.html)**
@@ -68,6 +64,7 @@ NodeJs,
 Express,
 Mocha test suite,
 Chai assertion library
+JSDocs
 
 ## Environments
 #### <a href="https://sendit18.herokuapp.com/">API endpoints hosted on Heroku</a>

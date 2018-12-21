@@ -6,7 +6,15 @@ node_js:
 install: 
   - npm install
 
+before_script:
+  - node db createTables
+  - node db createAdmin
+
 script: 
   - npm run test
+  
+after_script: 
+  - node db dropParcelTable
+  - node db dropUserTable
 
 after_success: npm run coverage

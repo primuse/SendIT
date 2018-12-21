@@ -49,7 +49,7 @@
           <li>
             <img src="asset/imgs/ico/user.svg" class="menu-ico">
             <a href="admin_all_users.html"><span>All Users</span></a>
-          </li>
+        </li>
         </ul>
       </div>
     </aside>
@@ -74,10 +74,10 @@
       </nav>
       <!-- Dashboard Content -->
       <div id="main-content-page" class="d-flex">
-        <div id="user-cont" class="d-flex">
+        <div id="user-cont">
           <div id="user-desc">
             <img src="asset/imgs/ico/user-black.svg" id="user-img">
-            <div class="text-center">
+            <div id="user-profile" class="text-center">
                 <h2 id="id"></h2>
                 <span id="profile-name" class="d-block mb-14">
                   <h4 id="firstName" class="d-inline"></h4>
@@ -88,26 +88,10 @@
             </div>
           </div>
           <div id="user-info" class="text-center">
-            <h1 class="mb-6">All Parcels</h1>
-            <div class="d-flex content-between mb-6">
-                <div> 
-                  <small>Created</small>
-                  <h4 id="created"></h4>
-                </div>
-                <div> 
-                  <small>Delivered</small>
-                  <h4 id="delivered" class="green"></h4>
-                </div>
-                <div> 
-                  <small>In-transit</small>
-                  <h4 id="in-transit" class="blue"></h4>
-                </div>
-                <div> 
-                  <small>Cancelled</small>
-                  <h4 id="canceled" class="red"></h4>
-                </div>
+            <div class="d-flex content-center">
+              <a href="#" id="upgrade" class="btn lg bg-blue white mr-5">Upgrade</a>
+              <a href="#" id="downgrade" class="btn lg bg-blue white">Downgrade</a>
             </div>
-            <!-- <a href="#" data-modal data-target="#profile-modal" class="btn lg bg-blue white">Edit Profile</a> -->
           </div>
         </div>
       </div>
@@ -140,9 +124,10 @@
     </div>
   </div> -->
 
+ 
     <script>
       window.addEventListener('load', () => {
-        User.getUser();
+        User.getUserByAdmin();
       });
     </script>
     <script src="js/notif.js"></script>

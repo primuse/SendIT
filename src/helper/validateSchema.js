@@ -10,40 +10,37 @@ import Joi from 'joi';
 /**
 * Joi validation constraints
 */
-const parcelName = Joi.string().required();
-const placedBy = Joi.number().integer().required();
-const price = Joi.number().integer().required();
+const parcelName = Joi.string().trim().required();
 const weight = Joi.number().integer().required();
-const pickupLocation = Joi.string().required();
-const destination = Joi.string().required();
-const status = Joi.string().valid(['Created', 'In-transit', 'Delivered']).required();
-const receiver = Joi.string().required();
-const email = Joi.string().email().lowercase().required();
+const pickupLocation = Joi.string().trim().required();
+const destination = Joi.string().trim().required();
+const status = Joi.string().trim().valid(['Created', 'In-transit', 'Delivered', 'Canceled']).required();
+const receiver = Joi.string().trim().required();
+const email = Joi.string().trim().email({ minDomainAtoms: 2 }).lowercase()
+  .required()
+  .error(new Error('Enter a valid email'));
 const phoneNumber = Joi.number().integer()
   .required();
-const currentLocation = Joi.string().required();
+const currentLocation = Joi.string().trim().required();
 
-const firstName = Joi.string().required();
-const lastName = Joi.string().required();
-const otherNames = Joi.string().required();
-const username = Joi.string().required();
-const password = Joi.string().alphanum().required();
+const firstName = Joi.string().trim().regex(/^[a-zA-Z]*$/).required()
+  .error(new Error('Enter a valid firstname'));
+const lastName = Joi.string().trim().regex(/^[a-zA-Z]*$/).required()
+  .error(new Error('Enter a valid lastname'));
+const password = Joi.string().alphanum().trim().required()
+  .error(new Error('Enter a valid password'));
 
 /**
 * Creates a new Joi schema.
 */
 const parcelSchema = {
   parcelName,
-  placedBy,
-  price,
   weight,
   pickupLocation,
   destination,
-  status,
   receiver,
   email,
   phoneNumber,
-  currentLocation,
 };
 
 /**
@@ -52,10 +49,37 @@ const parcelSchema = {
 const userSchema = {
   firstName,
   lastName,
-  otherNames,
-  username,
   email,
   password,
 };
 
-export { parcelSchema, userSchema };
+const loginSchema = {
+  email,
+  password,
+};
+
+const updateSchema = {
+  destination,
+};
+
+const resetSchema = {
+  email,
+};
+
+const locationSchema = {
+  currentLocation,
+};
+
+const statusSchema = {
+  status,
+};
+
+const passwordSchema = {
+  password,
+};
+
+
+export {
+  parcelSchema, userSchema, loginSchema, updateSchema, locationSchema, statusSchema, resetSchema,
+  passwordSchema,
+};
