@@ -11,7 +11,6 @@ main {
 
 #menu {
   padding: 30px 22px 30px 17px;
-  /*height: 110vh;*/
   box-sizing: border-box;
   height: auto;
   position: fixed;
@@ -24,7 +23,17 @@ main {
   height: auto;
   vertical-align: middle;
 }
-
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 22px;
+}
+.pagination .links {
+  text-decoration: underline;
+  color: rgb(255,69,0);
+  font-size: 1.1rem;
+  padding-right: 7px;
+}
 nav {
   padding: 10px 40px;
   box-shadow: rgba(0, 0, 0, 0.16) 0 6px 25px;

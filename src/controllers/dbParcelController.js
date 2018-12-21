@@ -45,9 +45,12 @@ class Parcel {
   * @param  {obj} res The HTTP response
   */
   static getAllParcels(req, res) {
-    model.getAllParcels().then((rows) => {
+    const { offset } = req.query;
+    model.getAllParcels(offset).then((rows) => {
       res.send({
+        message: 'All Parcels',
         data: rows,
+        pages: rows.pages,
       });
     }).catch((error) => {
       res.status(404)

@@ -70,26 +70,41 @@ class userModel {
   /**
   * Method to get all users from DB
   * @method
-  * @param {obj} req HTTP request
+  * @param {int} offset database offset
   * @returns {function}
   */
-  static getAllUsers() {
+  static getAllUsers(offset) {
     return new Promise((resolve, reject) => {
-      const findAllQuery = 'SELECT * FROM userTable ORDER BY id ASC';
+      const dbOffset = offset * 8;
+      const countAllQuery = 'SELECT COUNT(id) from userTable';
+      const findAllQuery = `SELECT * FROM userTable ORDER BY id ASC LIMIT 8 OFFSET '${dbOffset}'`;
 
-      DB.query(findAllQuery).then((result) => {
-        if (result.rows.length === 0) {
-          const response = {
-            message: 'No Users',
-          };
-          reject(response);
-        }
-        const users = result.rows;
-        users.map(user => delete user.password);
-        resolve(users);
-      }).catch((error) => {
-        reject(error);
-      });
+      DB.query(countAllQuery);
+
+      DB.query(findAllQuery);
+
+      Promise.all([
+        DB.query(countAllQuery),
+        DB.query(findAllQuery)
+      ])
+        .then((res) => {
+          const firstPromise = res[0].rows[0].count,
+            users = res[1].rows,
+            pages = Math.ceil(firstPromise / 8);
+
+          users.pages = pages;
+
+          if (users.length === 0) {
+            const response = {
+              message: 'No Users',
+            };
+            reject(response);
+          }
+          users.map(user => delete user.password);
+          resolve(users);
+        }).catch((err) => {
+          reject(err);
+        });
     });
   }
 
@@ -239,22 +254,39 @@ class userModel {
   * Method to get a users parcel from DB
   * @method
   * @param {integer} userId
+  * @param {integer} offset
   * @returns {function}
   */
-  static findUserParcels(userId) {
+  static findUserParcels(userId, offset) {
     return new Promise((resolve, reject) => {
-      const findQuery = `SELECT * FROM parcelTable WHERE placedby = '${userId}' ORDER BY id ASC`;
-      DB.query(findQuery).then((result) => {
-        if (result.rows.length === 0) {
-          const response = {
-            message: 'User has no parcels',
-          };
-          resolve(response);
-        }
-        resolve(result.rows);
-      }).catch((error) => {
-        reject(error);
-      });
+      const dbOffset = offset * 6;
+      const countAllQuery = `SELECT COUNT(id) from parcelTable WHERE placedby = '${userId}'`;
+      const findQuery = `SELECT * FROM parcelTable WHERE placedby = '${userId}' ORDER BY id ASC LIMIT 6 OFFSET '${dbOffset}'`;
+      DB.query(countAllQuery);
+
+      DB.query(findQuery);
+
+      Promise.all([
+        DB.query(countAllQuery),
+        DB.query(findQuery)
+      ])
+        .then((res) => {
+          const firstPromise = res[0].rows[0].count,
+            secondPromise = res[1].rows,
+            pages = Math.ceil(firstPromise / 6);
+
+          secondPromise.pages = pages;
+
+          if (secondPromise.length === 0) {
+            const response = {
+              message: 'User has no parcels',
+            };
+            reject(response);
+          }
+          resolve(secondPromise);
+        }).catch((err) => {
+          reject(err);
+        });
     });
   }
 }

@@ -30,9 +30,13 @@ class Fetch {
 			}
 		})
 		.catch((err) => {
-			err.json().then( obj => {
-				notif.make({text: obj.message, type: 'danger' })
-			})
+			if (err.json) {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			} else {
+				console.log(err)
+			}
 		})
 	}
 
@@ -66,7 +70,13 @@ class Fetch {
 			window.location = 'dashboard.html'
 		})
 		.catch((err) => {
-		  notif.make({text: 'Email already Registered', type: 'danger' });
+			if (err.json) {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			} else {
+				console.log(err)
+			}
 		})
 	}
 
@@ -90,9 +100,13 @@ class Fetch {
 			notif.make({text: 'A reset link has been sent to your mail', type: 'success'});
 		})
 		.catch((err) => {
-			err.json().then( obj => {
-				notif.make({text: obj.message, type: 'danger' })
-			})
+			if (err.json) {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			} else {
+				console.log(err)
+			}
 		})
 	}
 
@@ -120,12 +134,31 @@ class Fetch {
 			notif.make({text: 'Successfuly updated Password', type: 'success'});
 		})
 		.catch((err) => {
-			err.json().then( obj => {
-				notif.make({text: obj.message, type: 'danger' })
-			})
+			if (err.json) {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			} else {
+				console.log(err)
+			}
 		})
 	}
 }
+
+
+// Function to handle errors
+function handleErrors(res) {
+	if(!res.ok) {
+		throw res;	
+	}
+	else {
+	return res.json();
+	}
+}
+
+const notif = new Notification()
+document.body.append(notif.getElement());
+
 
 // Implementing the Login page
 let loginForm = document.getElementById('login-form');
@@ -151,18 +184,3 @@ if (passwordForm !== null) {
 	passwordForm.addEventListener('submit', Fetch.updatePassword);
 }
 
-
-
-// Function to handle errors
-function handleErrors(res) {
-	if(!res.ok) {
-		throw res;	
-	}
-	else {
-	return res.json();
-	}
-}
-
-
-const notif = new Notification()
-document.body.append(notif.getElement());

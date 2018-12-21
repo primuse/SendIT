@@ -43,10 +43,12 @@ class User {
   * @param  {obj} res The HTTP response
   */
   static getAllUsers(req, res) {
-    model.getAllUsers().then((rows) => {
+    const { offset } = req.query;
+    model.getAllUsers(offset).then((rows) => {
       res.send({
         message: 'All Users',
         data: rows,
+        pages: rows.pages,
       });
     }).catch((error) => {
       res.status(404)
@@ -141,10 +143,12 @@ class User {
   */
   static userParcels(req, res) {
     const { userId } = req.params;
-    model.findUserParcels(userId).then((data) => {
+    const { offset } = req.query;
+    model.findUserParcels(userId, offset).then((data) => {
       res.status(200).send({
         message: `User ${userId} Parcels`,
         data,
+        pages: data.pages
       });
     }).catch((error) => {
       res.status(401).send({
