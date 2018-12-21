@@ -281,7 +281,7 @@ class userModel {
             const response = {
               message: 'User has no parcels',
             };
-            reject(response);
+            resolve(response);
           }
           resolve(secondPromise);
         }).catch((err) => {
