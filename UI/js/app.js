@@ -63,7 +63,7 @@ function modalSetup() {
   }
 }
 
-// Function to create google map
+// Function to create google map and markers
 const MapObject = {}
 
 function initMap() {
