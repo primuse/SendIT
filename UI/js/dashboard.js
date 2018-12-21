@@ -1,11 +1,11 @@
-const table = document.createElement('table');
+const main = document.getElementById('table-cont');
 
 class User {
 	static getUserId() {
 		return +localStorage.getItem('id');
 	}
 
-	static getAllUsers() {
+	static getAllUsers(offset = 0) {
 		const token = localStorage.getItem('token'),
 			config = {
 				method: 'GET',
@@ -14,16 +14,25 @@ class User {
 				}),
 			};
 
-		fetch('http://localhost:3000/api/v1/users', config)
+		fetch(`http://localhost:3000/api/v1/users?offset=${offset}`, config)
 			.then(handleErrors)
 			.then(res => {
+				main.innerHTML = '';
 				User.buildAllUserCollection(res.data);
 				User.populateUserTable();
+				const span = document.querySelector('.pagination span');
+				if (span === null) {
+					createPagination(res.pages, User.getAllUsers);
+				};
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -45,9 +54,13 @@ class User {
 				User.renderFilters();
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -68,10 +81,13 @@ class User {
 				User.renderProfile(user);
 			})
 			.catch((err) => {
-				console.log(err);
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -93,9 +109,13 @@ class User {
 				notif.make({text: 'Successfully Upgraded User', type: 'success' });
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -114,38 +134,16 @@ class User {
 		fetch(`http://localhost:3000/api/v1/users/${userId}/downgrade`, config)
 			.then(handleErrors)
 			.then(res => {
-				console.log(res);
 				notif.make({text: 'Successfully Downgraded User', type: 'success' });
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
-			})
-	}
-
-	static downgradeUser() {
-		event.preventDefault();
-		const token = localStorage.getItem('token'),
-			userId = window.location.search.slice(4),
-			config = {
-				method: 'PATCH',
-				headers: new Headers({
-					'Content-Type': 'application/json',
-					'x-access-token': token
-				}),
-			};
-
-		fetch(`http://localhost:3000/api/v1/users/${userId}/downgrade`, config)
-			.then(handleErrors)
-			.then(res => {
-				console.log(res);
-				notif.make({text: 'Successfully Downgraded User', type: 'success' });
-			})
-			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -177,12 +175,14 @@ class User {
 	}
 
 	static populateUserTable() {
-		const table = createUserTable();
+		const table = document.createElement('table');
+		table.append(createUserTable());
 
 		User.collection
 		.map(userItem => {
 			table.append(userItem.buildRow());
 		});
+		main.append(table);
 	}
 
 	static renderFilters() {
@@ -204,7 +204,7 @@ class User {
 
 
 class Parcel {
-	static getAllParcels() {
+	static getAllParcels(offset = 0) {
 		const token = localStorage.getItem('token'),
 			config = {
 				method: 'GET',
@@ -213,21 +213,30 @@ class Parcel {
 				}),
 			};
 
-		fetch('http://localhost:3000/api/v1/parcels', config)
+		fetch(`http://localhost:3000/api/v1/parcels?offset=${offset}`, config)
 			.then(handleErrors)
 			.then(res => {
+				main.innerHTML = '';
 				Parcel.buildAllParcelCollection(res.data);
 				Parcel.populateTable();
 				Parcel.renderFilters();
+				const span = document.querySelector('.pagination span');
+				if (span === null) {
+					createPagination(res.pages, Parcel.getAllParcels);
+				};
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
-	static getDeliveredParcels() {
+	static getDeliveredParcels(offset = 0) {
 		const token = localStorage.getItem('token'),
 			config = {
 				method: 'GET',
@@ -236,7 +245,95 @@ class Parcel {
 				}),
 			};
 
-			fetch('http://localhost:3000/api/v1/parcels', config)
+		fetch(`http://localhost:3000/api/v1/parcels?offset=${offset}`, config)
+		.then(handleErrors)
+		.then(res => {
+			Parcel.buildDeliveredParcelCollection(res.data);
+			Parcel.populateTable();
+			Parcel.renderFilters();
+		})
+		.catch((err) => {
+			if (err.json) {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			} else {
+				console.log(err)
+			}
+		})
+	}
+
+	static getTransitParcels(offset = 0) {
+		const token = localStorage.getItem('token'),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/parcels?offset=${offset}`, config)
+		.then(handleErrors)
+		.then(res => {
+			Parcel.buildTransitParcelCollection(res.data);
+			Parcel.populateTable();
+			Parcel.renderFilters();
+		})
+		.catch((err) => {
+			if (err.json) {
+				err.json().then( obj => {
+					notif.make({text: obj.message, type: 'danger' })
+				})
+			} else {
+				console.log(err)
+			}
+		})
+	}
+
+	static getUserParcels(offset = 0) {
+		const token = localStorage.getItem('token'),
+			userId = User.getUserId(),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/users/${userId}/parcels?offset=${offset}`, config)
+			.then(handleErrors)
+			.then(res => {
+				main.innerHTML = '';
+				Parcel.buildAllParcelCollection(res.data);
+				Parcel.populateTable();
+				Parcel.renderFilters();
+				const span = document.querySelector('.pagination span');
+				if (span === null) {
+					createPagination(res.pages, Parcel.getUserParcels);
+				};
+			})
+			.catch((err) => {
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
+			})
+	}
+
+	static getDeliveredUserParcels(offset = 0) {
+		const token = localStorage.getItem('token'),
+			userId = User.getUserId(),
+			config = {
+				method: 'GET',
+				headers: new Headers({
+					'x-access-token': token
+				}),
+			};
+
+		fetch(`http://localhost:3000/api/v1/users/${userId}/parcels?offset=${offset}`, config)
 			.then(handleErrors)
 			.then(res => {
 				Parcel.buildDeliveredParcelCollection(res.data);
@@ -244,14 +341,19 @@ class Parcel {
 				Parcel.renderFilters();
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
-	static getTransitParcels() {
+	static getTransitUserParcels(offset = 0) {
 		const token = localStorage.getItem('token'),
+			userId = User.getUserId(),
 			config = {
 				method: 'GET',
 				headers: new Headers({
@@ -259,7 +361,7 @@ class Parcel {
 				}),
 			};
 
-			fetch('http://localhost:3000/api/v1/parcels', config)
+		fetch(`http://localhost:3000/api/v1/users/${userId}/parcels?offset=${offset}`, config)
 			.then(handleErrors)
 			.then(res => {
 				Parcel.buildTransitParcelCollection(res.data);
@@ -267,82 +369,13 @@ class Parcel {
 				Parcel.renderFilters();
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
-			})
-	}
-
-	static getUserParcels() {
-		const token = localStorage.getItem('token'),
-			userId = User.getUserId(),
-			config = {
-				method: 'GET',
-				headers: new Headers({
-					'x-access-token': token
-				}),
-			};
-
-		fetch(`http://localhost:3000/api/v1/users/${userId}/parcels`, config)
-			.then(handleErrors)
-			.then(res => {
-				Parcel.buildAllParcelCollection(res.data);
-				Parcel.populateTable();
-				Parcel.renderFilters();
-			})
-			.catch((err) => {
-				console.log(err);
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
-			})
-	}
-
-	static getDeliveredUserParcels() {
-		const token = localStorage.getItem('token'),
-			userId = User.getUserId(),
-			config = {
-				method: 'GET',
-				headers: new Headers({
-					'x-access-token': token
-				}),
-			};
-
-		fetch(`http://localhost:3000/api/v1/users/${userId}/parcels`, config)
-			.then(handleErrors)
-			.then(res => {
-				Parcel.buildDeliveredParcelCollection(res.data);
-				Parcel.populateTable();
-				Parcel.renderFilters();
-			})
-			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
-			})
-	}
-
-	static getTransitUserParcels() {
-		const token = localStorage.getItem('token'),
-			userId = User.getUserId(),
-			config = {
-				method: 'GET',
-				headers: new Headers({
-					'x-access-token': token
-				}),
-			};
-
-		fetch(`http://localhost:3000/api/v1/users/${userId}/parcels`, config)
-			.then(handleErrors)
-			.then(res => {
-				Parcel.buildTransitParcelCollection(res.data);
-				Parcel.populateTable();
-				Parcel.renderFilters();
-			})
-			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -364,9 +397,13 @@ class Parcel {
 				(new ParcelItem(parcel)).getLongAndLat();
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -397,11 +434,15 @@ class Parcel {
 				Parcel.getParcel();
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' });
-					hide(modal);
-					document.forms.changeDestination.reset()
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' });
+						hide(modal);
+						document.forms.changeDestination.reset()
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -432,11 +473,15 @@ class Parcel {
 				Parcel.getParcel();
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
-				})
-				hide(modal);
-				document.forms.locationForm.reset()
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' })
+					})
+					hide(modal);
+					document.forms.locationForm.reset()
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -467,11 +512,15 @@ class Parcel {
 				Parcel.getParcel();
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message.slice(18), type: 'danger' })
-				})
-				hide(modal);
-				document.forms.statusForm.reset()
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message.slice(18), type: 'danger' })
+					})
+					hide(modal);
+					document.forms.statusForm.reset()
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -497,10 +546,14 @@ class Parcel {
 				Parcel.getParcel();
 			})
 			.catch((err) => {
-				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' });
-					hide(modal);
-				})
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' });
+						hide(modal);
+					})
+				} else {
+					console.log(err)
+				}
 			})
 	}
 
@@ -542,17 +595,22 @@ class Parcel {
 				Parcel.getUserParcels();
 			})
 			.catch((err) => {
-				if(err.message === 'Failed to fetch') {
+				if (err.json) {
+					err.json().then( obj => {
+						notif.make({text: obj.message, type: 'danger' });
+						hide(modal);
+					})
+				} else if (err.message === 'Failed to fetch') {
 					notif.make({text: 'Create Parcel Failed, You are Offline', type: 'danger' });
+				} else {
+					console.log(err)
 				}
 			})
-
 	}
 
 	static buildAllParcelCollection(parcels) {
 		if(parcels.length) {
 			Parcel.collection = parcels.map((parcel) => new ParcelItem(parcel));
-			console.log(Parcel.collection);
 			Parcel.filteredCollection = parcels.map((parcel) => new ParcelItem(parcel));
 		}
 	}
@@ -568,12 +626,15 @@ class Parcel {
 	}
 
 	static populateTable() {
-		const table = createParcelTable();
-
+		const table = document.createElement('table');
+		table.append(createHeadingRow());
+		
 		Parcel.filteredCollection
 		.map(parcelItem => {
 			table.append(parcelItem.buildRow());
 		});
+		
+		main.append(table)
 	}
 
 	static renderFilters() {
@@ -763,51 +824,66 @@ class UserItem {
 	}
 }
 
-function createParcelTable() {
-	const main = document.getElementById('table-cont');
+function createHeadingRow() {
 	const tableRow = document.createElement('tr');
-	const id = document.createElement('th');
-	id.innerText = 'ID';
-	const name = document.createElement('th');
-	name.innerText = 'Name';
-	const weight = document.createElement('th');
-	weight.innerText = 'Weight';
-	const price = document.createElement('th');
-	price.innerText = 'Price';
-	const destination = document.createElement('th');
-	destination.innerText = 'Destination';
-	const receiver = document.createElement('th');
-	receiver.innerText = 'Receiver';
-	const sentOn = document.createElement('th');
-	sentOn.innerText = 'Sent On';
-	const status = document.createElement('th');
-	status.innerText = 'Status';
-
-	const headers = [id, name, weight, price, destination, receiver, sentOn, status];
-	for (let i = 0; i < headers.length; i++) {
-		tableRow.appendChild(headers[i]);
-	};
-	table.appendChild(tableRow);
-	main.appendChild(table);
-
-	return table;
-}
-
-function createUserTable() {
-	const main = document.getElementById('table-cont');
-	const tableRow = document.createElement('tr');
-	const tableData = ['ID', 'First Name', 'Last Name', 'Admin', 'Email', 'Registered On']
+	const tableData = ['ID', 'Name', 'Weight', 'Price', 'Destination', 'Receiver', 'Sent On', 'Status']
 
 	for (let data of tableData) {
 		const value = document.createElement('th');
 		value.innerText = data;
 		tableRow.appendChild(value);
 	}
-	table.appendChild(tableRow);
-	main.appendChild(table);
 
-	return table;
+	return tableRow;
 }
+
+function createUserTable() {
+	const tableRow = document.createElement('tr');
+	const tableData = ['ID', 'First Name', 'Last Name', 'Admin', 'Email', 'Registered On'];
+
+	for (let data of tableData) {
+		const value = document.createElement('th');
+		value.innerText = data;
+		tableRow.appendChild(value);
+	}
+
+	return tableRow;
+}
+
+function createPagination(pages, callback) {
+	const span = document.createElement('span');
+	const pagination = document.getElementsByClassName('pagination');
+
+	Array(pages).fill(0).map((value, index) => {
+		const anchor = document.createElement('a');
+		anchor.classList.add('links');
+		anchor.href= '#';
+		anchor.innerText = index + 1;
+		anchor.addEventListener('click', () => { 
+			callback(index) 
+		});
+		span.append(anchor);
+	});
+	pagination[0].append(span);
+}
+
+function handleErrors(res) {
+	if(!res.ok) {
+		throw res;	
+		
+	}
+	else {
+		return res.json();
+	}
+}
+
+function hide(modal) {
+	modal.style.display = 'none';
+}
+
+const notif = new Notification()
+document.body.append(notif.getElement());
+
 
 // Implementing the create parcel modal
 const createParcel = document.getElementById("createParcel");
@@ -852,20 +928,3 @@ if (downgrade !== null) {
 }
 
 
-
-
-function handleErrors(res) {
-	if(!res.ok) {
-		throw res;	
-	}
-	else {
-	return res.json();
-	}
-}
-
-function hide(modal) {
-	modal.style.display = 'none';
-}
-
-const notif = new Notification()
-document.body.append(notif.getElement());

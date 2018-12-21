@@ -65,24 +65,41 @@ class dbModel {
   /**
   * Method to get all parcels from DB
   * @method
-  * @param {obj} req HTTP request
+  * @param {int} offset database offset
   * @returns {function}
   */
-  static getAllParcels() {
+  static getAllParcels(offset) {
     return new Promise((resolve, reject) => {
-      const findAllQuery = 'SELECT * FROM parcelTable ORDER BY id ASC';
+      const dbOffset = offset * 6;
+      const countAllQuery = 'SELECT COUNT(id) from parcelTable';
+      const findAllQuery = `SELECT * FROM parcelTable ORDER BY id ASC LIMIT 6 OFFSET '${dbOffset}'`;
 
-      DB.query(findAllQuery).then((result) => {
-        if (result.rows.length === 0) {
-          const response = {
-            message: 'No parcel orders',
-          };
-          reject(response);
-        }
-        resolve(result.rows);
-      }).catch((error) => {
-        reject(error);
-      });
+      DB.query(countAllQuery);
+
+      DB.query(findAllQuery);
+
+      Promise.all([
+        DB.query(countAllQuery),
+        DB.query(findAllQuery)
+      ])
+        .then((res) => {
+          const firstPromise = res[0].rows[0].count,
+            secondPromise = res[1].rows,
+            pages = Math.ceil(firstPromise / 6);
+
+          secondPromise.pages = pages;
+
+          if (secondPromise.length === 0) {
+            const response = {
+              message: 'No parcel orders',
+            };
+            reject(response);
+          }
+
+          resolve(secondPromise);
+        }).catch((err) => {
+          reject(err);
+        });
     });
   }
 
