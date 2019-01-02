@@ -279,7 +279,7 @@ class userModel {
 
           if (secondPromise.length === 0) {
             const response = {
-              message: 'User has no parcels',
+              message: 'User has no parcel',
             };
             resolve(response);
           }

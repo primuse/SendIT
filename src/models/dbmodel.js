@@ -119,7 +119,7 @@ class dbModel {
         DB.query(findOneQuery).then((result) => {
           if (result.rows.length === 0) {
             const response = {
-              message: 'No parcel with given ID',
+              message: 'No parcel Found',
             };
             reject(response);
           }
@@ -166,7 +166,7 @@ class dbModel {
           DB.query(cancelQuery).then((results) => {
             if (results.rows.length === 0) {
               const response = {
-                message: 'No parcel found or already delivered',
+                message: 'No parcel found',
               };
               reject(response);
             }
@@ -238,7 +238,7 @@ class dbModel {
 
         if (length === 0 || status === 'Canceled') {
           const response = {
-            message: 'No parcel found or Already delivered or canceled',
+            message: 'No parcel found, already delivered or canceled',
           };
           reject(response);
         }

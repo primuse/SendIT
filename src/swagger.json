@@ -1,0 +1,798 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "SendIT is a courier service app that helps users deliver parcels to different destinations all around the world. You can find out more about SendIT at [https://github.com/primuse/SendIT](https://github.com/primuse/SendIT). For this sample, you can use the api key `special-key` to test the authorization filters.",
+    "version": "1.0.0",
+    "title": "SendIT",
+    "contact": {
+      "email": "okoyetiku@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "sendit2019.herokuapp.com",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "parcels",
+      "description": "Everything about your Parcels",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://github.com/primuse/SendIT"
+      }
+    },
+    {
+      "name": "user",
+      "description": "Operations about user",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://github.com/primuse/SendIT"
+      }
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/parcels": {
+      "post": {
+        "tags": [
+          "parcels"
+        ],
+        "summary": "Create a new parcel order",
+        "description": "",
+        "operationId": "createParcel",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Parcel order to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Parcel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Parcel order created",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "parcels"
+        ],
+        "summary": "Get all parcels",
+        "description": "Returns all parcels",
+        "operationId": "getAllParcels",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "pagination offset for database query",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "No parcel orders"
+          },
+          "403": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/parcels/:parcelId": {
+      "get": {
+        "tags": [
+          "parcels"
+        ],
+        "summary": "Finds parcel by ParcelID",
+        "description": "returns a single parcel",
+        "operationId": "findPetsByStatus",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "ID of parcel to be found",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "No parcel Found"
+          },
+          "403": {
+            "description": "Unauthorized Access"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/parcels/:parcelId/cancel": {
+      "patch": {
+        "tags": [
+          "parcels"
+        ],
+        "summary": "Cancel a parcel order",
+        "description": "",
+        "operationId": "cancelParcel",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "ID of parcel to be canceled",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order canceled",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "Parcel already delivered or canceled"
+          },
+          "403": {
+            "description": "Unauthorized Access"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/parcels/:parcelId/destination": {
+      "patch": {
+        "tags": [
+          "parcels"
+        ],
+        "summary": "change a parcel order's destination",
+        "operationId": "changeDestination",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "ID of parcel to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "destination",
+            "in": "body",
+            "description": "new destination of parcel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/destination"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order updated",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "No parcel found or already delivered"
+          },
+          "403": {
+            "description": "unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/parcels/:parcelId/currentlocation": {
+      "patch": {
+        "tags": [
+          "parcels"
+        ],
+        "summary": "changes current location of a parcel",
+        "description": "",
+        "operationId": "changeCurrentLocation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "ID of parcel to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "location",
+            "in": "body",
+            "description": "new current location of parcel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/location"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Location updated",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "No parcel found, already delivered or canceled"
+          },
+          "403": {
+            "description": "unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/parcels/:parcelId/status": {
+      "patch": {
+        "tags": [
+          "parcels"
+        ],
+        "summary": "changes status of a parcel",
+        "description": "",
+        "operationId": "changeStatus",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "ID of parcel to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "new status of parcel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "No parcel found or Already delivered"
+          },
+          "403": {
+            "description": "unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Creates a new user",
+        "description": "",
+        "operationId": "createUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "new user's details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Created",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "Email already Registered"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "details of user to login",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User logged in",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Gets all users",
+        "description": "",
+        "operationId": "getAllUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "pagination offset for database query",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "No users"
+          },
+          "403": {
+            "description": "Unauthorized access"
+          }
+        }
+      }
+    },
+    "/users/:userId": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Gets user by userID",
+        "description": "Returns a user",
+        "operationId": "getUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "description": "ID of user to be found",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "No User with given id"
+          },
+          "403": {
+            "description": "Unauthorized access"
+          }
+        }
+      }
+    },
+    "/users/:userId/parcels": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Gets a user's parcels",
+        "description": "Returns a user's parcels",
+        "operationId": "getUserParcels",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "pagination offset for database query",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "User has no parcel"
+          },
+          "403": {
+            "description": "Unauthorized access"
+          }
+        }
+      }
+    },
+    "/users/:userId/upgrade": {
+      "patch": {
+        "tags": [
+          "user"
+        ],
+        "summary": "upgrade a user to admin",
+        "description": "",
+        "operationId": "upgradeUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "description": "Id of user to be upgraded",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "Cannot Upgrade Super Admin or already upgraded"
+          },
+          "403": {
+            "description": "Unauthorized access"
+          }
+        }
+      }
+    },
+    "/users/:userId/downgrade": {
+      "patch": {
+        "tags": [
+          "user"
+        ],
+        "summary": "downgrade an admin to user",
+        "description": "",
+        "operationId": "downgradeAdmin",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "description": "Id of admin to be downgraded",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/parcelApiResponse"
+            }
+          },
+          "400": {
+            "description": "Cannot downgrade Super Admin or already downgraded"
+          },
+          "403": {
+            "description": "Unauthorized access"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "parcelApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "required": [
+        "firstName",
+        "lastName",
+        "email",
+        "password"
+      ],
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "required": [
+        "destination"
+      ],
+      "properties": {
+        "destination": {
+          "type": "string",
+          "description": "new destination of parcel"
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": [
+        "location"
+      ],
+      "properties": {
+        "location": {
+          "type": "string",
+          "description": "new current location of parcel"
+        }
+      }
+    },
+    "status": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "new status of parcel"
+        }
+      }
+    },
+    "login": {
+      "type": "object",
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Parcel": {
+      "type": "object",
+      "required": [
+        "parcelName",
+        "weight",
+        "pickupLocation",
+        "destination",
+        "receiver",
+        "email",
+        "phoneNumber"
+      ],
+      "properties": {
+        "parcelName": {
+          "type": "string",
+          "example": "Rice"
+        },
+        "weight": {
+          "type": "integer",
+          "description": "weight of parcel"
+        },
+        "pickupLocation": {
+          "type": "string",
+          "description": "Where parcel was picked up",
+          "example": "Rumuigbo, Port-Harcourt"
+        },
+        "destination": {
+          "type": "string",
+          "description": "where parcel is to be delivered",
+          "example": "Surulere, Lagos"
+        },
+        "receiver": {
+          "type": "string",
+          "description": "who parcel is to be delivered to",
+          "example": "Mike Oyo"
+        },
+        "email": {
+          "type": "string",
+          "description": "email of receiver",
+          "example": "ziggyluggy@yahoo.com"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "phone number of receiver",
+          "example": "08138875645"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about SendIT",
+    "url": "https://github.com/primuse/SendIT"
+  }
+}
