@@ -15,7 +15,7 @@ class Fetch {
 			body: JSON.stringify(myData),
 		};
 
-		fetch('https://sendit2019.herokuapp.com/api/v1/auth/login', config)
+		fetch('http://127.0.0.1:3000/api/v1/auth/login', config)
 		.then(handleErrors)
 		.then(res =>  { 
 			localStorage.setItem('token', res.data[0].token);
@@ -60,7 +60,7 @@ class Fetch {
 			body: JSON.stringify(myData),
 		};
 
-		fetch('https://sendit2019.herokuapp.com/api/v1/auth/signup', config)
+		fetch('http://127.0.0.1:3000/api/v1/auth/signup', config)
 		.then(handleErrors)
 		.then(res =>  { 
 			localStorage.setItem('token', res.data.token);
@@ -72,7 +72,7 @@ class Fetch {
 		.catch((err) => {
 			if (err.json) {
 				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
+					notif.make({text: obj.message.error, type: 'danger' })
 				})
 			} else {
 				console.log(err)
@@ -94,7 +94,7 @@ class Fetch {
 			body: JSON.stringify(myData),
 		};
 
-		fetch('https://sendit2019.herokuapp.com/api/v1/reset/email', config)
+		fetch('http://127.0.0.1:3000/api/v1/reset/email', config)
 		.then(handleErrors)
 		.then(res =>  { 
 			notif.make({text: 'A reset link has been sent to your mail', type: 'success'});
@@ -128,7 +128,7 @@ class Fetch {
 						body: JSON.stringify(myData),
 					};
 
-		fetch(`https://sendit2019.herokuapp.com/api/v1/reset/${userId}`, config)
+		fetch(`http://127.0.0.1:3000/api/v1/reset/${userId}`, config)
 		.then(handleErrors)
 		.then(res =>  { 
 			notif.make({text: 'Successfuly updated Password', type: 'success'});

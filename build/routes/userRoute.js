@@ -34,13 +34,21 @@ router.post('/auth/signup', _validator.default.validateUser, _userController.def
 /**
 * Route to update user
 * @param  {string} route The Post url route
-* @param  {function} UserController.createUsers The handler method
+* @param  {function} UserController.updateUser The handler method
 * @returns {(obj|obj} success message or error message
 */
 
-router.patch('/users/:userId/update', _validator.default.validateToken, _validator.default.validateUserRole, _userController.default.updateUser);
+router.patch('/users/:userId/upgrade', _validator.default.validateToken, _validator.default.validateUserParam, _validator.default.validateUserRole, _userController.default.updateUser);
 /**
-* Route to get all Parcel Orders
+* Route to downgrade user
+* @param  {string} route The Post url route
+* @param  {function} UserController.downgradeUser The handler method
+* @returns {(obj|obj} success message or error message
+*/
+
+router.patch('/users/:userId/downgrade', _validator.default.validateToken, _validator.default.validateUserParam, _validator.default.validateUserRole, _userController.default.downgradeUser);
+/**
+* Route to get all Users
 * @param  {string} route The Get Parcels url route
 * @param  {function} ParcelController.getAllParcels The handler function
 * @returns {(obj|obj} parcel or error message
@@ -48,13 +56,21 @@ router.patch('/users/:userId/update', _validator.default.validateToken, _validat
 
 router.get('/users', _validator.default.validateToken, _validator.default.validateUserRole, _userController.default.getAllUsers);
 /**
-* Route to get parcel order by ID
+* Route to get user by user
 * @param  {string} route The Get parcels/:parcelID url route
 * @param  {function} ParcelController.getParcel The handler function
 * @returns {(obj|obj} parcel or error message
 */
 
-router.get('/users/:userId', _validator.default.validateToken, _userController.default.getUser);
+router.get('/users/:userId', _validator.default.validateToken, _validator.default.validateUsers, _validator.default.validateUserParam, _userController.default.getUser);
+/**
+* Route to get a user by admin
+* @param  {string} route The Get parcels/:parcelID url route
+* @param  {function} ParcelController.getParcel The handler function
+* @returns {(obj|obj} parcel or error message
+*/
+
+router.get('/auth/users/:userId', _validator.default.validateToken, _validator.default.validateUserRole, _validator.default.validateUserParam, _userController.default.getUser);
 /**
 * Route to get all parcels by user
 * @param  {string} route The Post url route
@@ -62,7 +78,7 @@ router.get('/users/:userId', _validator.default.validateToken, _userController.d
 * @returns {(obj|obj} success message or error message
 */
 
-router.get('/users/:userId/parcels', _validator.default.validateUsers, _userController.default.userParcels);
+router.get('/users/:userId/parcels', _validator.default.validateUsers, _validator.default.validateUserParam, _userController.default.userParcels);
 /**
 * Route to login Users
 * @param  {string} route The Post url route

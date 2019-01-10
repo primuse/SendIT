@@ -29,10 +29,9 @@ class Notification {
 	make(props = {}) {
 		this.changeText(props.text);
 		this.changeType(props.type);
-		const time = props.text.split(' ').length * 1000;
 		setTimeout(() => {
 			this.notification.classList.remove('swipe-left');
-		}, time)
+		}, 4000)
 		this.notification.classList.add('swipe-left');
 	}
 

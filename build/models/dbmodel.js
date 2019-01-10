@@ -7,9 +7,13 @@ exports.default = void 0;
 
 var _moment = _interopRequireDefault(require("moment"));
 
+var _bcrypt = _interopRequireDefault(require("bcrypt"));
+
 var _DB = _interopRequireDefault(require("./DB"));
 
 var _email = _interopRequireDefault(require("../helper/email"));
+
+var _authPassword = _interopRequireDefault(require("../helper/authPassword"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38,22 +42,19 @@ function () {
     * Method to create new parcel by inserting into DB
     * @method
     * @param {string} parcelName
-    * @param {integer} price
     * @param {integer} weight
     * @param {string} pickupLocation
     * @param {string} destination
-    * @param {string} status
     * @param {string} receiver
     * @param {string} email
     * @param {integer} phoneNumber
-    * @param {string} currentLocation
     * @param {integer} userId
     * @returns {function}
     */
-    value: function createParcel(parcelName, price, weight, pickupLocation, destination, status, receiver, email, phoneNumber, currentLocation, userId) {
+    value: function createParcel(parcelName, weight, pickupLocation, destination, receiver, email, phoneNumber, userId) {
       return new Promise(function (resolve, reject) {
         var querytext = "INSERT INTO\n      parcelTable(parcelName, placedBy, price, weight, metric,\n      pickupLocation, destination, status, receiver, email, phoneNumber, currentLocation, sentOn)\n      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)\n      returning *";
-        var values = [parcelName, userId, price, weight, 'kg', pickupLocation, destination, status, receiver, email, phoneNumber, currentLocation, (0, _moment.default)(new Date()).format('YYYY-MM-DD HH:mm:ss')];
+        var values = [parcelName, userId, Number(weight) * 200, weight, 'kg', pickupLocation, destination, 'Created', receiver, email, phoneNumber, pickupLocation, (0, _moment.default)(new Date()).format('DD-MM-YYYY')];
 
         _DB.default.query(querytext, values).then(function (result) {
           resolve(result.rows[0]);
@@ -65,27 +66,38 @@ function () {
     /**
     * Method to get all parcels from DB
     * @method
-    * @param {obj} req HTTP request
+    * @param {int} offset database offset
     * @returns {function}
     */
 
   }, {
     key: "getAllParcels",
-    value: function getAllParcels() {
+    value: function getAllParcels(offset) {
       return new Promise(function (resolve, reject) {
-        var findAllQuery = 'SELECT * FROM parcelTable';
+        var dbOffset = offset * 6;
+        var countAllQuery = 'SELECT COUNT(id) from parcelTable';
+        var findAllQuery = "SELECT * FROM parcelTable ORDER BY id ASC LIMIT 6 OFFSET '".concat(dbOffset, "'");
 
-        _DB.default.query(findAllQuery).then(function (result) {
-          if (result.rows.length === 0) {
+        _DB.default.query(countAllQuery);
+
+        _DB.default.query(findAllQuery);
+
+        Promise.all([_DB.default.query(countAllQuery), _DB.default.query(findAllQuery)]).then(function (res) {
+          var firstPromise = res[0].rows[0].count,
+              secondPromise = res[1].rows,
+              pages = Math.ceil(firstPromise / 6);
+          secondPromise.pages = pages;
+
+          if (secondPromise.length === 0) {
             var response = {
               message: 'No parcel orders'
             };
             reject(response);
           }
 
-          resolve(result.rows);
-        }).catch(function (error) {
-          reject(error);
+          resolve(secondPromise);
+        }).catch(function (err) {
+          reject(err);
         });
       });
     }
@@ -94,27 +106,45 @@ function () {
     * @method
     * @param {integer} id
     * @param {integer} userId
+    * @param {integer} role
     * @returns {function}
     */
 
   }, {
     key: "findParcel",
-    value: function findParcel(id, userId) {
+    value: function findParcel(id, userId, role) {
       return new Promise(function (resolve, reject) {
         var findOneQuery = "SELECT * FROM parcelTable WHERE id = '".concat(id, "' AND placedby = '").concat(userId, "'");
 
-        _DB.default.query(findOneQuery).then(function (result) {
-          if (result.rows.length === 0) {
-            var response = {
-              message: 'No parcel with given id'
-            };
-            reject(response);
-          }
+        if (role) {
+          findOneQuery = "SELECT * FROM parcelTable WHERE id = '".concat(id, "'");
 
-          resolve(result.rows);
-        }).catch(function (error) {
-          reject(error);
-        });
+          _DB.default.query(findOneQuery).then(function (result) {
+            if (result.rows.length === 0) {
+              var response = {
+                message: 'No parcel Found'
+              };
+              reject(response);
+            }
+
+            resolve(result.rows);
+          }).catch(function (error) {
+            reject(error);
+          });
+        } else {
+          _DB.default.query(findOneQuery).then(function (result) {
+            if (result.rows.length === 0) {
+              var response = {
+                message: 'No Parcel Found'
+              };
+              reject(response);
+            }
+
+            resolve(result.rows);
+          }).catch(function (error) {
+            reject(error);
+          });
+        }
       });
     }
     /**
@@ -146,7 +176,7 @@ function () {
             _DB.default.query(cancelQuery).then(function (results) {
               if (results.rows.length === 0) {
                 var _response = {
-                  message: 'No parcel found or already delivered'
+                  message: 'No parcel found'
                 };
                 reject(_response);
               }
@@ -195,7 +225,7 @@ function () {
                 reject(_response2);
               }
 
-              resolve(results.rows);
+              resolve(results.rows[0]);
             }).catch(function (error) {
               reject(error);
             });
@@ -227,12 +257,12 @@ function () {
 
           if (length === 0 || status === 'Canceled') {
             var response = {
-              message: 'No parcel found or already delivered'
+              message: 'No parcel found, already delivered or canceled'
             };
             reject(response);
           }
 
-          resolve(result.rows);
+          resolve(result.rows[0]);
         }).catch(function (error) {
           reject(error);
         });
@@ -263,16 +293,101 @@ function () {
         _DB.default.query(updateQuery).then(function (result) {
           if (result.rows.length === 0) {
             var response = {
-              message: 'No parcel found or already delivered'
+              message: 'No parcel found or Already delivered'
             };
             reject(response);
           }
 
           var placedby = result.rows[0].placedby;
-          var emailBody = "Your Parcel status has been changed to ".concat(value);
+          var emailBody = "Your Parcel status has been changed to ".concat(value, " <br><br> The SendIT Team");
 
           _email.default.sendMail(emailBody, placedby).then(function () {
-            resolve(result.rows);
+            resolve(result.rows[0]);
+          }).catch(function (err) {
+            reject(err);
+          });
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    }
+    /**
+    * Method to send a reset mail
+    * @method
+    * @param {string} email
+    * @returns {function}
+    */
+
+  }, {
+    key: "sendResetEmail",
+    value: function sendResetEmail(email) {
+      return new Promise(function (resolve, reject) {
+        var findQuery = "SELECT * FROM userTable WHERE email = '".concat(email, "'");
+
+        _DB.default.query(findQuery).then(function (result) {
+          if (result.rows.length === 0) {
+            var response = {
+              message: 'No account found for this email'
+            };
+            reject(response);
+          }
+
+          var _result$rows$ = result.rows[0],
+              id = _result$rows$.id,
+              isadmin = _result$rows$.isadmin;
+
+          _authPassword.default.getToken({
+            id: id,
+            isadmin: isadmin
+          }, process.env.secret, {
+            expiresIn: '1d'
+          }).then(function (token) {
+            var emailBody = "Click on this link to reset your password <br> <a href=\"http://127.0.0.1:5500/UI/password_reset.html?id=".concat(id, "&auth=").concat(token, "\">Reset Password</a> <br><br> The SendIT Team");
+
+            _email.default.sendMail(emailBody, id).then(function () {
+              resolve(result.rows[0]);
+            }).catch(function (err) {
+              reject(err);
+            });
+          }).catch(function (err) {
+            reject(err);
+          });
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    }
+    /**
+    * Method to update a user's password in DB
+    * @method
+    * @param {integer} id
+    * @param {string} password
+    * @returns {function}
+    */
+
+  }, {
+    key: "updatePassword",
+    value: function updatePassword(id, password) {
+      return new Promise(function (resolve, reject) {
+        var hashedPassword = _bcrypt.default.hashSync(password, 8);
+
+        var updateQuery = "UPDATE userTable SET password = '".concat(hashedPassword, "' WHERE id = '").concat(id, "' returning *");
+
+        _DB.default.query(updateQuery).then(function (result) {
+          if (result.rows.length === 0) {
+            var response = {
+              message: 'Invalid request'
+            };
+            reject(response);
+          }
+
+          var user = result.rows[0];
+          delete user.password;
+          delete user.isadmin;
+          var emailBody = "Your password has been succesfully changed to: <br> <b>".concat(password, "</b> <br><br> The SendIT Team");
+
+          _email.default.sendMail(emailBody, id).then(function () {
+            resolve(result.rows[0]);
           }).catch(function (err) {
             reject(err);
           });

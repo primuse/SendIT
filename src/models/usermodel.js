@@ -50,6 +50,7 @@ class userModel {
         delete user.password;
         const { id, isadmin } = user;
         Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '7d' }).then((token) => {
+
           resolve({ token, user });
         }).catch((err) => {
           reject(err);
@@ -59,6 +60,7 @@ class userModel {
           const response = {
             error: 'Email already Registered',
           };
+
           reject(response);
         } else {
           reject(error);
@@ -101,6 +103,7 @@ class userModel {
             reject(response);
           }
           users.map(user => delete user.password);
+
           resolve(users);
         }).catch((err) => {
           reject(err);
@@ -122,6 +125,7 @@ class userModel {
           const response = {
             message: 'No User with given id',
           };
+
           reject(response);
         }
         const user = result.rows[0];
@@ -149,6 +153,7 @@ class userModel {
           const response = {
             message: 'Authentication failed. User not found',
           };
+
           reject(response);
         }
         Helper.comparePassword(password, result.rows[0].password).then(() => {

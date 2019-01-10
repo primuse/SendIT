@@ -70,36 +70,42 @@ class dbModel {
   */
   static getAllParcels(offset) {
     return new Promise((resolve, reject) => {
-      const dbOffset = offset * 6;
-      const countAllQuery = 'SELECT COUNT(id) from parcelTable';
-      const findAllQuery = `SELECT * FROM parcelTable ORDER BY id ASC LIMIT 6 OFFSET '${dbOffset}'`;
+      (async () => {
+        const dbOffset = offset * 6;
+        const countAllQuery = 'SELECT COUNT(id) from parcelTable';
+        const findAllQuery = `SELECT * FROM parcelTable ORDER BY id ASC LIMIT 6 OFFSET '${dbOffset}'`;
+        const client = await DB.connect();
 
-      DB.query(countAllQuery);
+        client.query(countAllQuery);
 
-      DB.query(findAllQuery);
+        client.query(findAllQuery);
 
-      Promise.all([
-        DB.query(countAllQuery),
-        DB.query(findAllQuery)
-      ])
-        .then((res) => {
-          const firstPromise = res[0].rows[0].count,
-            secondPromise = res[1].rows,
-            pages = Math.ceil(firstPromise / 6);
+        Promise.all([
+          client.query(countAllQuery),
+          client.query(findAllQuery)
+        ])
+          .then((res) => {
+            const firstPromise = res[0].rows[0].count,
+              secondPromise = res[1].rows,
+              pages = Math.ceil(firstPromise / 6);
 
-          secondPromise.pages = pages;
+            secondPromise.pages = pages;
 
-          if (secondPromise.length === 0) {
-            const response = {
-              message: 'No parcel orders',
-            };
-            reject(response);
-          }
-
-          resolve(secondPromise);
-        }).catch((err) => {
-          reject(err);
-        });
+            if (secondPromise.length === 0) {
+              const response = {
+                message: 'No parcel orders',
+              };
+              client.release();
+              reject(response);
+            }
+            client.release();
+            resolve(secondPromise);
+          }).catch((err) => {
+            console.log(err);
+            client.release();
+            reject(err);
+          });
+      })();
     });
   }
 
@@ -123,6 +129,7 @@ class dbModel {
             };
             reject(response);
           }
+
           resolve(result.rows);
         }).catch((error) => {
           reject(error);
@@ -135,6 +142,7 @@ class dbModel {
             };
             reject(response);
           }
+
           resolve(result.rows);
         }).catch((error) => {
           reject(error);
@@ -161,6 +169,7 @@ class dbModel {
           const response = {
             message: 'Parcel already delivered or canceled',
           };
+
           reject(response);
         } else {
           DB.query(cancelQuery).then((results) => {
@@ -199,6 +208,7 @@ class dbModel {
           const response = {
             message: 'Parcel already delivered or canceled',
           };
+
           reject(response);
         } else {
           DB.query(updateQuery).then((results) => {
@@ -240,6 +250,7 @@ class dbModel {
           const response = {
             message: 'No parcel found, already delivered or canceled',
           };
+
           reject(response);
         }
         resolve(result.rows[0]);
@@ -271,13 +282,16 @@ class dbModel {
           const response = {
             message: 'No parcel found or Already delivered',
           };
+
           reject(response);
         }
         const { placedby } = result.rows[0];
         const emailBody = `Your Parcel status has been changed to ${value} <br><br> The SendIT Team`;
         Notification.sendMail(emailBody, placedby).then(() => {
+
           resolve(result.rows[0]);
         }).catch((err) => {
+
           reject(err);
         });
       }).catch((error) => {
@@ -300,6 +314,7 @@ class dbModel {
           const response = {
             message: 'No account found for this email',
           };
+
           reject(response);
         }
         const { id, isadmin } = result.rows[0];
@@ -335,6 +350,7 @@ class dbModel {
           const response = {
             message: 'Invalid request',
           };
+
           reject(response);
         }
         const user = result.rows[0];

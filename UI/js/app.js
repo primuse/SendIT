@@ -20,7 +20,7 @@ function resize() {
   if (deviceWidth <= 767) {
     $('#main-content-page').addEventListener('click', () => {
       asideClass.remove('fade-in');
-      asideClasslass.remove('toggled-nav')
+      asideClass.remove('toggled-nav')
     });
 
     $('#toggle').addEventListener('click', () => {

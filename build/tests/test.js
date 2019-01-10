@@ -84,8 +84,6 @@ var myToken = null;
     var user = {
       firstName: 'Joseph',
       lastName: 'Julius',
-      otherNames: 'John',
-      username: 'jude',
       email: 'okoyetiku@yahoo.com',
       password: 'tiku'
     };
@@ -175,7 +173,7 @@ var myToken = null;
     _chai.default.request(_index.default).get('/api/v1/parcels/100').set('x-access-token', myToken).end(function (err, res) {
       expect(res.status).to.equal(404);
       expect(res.body).to.be.an('object');
-      expect(res.body.message).to.equal('No parcel with given id');
+      expect(res.body.message).to.equal('No Permission to view this parcel');
       done(err);
     });
   });
@@ -200,14 +198,14 @@ var myToken = null;
   (0, _mocha.it)('should change parcel destination to provided value', function (done) {
     _chai.default.request(_index.default).patch('/api/v1/parcels/1/destination').set('x-access-token', myToken).send(value).end(function (err, res) {
       expect(res.status).to.be.oneOf([200, 400]);
-      expect(res.body.data.message).to.equal('Order updated');
+      expect(res.body.message).to.equal('Order updated');
       done(err);
     });
   });
   (0, _mocha.it)('should return an error if parcel status = delivered or parcel not found', function (done) {
     _chai.default.request(_index.default).patch('/api/v1/parcels/100/destination').set('x-access-token', myToken).send(value).end(function (err, res) {
       expect(res.status).to.equal(400);
-      expect(res.body.message).to.equal('No parcel with given id');
+      expect(res.body.message).to.equal('No Permission to view this parcel');
       done(err);
     });
   });
@@ -246,7 +244,7 @@ var myToken = null;
   (0, _mocha.it)('should change parcel currentLocation to provided value', function (done) {
     _chai.default.request(_index.default).patch('/api/v1/parcels/1/currentLocation').set('x-access-token', myToken).send(value).end(function (err, res) {
       expect(res.status).to.be.oneOf([200, 400]);
-      expect(res.body.data.message).to.equal('Location updated');
+      expect(res.body.message).to.equal('Location updated');
       done(err);
     });
   });
@@ -292,7 +290,7 @@ var myToken = null;
   (0, _mocha.it)('should return an error if parcel status = delivered or parcel not found', function (done) {
     _chai.default.request(_index.default).patch('/api/v1/parcels/100/cancel').set('x-access-token', myToken).end(function (err, res) {
       expect(res.status).to.equal(400);
-      expect(res.body.message).to.equal('No parcel with given id');
+      expect(res.body.message).to.equal('No Permission to view this parcel');
       done(err);
     });
   });
@@ -317,7 +315,7 @@ var myToken = null;
   (0, _mocha.it)('should change parcel status to provided value', function (done) {
     _chai.default.request(_index.default).patch('/api/v1/parcels/1/status').set('x-access-token', myToken).send(value).end(function (err, res) {
       expect(res.status).to.equal(200);
-      expect(res.body.data.message).to.equal('Status updated');
+      expect(res.body.message).to.equal('Status has been updated to In-transit');
       done(err);
     });
   });

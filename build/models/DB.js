@@ -25,9 +25,12 @@ var _require = require('pg'),
 */
 
 
+console.log(process.env.DATABASE_URI);
 var pool = new Pool({
   connectionString: process.env.DATABASE_URI
 });
-pool.connect();
+pool.connect().catch(function (err) {
+  console.log(err);
+});
 var _default = pool;
 exports.default = _default;

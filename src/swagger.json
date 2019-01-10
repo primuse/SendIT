@@ -60,6 +60,12 @@
             "schema": {
               "$ref": "#/definitions/Parcel"
             }
+          },
+          {
+            "in": "header",
+            "name": "x-access-token",
+            "description": "token for authorization",
+            "required": true
           }
         ],
         "responses": {
@@ -99,6 +105,12 @@
             "description": "pagination offset for database query",
             "required": true,
             "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "x-access-token",
+            "description": "token for authorization",
+            "required": true
           }
         ],
         "responses": {

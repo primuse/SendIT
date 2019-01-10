@@ -11,6 +11,12 @@ var _dotenv = _interopRequireDefault(require("dotenv"));
 
 var _bodyParser = _interopRequireDefault(require("body-parser"));
 
+var _cors = _interopRequireDefault(require("cors"));
+
+var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
+
+var _swagger = _interopRequireDefault(require("./swagger.json"));
+
 var _parcelRoute = _interopRequireDefault(require("./routes/parcelRoute"));
 
 var _userRoute = _interopRequireDefault(require("./routes/userRoute"));
@@ -39,12 +45,18 @@ var port = process.env.PORT;
  * support encoded bodies
  */
 
+var corsOptions = {
+  origin: '*',
+  credentials: true
+};
+app.use((0, _cors.default)(corsOptions));
 app.use(_bodyParser.default.json());
 app.use(_bodyParser.default.urlencoded({
   extended: true
 }));
 app.use('/api/v1', _parcelRoute.default);
 app.use('/api/v1', _userRoute.default);
+app.use('/api-docs', _swaggerUiExpress.default.serve, _swaggerUiExpress.default.setup(_swagger.default));
 /**
 * Index Route
 * @param  {string} route The index url route
