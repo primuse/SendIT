@@ -256,43 +256,36 @@ class userModel {
   }
 
   /**
-  * Method to get a users parcel from DB
-  * @method
-  * @param {integer} userId
-  * @param {integer} offset
-  * @returns {function}
-  */
-  static findUserParcels(userId, offset) {
-    return new Promise((resolve, reject) => {
+    * Method to get a users parcel from DB
+    * @method
+    * @param {integer} userId
+    * @param {integer} offset
+    * @returns {function}
+    */
+  static async findUserParcels(userId, offset = 1) {
+    try {
       const dbOffset = offset * 6;
       const countAllQuery = `SELECT COUNT(id) from parcelTable WHERE placedby = '${userId}'`;
       const findQuery = `SELECT * FROM parcelTable WHERE placedby = '${userId}' ORDER BY id ASC LIMIT 6 OFFSET '${dbOffset}'`;
-      DB.query(countAllQuery);
 
-      DB.query(findQuery);
+      const count = await DB.query(countAllQuery).then(res => res.rows[0].count);
+      const userParcels = await DB.query(findQuery).then(res => res.rows);
 
-      Promise.all([
-        DB.query(countAllQuery),
-        DB.query(findQuery)
-      ])
-        .then((res) => {
-          const firstPromise = res[0].rows[0].count,
-            secondPromise = res[1].rows,
-            pages = Math.ceil(firstPromise / 6);
+      const pages = Math.ceil(count / 6);
 
-          secondPromise.pages = pages;
+      userParcels.pages = pages;
 
-          if (secondPromise.length === 0) {
-            const response = {
-              message: 'User has no parcel',
-            };
-            resolve(response);
-          }
-          resolve(secondPromise);
-        }).catch((err) => {
-          reject(err);
-        });
-    });
+      if (userParcels.length === 0) {
+        const response = {
+        };
+
+        return response;
+      }
+
+      return userParcels;
+    } catch (err) {
+      throw err;
+    }
   }
 }
 export default userModel;

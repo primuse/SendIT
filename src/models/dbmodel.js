@@ -68,44 +68,36 @@ class dbModel {
   * @param {int} offset database offset
   * @returns {function}
   */
-  static getAllParcels(offset) {
+  static getAllParcels(offset = 1) {
     return new Promise((resolve, reject) => {
-      (async () => {
-        const dbOffset = offset * 6;
-        const countAllQuery = 'SELECT COUNT(id) from parcelTable';
-        const findAllQuery = `SELECT * FROM parcelTable ORDER BY id ASC LIMIT 6 OFFSET '${dbOffset}'`;
-        const client = await DB.connect();
+      const dbOffset = offset * 6;
+      const countAllQuery = 'SELECT COUNT(id) from parcelTable';
+      const findAllQuery = `SELECT * FROM parcelTable ORDER BY id ASC LIMIT 6 OFFSET '${dbOffset}'`;
 
-        client.query(countAllQuery);
+      DB.query(countAllQuery);
 
-        client.query(findAllQuery);
+      DB.query(findAllQuery);
 
-        Promise.all([
-          client.query(countAllQuery),
-          client.query(findAllQuery)
-        ])
-          .then((res) => {
-            const firstPromise = res[0].rows[0].count,
-              secondPromise = res[1].rows,
-              pages = Math.ceil(firstPromise / 6);
+      Promise.all([
+        DB.query(countAllQuery),
+        DB.query(findAllQuery)
+      ])
+        .then((res) => {
+          const firstPromise = res[0].rows[0].count,
+            secondPromise = res[1].rows,
+            pages = Math.ceil(firstPromise / 6);
 
-            secondPromise.pages = pages;
+          secondPromise.pages = pages;
 
-            if (secondPromise.length === 0) {
-              const response = {
-                message: 'No parcel orders',
-              };
-              client.release();
-              reject(response);
-            }
-            client.release();
-            resolve(secondPromise);
-          }).catch((err) => {
-            console.log(err);
-            client.release();
-            reject(err);
-          });
-      })();
+          if (secondPromise.length === 0) {
+            const response = {
+            };
+            resolve(response);
+          }
+          resolve(secondPromise);
+        }).catch((err) => {
+          reject(err);
+        });
     });
   }
 
@@ -125,9 +117,8 @@ class dbModel {
         DB.query(findOneQuery).then((result) => {
           if (result.rows.length === 0) {
             const response = {
-              message: 'No parcel Found',
             };
-            reject(response);
+            resolve(response);
           }
 
           resolve(result.rows);
@@ -138,9 +129,8 @@ class dbModel {
         DB.query(findOneQuery).then((result) => {
           if (result.rows.length === 0) {
             const response = {
-              message: 'No Parcel Found',
             };
-            reject(response);
+            resolve(response);
           }
 
           resolve(result.rows);
@@ -175,9 +165,8 @@ class dbModel {
           DB.query(cancelQuery).then((results) => {
             if (results.rows.length === 0) {
               const response = {
-                message: 'No parcel found',
               };
-              reject(response);
+              resolve(response);
             }
             resolve(results.rows);
           }).catch((error) => {
@@ -248,7 +237,7 @@ class dbModel {
 
         if (length === 0 || status === 'Canceled') {
           const response = {
-            message: 'No parcel found, already delivered or canceled',
+            message: 'Already delivered or canceled',
           };
 
           reject(response);
@@ -288,10 +277,8 @@ class dbModel {
         const { placedby } = result.rows[0];
         const emailBody = `Your Parcel status has been changed to ${value} <br><br> The SendIT Team`;
         Notification.sendMail(emailBody, placedby).then(() => {
-
           resolve(result.rows[0]);
         }).catch((err) => {
-
           reject(err);
         });
       }).catch((error) => {

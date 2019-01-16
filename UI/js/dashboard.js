@@ -14,7 +14,7 @@ class User {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/users?offset=${offset}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/users?offset=${offset}`, config)
 			.then(handleErrors)
 			.then(res => {
 				main.innerHTML = '';
@@ -46,7 +46,7 @@ class User {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/users/${userId}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/users/${userId}`, config)
 			.then(handleErrors)
 			.then(res => {
 				const user = res.data;
@@ -74,7 +74,7 @@ class User {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/auth/users/${userId}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/auth/users/${userId}`, config)
 			.then(handleErrors)
 			.then(res => {
 				const user = res.data;
@@ -103,7 +103,7 @@ class User {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/users/${userId}/upgrade`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/users/${userId}/upgrade`, config)
 			.then(handleErrors)
 			.then(res => {
 				notif.make({text: 'Successfully Upgraded User', type: 'success' });
@@ -131,7 +131,7 @@ class User {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/users/${userId}/downgrade`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/users/${userId}/downgrade`, config)
 			.then(handleErrors)
 			.then(res => {
 				notif.make({text: 'Successfully Downgraded User', type: 'success' });
@@ -213,7 +213,7 @@ class Parcel {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/parcels?offset=${offset}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/parcels?offset=${offset}`, config)
 			.then(handleErrors)
 			.then(res => {
 				main.innerHTML = '';
@@ -246,7 +246,7 @@ class Parcel {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/parcels?offset=${offset}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/parcels?offset=${offset}`, config)
 		.then(handleErrors)
 		.then(res => {
 			Parcel.buildDeliveredParcelCollection(res.data);
@@ -273,7 +273,7 @@ class Parcel {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/parcels?offset=${offset}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/parcels?offset=${offset}`, config)
 		.then(handleErrors)
 		.then(res => {
 			Parcel.buildTransitParcelCollection(res.data);
@@ -301,7 +301,7 @@ class Parcel {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/users/${userId}/parcels?offset=${offset}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/users/${userId}/parcels?offset=${offset}`, config)
 			.then(handleErrors)
 			.then(res => {
 				main.innerHTML = '';
@@ -334,7 +334,7 @@ class Parcel {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/users/${userId}/parcels?offset=${offset}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/users/${userId}/parcels?offset=${offset}`, config)
 			.then(handleErrors)
 			.then(res => {
 				Parcel.buildDeliveredParcelCollection(res.data);
@@ -362,7 +362,7 @@ class Parcel {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/users/${userId}/parcels?offset=${offset}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/users/${userId}/parcels?offset=${offset}`, config)
 			.then(handleErrors)
 			.then(res => {
 				Parcel.buildTransitParcelCollection(res.data);
@@ -390,7 +390,7 @@ class Parcel {
 				}),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/parcels/${parcelId}`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/parcels/${parcelId}`, config)
 			.then(handleErrors)
 			.then(res => {
 				const parcel = res.data[0];
@@ -426,7 +426,7 @@ class Parcel {
 				body: JSON.stringify(myData),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/parcels/${parcelId}/destination`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/parcels/${parcelId}/destination`, config)
 			.then(handleErrors)
 			.then(res => {
 				notif.make({text: 'Successfully Updated destination', type: 'success' });
@@ -465,7 +465,7 @@ class Parcel {
 				body: JSON.stringify(myData),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/parcels/${parcelId}/currentlocation`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/parcels/${parcelId}/currentlocation`, config)
 			.then(handleErrors)
 			.then(res => {
 				notif.make({text: 'Successfully Updated location', type: 'success' });
@@ -475,6 +475,7 @@ class Parcel {
 			})
 			.catch((err) => {
 				if (err.json) {
+					console.log('tiku');
 					err.json().then( obj => {
 						notif.make({text: obj.message, type: 'danger' })
 					})
@@ -504,7 +505,7 @@ class Parcel {
 				body: JSON.stringify(myData),
 			};
 
-		fetch(`http://127.0.0.1:3000/api/v1/parcels/${parcelId}/status`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/parcels/${parcelId}/status`, config)
 			.then(handleErrors)
 			.then(res => {
 				notif.make({text: 'Successfully Updated status', type: 'success' });
@@ -539,7 +540,7 @@ class Parcel {
 			};
 
 
-		fetch(`http://127.0.0.1:3000/api/v1/parcels/${parcelId}/cancel`, config)
+		fetch(`https://sendit2019.herokuapp.com/api/v1/parcels/${parcelId}/cancel`, config)
 			.then(handleErrors)
 			.then(res => {
 				notif.make({text: 'Successfully Canceled Parcel', type: 'success' });
@@ -587,7 +588,7 @@ class Parcel {
 				body: JSON.stringify(myData),
 			};
 
-		fetch('http://127.0.0.1:3000/api/v1//parcels', config)
+		fetch('https://sendit2019.herokuapp.com/api/v1//parcels', config)
 			.then(res => res.json())
 			.then(res => {
         notif.make({text: 'Successfully created parcel', type: 'success' });

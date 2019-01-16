@@ -51,11 +51,9 @@ const createTables = () => {
     pool.query(queryText)
       .then((res) => {
         console.log(res);
-        pool.end();
       })
       .catch((err) => {
         console.log(err);
-        pool.end();
       });
   });
 };
@@ -68,11 +66,9 @@ const dropParcelTable = () => {
   pool.query(queryText)
     .then((res) => {
       console.log(res);
-      pool.end();
     })
     .catch((err) => {
       console.log(err);
-      pool.end();
     });
 };
 
@@ -81,11 +77,9 @@ const dropUserTable = () => {
   pool.query(queryText)
     .then((res) => {
       console.log(res);
-      pool.end();
     })
     .catch((err) => {
       console.log(err);
-      pool.end();
     });
 };
 
@@ -95,11 +89,9 @@ const createAdmin = () => {
   pool.query(queryText)
     .then((res) => {
       console.log(res);
-      pool.end();
     })
     .catch((err) => {
       console.log(err);
-      pool.end();
     });
 };
 
@@ -111,11 +103,9 @@ const createParcel = () => {
   pool.query(parcelQuery)
     .then((res) => {
       console.log(res);
-      pool.end();
     })
     .catch((err) => {
       console.log(err);
-      pool.end();
     });
 };
 
