@@ -13,9 +13,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import swaggerUI from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 import parcelRoute from './routes/parcelRoute';
 import userRoute from './routes/userRoute';
 import '@babel/polyfill';
+
 
 dotenv.config();
 
@@ -37,6 +40,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/v1', parcelRoute);
 app.use('/api/v1', userRoute);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 /**
 * Index Route

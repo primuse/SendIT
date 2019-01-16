@@ -40,17 +40,14 @@ function () {
     value: function createParcels(req, res) {
       var _req$body = req.body,
           parcelName = _req$body.parcelName,
-          price = _req$body.price,
           weight = _req$body.weight,
           pickupLocation = _req$body.pickupLocation,
           destination = _req$body.destination,
-          status = _req$body.status,
           receiver = _req$body.receiver,
           email = _req$body.email,
-          phoneNumber = _req$body.phoneNumber,
-          currentLocation = _req$body.currentLocation;
+          phoneNumber = _req$body.phoneNumber;
       var userId = req.decoded;
-      model.createParcel(parcelName, price, weight, pickupLocation, destination, status, receiver, email, phoneNumber, currentLocation, userId).then(function (rows) {
+      model.createParcel(parcelName, weight, pickupLocation, destination, receiver, email, phoneNumber, userId).then(function (rows) {
         res.status(201).send({
           rows: rows
         });
@@ -70,9 +67,12 @@ function () {
   }, {
     key: "getAllParcels",
     value: function getAllParcels(req, res) {
-      model.getAllParcels().then(function (rows) {
+      var offset = req.query.offset;
+      model.getAllParcels(offset).then(function (rows) {
         res.send({
-          data: rows
+          message: 'All Parcels',
+          data: rows,
+          pages: rows.pages
         });
       }).catch(function (error) {
         res.status(404).send(error);
@@ -90,7 +90,8 @@ function () {
     value: function getParcel(req, res) {
       var id = req.params.parcelId;
       var userId = req.decoded;
-      model.findParcel(id, userId).then(function (parcel) {
+      var role = req.role;
+      model.findParcel(id, userId, role).then(function (parcel) {
         res.send({
           data: parcel
         });
@@ -134,15 +135,36 @@ function () {
       var id = req.params.parcelId;
       var value = req.body.destination;
       var userId = req.decoded;
-      model.changeDestination(id, value, userId).then(function () {
+      model.changeDestination(id, value, userId).then(function (data) {
         res.send({
-          data: {
-            id: id,
-            message: 'Order updated'
-          }
+          message: 'Order updated',
+          data: data
         });
       }).catch(function (error) {
         res.status(400).send(error);
+      });
+    }
+    /**
+    * Hanlder Method to change a user's password
+    * @method
+    * @param  {obj} req The HTTP request
+    * @param  {obj} res The HTTP response
+    */
+
+  }, {
+    key: "updatePassword",
+    value: function updatePassword(req, res) {
+      var userId = req.params.userId;
+      var password = req.body.password;
+      model.updatePassword(userId, password).then(function (data) {
+        res.status(200).send({
+          message: 'Password Updated',
+          data: data
+        });
+      }).catch(function (error) {
+        res.status(401).send({
+          message: error.message
+        });
       });
     }
     /**
@@ -157,12 +179,10 @@ function () {
     value: function locationParcel(req, res) {
       var id = req.params.parcelId;
       var value = req.body.currentLocation;
-      model.changeLocation(id, value).then(function () {
+      model.changeLocation(id, value).then(function (data) {
         res.send({
-          data: {
-            id: id,
-            message: 'Location updated'
-          }
+          message: 'Location updated',
+          data: data
         });
       }).catch(function (error) {
         res.status(400).send(error);
@@ -180,12 +200,30 @@ function () {
     value: function statusParcel(req, res) {
       var id = req.params.parcelId;
       var value = req.body.status;
-      model.changeStatus(id, value).then(function () {
+      model.changeStatus(id, value).then(function (data) {
         res.send({
-          data: {
-            id: id,
-            message: 'Status updated'
-          }
+          message: "Status has been updated to ".concat(value),
+          data: data
+        });
+      }).catch(function (error) {
+        res.status(400).send(error);
+      });
+    }
+    /**
+    * Handler Method to request password reset email
+    * @method
+    * @param  {obj} req The HTTP request
+    * @param  {obj} res The HTTP response
+    */
+
+  }, {
+    key: "sendResetEmail",
+    value: function sendResetEmail(req, res) {
+      var email = req.body.email;
+      model.sendResetEmail(email).then(function (data) {
+        res.send({
+          message: 'Email has been sent',
+          data: data
         });
       }).catch(function (error) {
         res.status(400).send(error);

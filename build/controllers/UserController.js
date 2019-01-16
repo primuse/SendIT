@@ -41,12 +41,11 @@ function () {
       var _req$body = req.body,
           firstName = _req$body.firstName,
           lastName = _req$body.lastName,
-          otherNames = _req$body.otherNames,
-          username = _req$body.username,
           email = _req$body.email,
           password = _req$body.password;
-      model.createUser(firstName, lastName, otherNames, username, email, password).then(function (data) {
+      model.createUser(firstName, lastName, email, password).then(function (data) {
         res.status(201).send({
+          message: 'User Created',
           data: data
         });
       }).catch(function (error) {
@@ -56,7 +55,7 @@ function () {
       });
     }
     /**
-    * Handler Method to get all Parcel orders
+    * Handler Method to get all users
     * @method
     * @param  {obj} req The HTTP request
     * @param  {obj} res The HTTP response
@@ -65,9 +64,12 @@ function () {
   }, {
     key: "getAllUsers",
     value: function getAllUsers(req, res) {
-      model.getAllUsers().then(function (rows) {
+      var offset = req.query.offset;
+      model.getAllUsers(offset).then(function (rows) {
         res.send({
-          data: rows
+          message: 'All Users',
+          data: rows,
+          pages: rows.pages
         });
       }).catch(function (error) {
         res.status(404).send(error);
@@ -86,6 +88,7 @@ function () {
       var id = req.params.userId;
       model.findUser(id).then(function (parcel) {
         res.send({
+          message: "User with ID:".concat(id),
           data: parcel
         });
       }).catch(function (error) {
@@ -93,7 +96,7 @@ function () {
       });
     }
     /**
-    * Hanlder Method to get a user by ID
+    * Hanlder Method to login a user by ID
     * @method
     * @param  {obj} req The HTTP request
     * @param  {obj} res The HTTP response
@@ -107,6 +110,7 @@ function () {
           password = _req$body2.password;
       model.loginUser(email, password).then(function (data) {
         res.status(200).send({
+          message: 'User logged in',
           data: data
         });
       }).catch(function (error) {
@@ -116,7 +120,7 @@ function () {
       });
     }
     /**
-    * Hanlder Method to get a user by ID
+    * Hanlder Method to get a upgrade user by ID
     * @method
     * @param  {obj} req The HTTP request
     * @param  {obj} res The HTTP response
@@ -126,9 +130,9 @@ function () {
     key: "updateUser",
     value: function updateUser(req, res) {
       var id = req.params.userId;
-      var value = req.body.isadmin;
-      model.updateUser(id, value).then(function (data) {
+      model.updateUser(id).then(function (data) {
         res.status(200).send({
+          message: 'User has been successfully upgraded',
           data: data
         });
       }).catch(function (error) {
@@ -145,12 +149,37 @@ function () {
     */
 
   }, {
+    key: "downgradeUser",
+    value: function downgradeUser(req, res) {
+      var id = req.params.userId;
+      model.downgradeUser(id).then(function (data) {
+        res.status(200).send({
+          message: 'User has been successfully downgraded',
+          data: data
+        });
+      }).catch(function (error) {
+        res.status(401).send({
+          message: error.message
+        });
+      });
+    }
+    /**
+    * Hanlder Method to get a user parcels by ID
+    * @method
+    * @param  {obj} req The HTTP request
+    * @param  {obj} res The HTTP response
+    */
+
+  }, {
     key: "userParcels",
     value: function userParcels(req, res) {
       var userId = req.params.userId;
-      model.findUserParcels(userId).then(function (data) {
+      var offset = req.query.offset;
+      model.findUserParcels(userId, offset).then(function (data) {
         res.status(200).send({
-          data: data
+          message: "User ".concat(userId, " Parcels"),
+          data: data,
+          pages: data.pages
         });
       }).catch(function (error) {
         res.status(401).send({

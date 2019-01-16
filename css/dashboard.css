@@ -146,7 +146,7 @@ tr:nth-child(even) {
 }
 
 .parcel-details {
-  width: 50%;
+  min-width: 50%;
   flex: 1 0 auto;
 }
 
@@ -171,7 +171,7 @@ tr:nth-child(even) {
 }
 
 #map {
-  width: 300px;
+  min-width: 300px;
   height: 535px;
 }
 
@@ -271,6 +271,9 @@ label {
   
   .toggler {
     display: block;
+  }
+  #main-content-page {
+    height: 100vh;
   }
 }
 

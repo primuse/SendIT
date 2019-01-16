@@ -72,7 +72,7 @@ class Fetch {
 		.catch((err) => {
 			if (err.json) {
 				err.json().then( obj => {
-					notif.make({text: obj.message, type: 'danger' })
+					notif.make({text: obj.message.error, type: 'danger' })
 				})
 			} else {
 				console.log(err)

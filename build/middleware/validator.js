@@ -50,7 +50,7 @@ function () {
         return next();
       }).catch(function (err) {
         res.status(400).send({
-          message: err.details[0].message.replace(/['"']/gi, '')
+          message: err.message
         });
       });
     }
@@ -74,6 +74,44 @@ function () {
       });
     }
     /**
+    * Method to validate parcel input before inserting into DB
+    * @method
+    * @param {obj} req HTTP request
+    * @param {obj} res HTTP response
+    * @param {obj} next points to the next function down the line
+    */
+
+  }, {
+    key: "validateReset",
+    value: function validateReset(req, res, next) {
+      _joi.default.validate(req.body, _validateSchema.resetSchema).then(function () {
+        return next();
+      }).catch(function (err) {
+        res.status(400).send({
+          message: err.message
+        });
+      });
+    }
+    /**
+    * Method to validate parcel input before inserting into DB
+    * @method
+    * @param {obj} req HTTP request
+    * @param {obj} res HTTP response
+    * @param {obj} next points to the next function down the line
+    */
+
+  }, {
+    key: "validatePassword",
+    value: function validatePassword(req, res, next) {
+      _joi.default.validate(req.body, _validateSchema.passwordSchema).then(function () {
+        return next();
+      }).catch(function (err) {
+        res.status(400).send({
+          message: err.message
+        });
+      });
+    }
+    /**
     * Method to validate login input
     * @method
     * @param {obj} req HTTP request
@@ -88,7 +126,7 @@ function () {
         return next();
       }).catch(function (err) {
         res.status(400).send({
-          message: err.details[0].message.replace(/['"']/gi, '')
+          message: err.message
         });
       });
     }
@@ -167,7 +205,6 @@ function () {
         _jsonwebtoken.default.verify(token, process.env.secret, function (err, decoded) {
           if (err) {
             return res.status(500).send({
-              auth: false,
               message: 'Failed to authenticate token.'
             });
           }
@@ -178,7 +215,6 @@ function () {
         });
       } else {
         return res.status(403).send({
-          auth: false,
           message: 'No token provided.'
         });
       }
@@ -242,6 +278,50 @@ function () {
           message: 'Unauthorized access'
         });
       }
+    }
+    /**
+    * Method to validate parcel Parameter
+    * @method
+    * @param {obj} req HTTP request
+    * @param {obj} res HTTP response
+    * @param {obj} next points to the next function down the line
+    * @returns {function}
+    */
+
+  }, {
+    key: "validateParcelParam",
+    value: function validateParcelParam(req, res, next) {
+      var parcelId = Number(req.params.parcelId);
+
+      if (isNaN(parcelId)) {
+        return res.status(404).send({
+          message: 'Page not found'
+        });
+      }
+
+      next();
+    }
+    /**
+    * Method to validate parcel Parameter
+    * @method
+    * @param {obj} req HTTP request
+    * @param {obj} res HTTP response
+    * @param {obj} next points to the next function down the line
+    * @returns {function}
+    */
+
+  }, {
+    key: "validateUserParam",
+    value: function validateUserParam(req, res, next) {
+      var userId = Number(req.params.userId);
+
+      if (isNaN(userId)) {
+        return res.status(404).send({
+          message: 'Page not Found'
+        });
+      }
+
+      next();
     }
   }]);
 

@@ -46,9 +46,8 @@ function () {
     value: function sendMail(emailBody, userId) {
       return new Promise(function (resolve, reject) {
         _usermodel.default.findUser(userId).then(function (user) {
-          var _user$ = user[0],
-              email = _user$.email,
-              firstname = _user$.firstname;
+          var email = user.email,
+              firstname = user.firstname;
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
           var msg = {
             to: email,
@@ -59,6 +58,7 @@ function () {
           sgMail.send(msg);
           resolve();
         }).catch(function (error) {
+          console.log(error);
           reject(error);
         });
       });

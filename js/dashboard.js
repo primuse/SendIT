@@ -226,6 +226,7 @@ class Parcel {
 				};
 			})
 			.catch((err) => {
+				console.log('resolve');
 				if (err.json) {
 					err.json().then( obj => {
 						notif.make({text: obj.message, type: 'danger' })
@@ -474,6 +475,7 @@ class Parcel {
 			})
 			.catch((err) => {
 				if (err.json) {
+					console.log('tiku');
 					err.json().then( obj => {
 						notif.make({text: obj.message, type: 'danger' })
 					})

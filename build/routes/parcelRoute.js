@@ -46,7 +46,7 @@ router.get('/parcels', _validator.default.validateToken, _validator.default.vali
 * @returns {(obj|obj} parcel or error message
 */
 
-router.get('/parcels/:parcelId', _validator.default.validateToken, _dbParcelController.default.getParcel);
+router.get('/parcels/:parcelId', _validator.default.validateToken, _validator.default.validateParcelParam, _dbParcelController.default.getParcel);
 /**
 * Route to cancel a parcel order
 * @param  {string} route The cancel url route
@@ -54,7 +54,7 @@ router.get('/parcels/:parcelId', _validator.default.validateToken, _dbParcelCont
 * @returns {(obj|obj} success message or error message
 */
 
-router.patch('/parcels/:parcelId/cancel', _validator.default.validateToken, _dbParcelController.default.cancelParcel);
+router.patch('/parcels/:parcelId/cancel', _validator.default.validateToken, _validator.default.validateParcelParam, _dbParcelController.default.cancelParcel);
 /**
 * Route to change a parcel destination
 * @param  {string} route The cancel url route
@@ -62,7 +62,7 @@ router.patch('/parcels/:parcelId/cancel', _validator.default.validateToken, _dbP
 * @returns {(obj|obj} success message or error message
 */
 
-router.patch('/parcels/:parcelId/destination', _validator.default.validateToken, _validator.default.validateDestination, _dbParcelController.default.updateParcel);
+router.patch('/parcels/:parcelId/destination', _validator.default.validateToken, _validator.default.validateParcelParam, _validator.default.validateDestination, _dbParcelController.default.updateParcel);
 /**
 * Route to change currentLocation of a parcel order
 * @param  {string} route The cancel url route
@@ -70,7 +70,7 @@ router.patch('/parcels/:parcelId/destination', _validator.default.validateToken,
 * @returns {(obj|obj} success message or error message
 */
 
-router.patch('/parcels/:parcelId/currentlocation', _validator.default.validateToken, _validator.default.validateUserRole, _validator.default.validateLocation, _dbParcelController.default.locationParcel);
+router.patch('/parcels/:parcelId/currentlocation', _validator.default.validateToken, _validator.default.validateUserRole, _validator.default.validateParcelParam, _validator.default.validateLocation, _dbParcelController.default.locationParcel);
 /**
 * Route to change status of a parcel order
 * @param  {string} route The cancel url route
@@ -78,6 +78,22 @@ router.patch('/parcels/:parcelId/currentlocation', _validator.default.validateTo
 * @returns {(obj|obj} success message or error message
 */
 
-router.patch('/parcels/:parcelId/status', _validator.default.validateToken, _validator.default.validateUserRole, _validator.default.validateStatus, _dbParcelController.default.statusParcel);
+router.patch('/parcels/:parcelId/status', _validator.default.validateToken, _validator.default.validateUserRole, _validator.default.validateParcelParam, _validator.default.validateStatus, _dbParcelController.default.statusParcel);
+/**
+* Route to request email reset link
+* @param  {string} route The reset email
+* @param  {function} ParcelController.sendResetEmail The handler function
+* @returns {(obj|obj} success message or error message
+*/
+
+router.post('/reset/email', _validator.default.validateReset, _dbParcelController.default.sendResetEmail);
+/**
+* Route to reset user password
+* @param  {string} route The reset email
+* @param  {function} ParcelController.updatePassword The handler function
+* @returns {(obj|obj} success message or error message
+*/
+
+router.patch('/reset/:userId', _validator.default.validateUsers, _validator.default.validatePassword, _dbParcelController.default.updatePassword);
 var _default = router;
 exports.default = _default;

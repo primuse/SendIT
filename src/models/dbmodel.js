@@ -68,7 +68,7 @@ class dbModel {
   * @param {int} offset database offset
   * @returns {function}
   */
-  static getAllParcels(offset) {
+  static getAllParcels(offset = 1) {
     return new Promise((resolve, reject) => {
       const dbOffset = offset * 6;
       const countAllQuery = 'SELECT COUNT(id) from parcelTable';
@@ -91,11 +91,9 @@ class dbModel {
 
           if (secondPromise.length === 0) {
             const response = {
-              message: 'No parcel orders',
             };
-            reject(response);
+            resolve(response);
           }
-
           resolve(secondPromise);
         }).catch((err) => {
           reject(err);
@@ -119,10 +117,10 @@ class dbModel {
         DB.query(findOneQuery).then((result) => {
           if (result.rows.length === 0) {
             const response = {
-              message: 'No parcel with given ID',
             };
-            reject(response);
+            resolve(response);
           }
+
           resolve(result.rows);
         }).catch((error) => {
           reject(error);
@@ -131,10 +129,10 @@ class dbModel {
         DB.query(findOneQuery).then((result) => {
           if (result.rows.length === 0) {
             const response = {
-              message: 'No Parcel Found',
             };
-            reject(response);
+            resolve(response);
           }
+
           resolve(result.rows);
         }).catch((error) => {
           reject(error);
@@ -161,14 +159,14 @@ class dbModel {
           const response = {
             message: 'Parcel already delivered or canceled',
           };
+
           reject(response);
         } else {
           DB.query(cancelQuery).then((results) => {
             if (results.rows.length === 0) {
               const response = {
-                message: 'No parcel found or already delivered',
               };
-              reject(response);
+              resolve(response);
             }
             resolve(results.rows);
           }).catch((error) => {
@@ -199,6 +197,7 @@ class dbModel {
           const response = {
             message: 'Parcel already delivered or canceled',
           };
+
           reject(response);
         } else {
           DB.query(updateQuery).then((results) => {
@@ -238,8 +237,9 @@ class dbModel {
 
         if (length === 0 || status === 'Canceled') {
           const response = {
-            message: 'No parcel found or Already delivered or canceled',
+            message: 'Already delivered or canceled',
           };
+
           reject(response);
         }
         resolve(result.rows[0]);
@@ -271,6 +271,7 @@ class dbModel {
           const response = {
             message: 'No parcel found or Already delivered',
           };
+
           reject(response);
         }
         const { placedby } = result.rows[0];
@@ -300,6 +301,7 @@ class dbModel {
           const response = {
             message: 'No account found for this email',
           };
+
           reject(response);
         }
         const { id, isadmin } = result.rows[0];
@@ -335,6 +337,7 @@ class dbModel {
           const response = {
             message: 'Invalid request',
           };
+
           reject(response);
         }
         const user = result.rows[0];
