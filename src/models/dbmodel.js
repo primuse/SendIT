@@ -307,7 +307,7 @@ class dbModel {
         }
         const { id, isadmin } = result.rows[0];
         Helper.getToken({ id, isadmin }, process.env.secret, { expiresIn: '1d' }).then((token) => {
-          const emailBody = `Click on this link to reset your password <br> <a href="https://react-sendit.herokuapp.com/?id=${id}&auth=${token}">Reset Password</a> <br><br> The SendIT Team`;
+          const emailBody = `Click on this link to reset your password <br> <a href="https://react-sendit.herokuapp.com/set_password?id=${id}&auth=${token}">Reset Password</a> <br><br> The SendIT Team`;
           Notification.sendMail(emailBody, id).then(() => {
             resolve(result.rows[0]);
           }).catch((err) => {
