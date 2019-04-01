@@ -11,6 +11,8 @@ var _bcrypt = _interopRequireDefault(require("bcrypt"));
 
 var _DB = _interopRequireDefault(require("./DB"));
 
+require("@babel/polyfill");
+
 var _email = _interopRequireDefault(require("../helper/email"));
 
 var _authPassword = _interopRequireDefault(require("../helper/authPassword"));
@@ -72,7 +74,8 @@ function () {
 
   }, {
     key: "getAllParcels",
-    value: function getAllParcels(offset) {
+    value: function getAllParcels() {
+      var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       return new Promise(function (resolve, reject) {
         var dbOffset = offset * 6;
         var countAllQuery = 'SELECT COUNT(id) from parcelTable';
@@ -89,10 +92,8 @@ function () {
           secondPromise.pages = pages;
 
           if (secondPromise.length === 0) {
-            var response = {
-              message: 'No parcel orders'
-            };
-            reject(response);
+            var response = {};
+            resolve(response);
           }
 
           resolve(secondPromise);
@@ -121,10 +122,8 @@ function () {
 
           _DB.default.query(findOneQuery).then(function (result) {
             if (result.rows.length === 0) {
-              var response = {
-                message: 'No parcel Found'
-              };
-              reject(response);
+              var response = {};
+              resolve(response);
             }
 
             resolve(result.rows);
@@ -134,10 +133,8 @@ function () {
         } else {
           _DB.default.query(findOneQuery).then(function (result) {
             if (result.rows.length === 0) {
-              var response = {
-                message: 'No Parcel Found'
-              };
-              reject(response);
+              var response = {};
+              resolve(response);
             }
 
             resolve(result.rows);
@@ -175,10 +172,8 @@ function () {
           } else {
             _DB.default.query(cancelQuery).then(function (results) {
               if (results.rows.length === 0) {
-                var _response = {
-                  message: 'No parcel found'
-                };
-                reject(_response);
+                var _response = {};
+                resolve(_response);
               }
 
               resolve(results.rows);
@@ -257,7 +252,7 @@ function () {
 
           if (length === 0 || status === 'Canceled') {
             var response = {
-              message: 'No parcel found, already delivered or canceled'
+              message: 'Already delivered or canceled'
             };
             reject(response);
           }
@@ -342,7 +337,7 @@ function () {
           }, process.env.secret, {
             expiresIn: '1d'
           }).then(function (token) {
-            var emailBody = "Click on this link to reset your password <br> <a href=\"http://127.0.0.1:5500/UI/password_reset.html?id=".concat(id, "&auth=").concat(token, "\">Reset Password</a> <br><br> The SendIT Team");
+            var emailBody = "Click on this link to reset your password <br> <a href=\"https://react-sendit.herokuapp.com/?id=".concat(id, "&auth=").concat(token, "\">Reset Password</a> <br><br> The SendIT Team");
 
             _email.default.sendMail(emailBody, id).then(function () {
               resolve(result.rows[0]);
